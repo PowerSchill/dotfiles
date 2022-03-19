@@ -1,0 +1,14 @@
+{{- if eq .osid "linux-centos" -}}
+#!/bin/bash
+
+cd /tmp
+
+sudo yum -y install curl \
+                    gem \
+                    tmux \
+                    vim \
+                    zsh \
+
+#https://github.com/git-town/git-town/releases/download/v7.7.0/git-town_7.7.0_linux_arm_64.rpm
+#sudo apt -y install ./git-town_7.7.0_linux_arm_64.deb
+{{ end -}}

@@ -1,0 +1,31 @@
+{{- if eq .osid "linux-fedora" -}}
+#!/bin/bash
+
+cd /tmp
+
+sudo dnf -y install bzip2 \
+                    curl \
+                    direnv \
+                    gcc-c++ \
+                    gdbm-devel \
+                    gem \
+                    git \
+                    libffi-devel \
+                    libyaml-devel \
+                    ncurses-devel \
+                    neofetch \
+                    openssl-devel \
+                    readline-devel \
+                    tmux \
+                    util-linux-user \
+                    vim \
+                    zlib-devel \
+                    zsh \
+
+
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+
+#https://github.com/git-town/git-town/releases/download/v7.7.0/git-town_7.7.0_linux_arm_64.rpm
+#sudo apt -y install ./git-town_7.7.0_linux_arm_64.deb
+{{ end -}}

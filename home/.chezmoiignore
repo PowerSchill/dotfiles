@@ -1,0 +1,12 @@
+.oh-my-zsh/cache/**
+.oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+.vim/viminfo
+.vim/undo
+
+{{ if ne .chezmoi.os "darwin" }}
+Library/Application Support
+{{ end }}
+
+{{ if ne .chezmoi.os "linux" }}
+{{ end }}
+

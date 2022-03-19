@@ -7,6 +7,7 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
+DISABLE_AUTO_UPDATE="true"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -53,7 +54,7 @@ plugins=(
   urltools
   vagrant
   zsh-autosuggestions
-  zsh-z
+  z
   )
 
 # User configuration
@@ -307,9 +308,6 @@ _maestral_completion() {
         compadd -U -V unsorted -a completions
     fi
 }
-
-compdef _maestral_completion maestral;
-
 
 eval "$(rbenv init -)"
 

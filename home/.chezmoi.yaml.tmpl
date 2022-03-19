@@ -1,0 +1,36 @@
+{{- $email := "" -}}
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else -}}
+{{-   $email = promptString "email" -}}
+{{- end -}}
+
+{{- $gpg_key := "" -}}
+{{- if hasKey . "gpg_key" -}}
+{{-   $gpg_key = .gpg_key -}}
+{{- else -}}
+{{-   $gpg_key = promptString "gpg_key" -}}
+{{- end -}}
+
+{{- $location := "" -}}
+{{- if hasKey . "location" -}}
+{{-   $location = .location -}}
+{{- else -}}
+{{-   $location = promptString "location" -}}
+{{- end -}}
+
+{{- $osid := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+git:
+  autoCommit: true
+  autoPush: true
+diff:
+  pager: delta
+data:
+    email: {{ $email | quote }}
+    gpg_key: {{ $gpg_key | quote }}
+    location: {{ $location | quote }}
+    osid: {{ $osid | quote }}

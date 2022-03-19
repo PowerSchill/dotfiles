@@ -1,0 +1,10 @@
+{{ if (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+cd /tmp
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+unzip FiraCode.zip -d ~/.fonts
+fc-cache -fv
+{{ end -}}

@@ -1,0 +1,5 @@
+{{- if eq .chezmoi.os "darwin" -}}
+pinentry-program {{ output "which" "pinentry-mac" | trim }}
+{{ end -}}
+default-cache-ttl 600
+max-cache-ttl 7200

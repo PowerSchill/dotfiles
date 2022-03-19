@@ -1,0 +1,102 @@
+.oh-my-zsh:
+  type: archive
+  url: https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz
+  exact: true
+  stripComponents: 1
+  refreshPeriod: 168h
+.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
+  type: archive
+  url: https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz
+  exact: true
+  stripComponents: 1
+  refreshPeriod: 168h
+.oh-my-zsh/custom/plugins/zsh-autosuggestions:
+  type: git-repo
+  url: https://github.com/zsh-users/zsh-autosuggestions
+  exact: false
+  stripComponents: 1
+  refreshPeriod: 168h
+.oh-my-zsh/custom/themes/powerlevel10k:
+  type: archive
+  url: https://github.com/romkatv/powerlevel10k/archive/v1.15.0.tar.gz
+  exact: true
+  stripComponents: 1
+.vim/pack/vendor/start/alker0/chezmoi.vim:
+  type: git-repo
+  url: https://github.com/alker0/chezmoi.vim.git
+  refreshPeriod: 168h
+.vim/pack/vendor/start/nerdtree:
+  type: git-repo
+  url: https://github.com/preservim/nerdtree.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-terraform:
+  type: git-repo
+  url: https://github.com/hashivim/vim-terraform.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/nerdtree-git-plugin:
+  type: git-repo
+  url: https://github.com/Xuyuanp/nerdtree-git-plugin.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-devicons:
+  type: git-repo
+  url: https://github.com/ryanoasis/vim-devicons.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-nerdtree-syntax-highlight:
+  type: git-repo
+  url: https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/fzf.vim:
+  type: git-repo
+  url: https://github.com/junegunn/fzf.vim.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-surround:
+  type: git-repo
+  url: https://github.com/tpope/vim-surround.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/editorconfig-vim:
+  type: git-repo
+  url: https://github.com/editorconfig/editorconfig-vim.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-fugitive:
+  type: git-repo
+  url: https://github.com/tpope/vim-fugitive.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/syntastic:
+  type: git-repo
+  url: https://github.com/vim-syntastic/syntastic.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-airline:
+  type: git-repo
+  url: https://github.com/vim-airline/vim-airline.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/vim-airline-themes:
+  type: git-repo
+  url: https://github.com/vim-airline/vim-airline-themes.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/nerdcommenter:
+  type: git-repo
+  url: https://github.com/preservim/nerdcommenter.git
+  refreshPeriod: 168h
+{{-   $fontDir := "" }}
+{{-   if eq .chezmoi.os "darwin" }}
+{{-     $fontDir = "Library/Fonts" }}
+{{-   else if eq .chezmoi.os "linux" }}
+{{-     $fontDir = ".local/share/fonts" }}
+{{-   end }}
+{{ $fontDir }}/MesloLGS NF Regular.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Regular.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Bold.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Bold.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Italic.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Italic.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Bold Italic.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Bold Italic.ttf
+  refreshPeriod: 168h
+

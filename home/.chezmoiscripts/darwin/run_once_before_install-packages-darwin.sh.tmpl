@@ -1,0 +1,35 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+# core packages
+brew bundle --no-lock --file=/dev/stdin <<EOF
+
+# ============================================================================
+# = Homebrew Taps
+# ============================================================================
+tap "homebrew/cask-fonts"
+
+# ============================================================================
+# = Homebrew packages
+# ============================================================================
+
+brew "dockutil"
+brew "git-delta"
+brew "neofetch"
+brew "tmux"
+brew "vim"
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-syntax-highlighting"
+brew "zsh"
+
+
+# ============================================================================
+# = Homebrew Casks
+# ============================================================================
+
+cask "iterm2"
+cask "font-fira-code-nerd-font"
+
+EOF
+{{ end -}}
