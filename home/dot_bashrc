@@ -1,1 +1,1 @@
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+$(grep /zsh$ /etc/shells | tail -1)
