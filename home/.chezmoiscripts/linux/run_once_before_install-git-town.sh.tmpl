@@ -2,6 +2,6 @@
 
 GTVersion=7.7.0
 
-{{- if eq .os "linux" -}}
+{{- if eq .chezmoi.os "linux" -}}
 curl https://www.git-town.com/install.sh | sh
 {{ end -}}
