@@ -306,6 +306,9 @@ endif
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
+" Quick Save
+noremap <leader>s :update<cr>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
