@@ -2,7 +2,6 @@
 
 GTVersion=7.7.0
 
-{{- if eq .osid "linux-ubunutu" -}}
-wget https://github.com/git-town/git-town/releases/download/v$GTVersion/git-town_$GTVersion_linux_arm_64.deb
-sudo apt -y install ./git-town_$GTVersion_linux_arm_64.deb
+{{- if eq .os "linux" -}}
+curl https://www.git-town.com/install.sh | sh
 {{ end -}}
