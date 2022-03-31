@@ -1,5 +1,5 @@
 .oh-my-zsh/cache/**
-.oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+.oh-my-zsh/custom/
 .vim/viminfo
 .vim/undo
 
@@ -8,5 +8,20 @@ Library/Application Support
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
+{{ end }}
+
+
+{{ if ne .chezmoi.os "windows" }}
+Documents
+{{ else }}
+.bashrc
+.digrc
+.tmux.conf
+.vim
+.vimrc
+.zsh_aliases
+.zshrc
+.zshrc_local
+Brewfile
 {{ end }}
 
