@@ -5,18 +5,22 @@
 {{-   $email = promptString "email" -}}
 {{- end -}}
 
+{{- $environment := "" -}}
+{{- if hasKey . "environment" -}}
+{{-   $environment = .environment -}}
+{{- else -}}
+{{-   $environment = promptString "Environment (personal,work)" -}}
+{{- end -}}
+
 {{- $gpg_key := "" -}}
 {{- if hasKey . "gpg_key" -}}
 {{-   $gpg_key = .gpg_key -}}
 {{- else -}}
-{{-   $gpg_key = promptString "gpg_key" -}}
-{{- end -}}
-
-{{- $location := "" -}}
-{{- if hasKey . "location" -}}
-{{-   $location = .location -}}
-{{- else -}}
-{{-   $location = promptString "location" -}}
+{{-   if eq $environment "personal" -}}
+{{-     $gpg_key = "FAAFAF0EBAB3CC10CD5D51FA3A643C8EDF173DCC" -}}
+{{-   else -}}
+{{-     $gpg_key = "" -}}
+{{-   end -}}
 {{- end -}}
 
 {{- $osid := .chezmoi.os -}}
@@ -33,5 +37,5 @@ diff:
 data:
     email: {{ $email | quote }}
     gpg_key: {{ $gpg_key | quote }}
-    location: {{ $location | quote }}
+    environment: {{ $environment | quote }}
     osid: {{ $osid | quote }}
