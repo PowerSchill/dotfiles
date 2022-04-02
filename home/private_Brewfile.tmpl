@@ -106,14 +106,14 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 brew "zsh"
 
-{{- if eq .location "work" }}
+{{- if eq .environment "work" }}
 
 brew "docker"
 brew "tfsec"
 
 {{- end }}
 
-{{- if eq .location "home" }}
+{{- if eq .environment "home" }}
 
 
 {{- end }}
@@ -178,11 +178,11 @@ cask "visual-studio-code-insiders"
 cask "visual-studio-code"
 cask "vlc"
 
-{{- if eq .location "work" }}
+{{- if eq .environment "work" }}
 
 {{- end }}
 
-{{- if eq .location "home" }}
+{{- if eq .environment "home" }}
 
 cask "aerial"
 cask "arq"
@@ -230,10 +230,10 @@ mas "The Clock", id: 488764545
 mas "Tweetbot", id: 1384080005
 mas "Xcode", id: 497799835
 
-{{- if eq .location "work" }}
+{{- if eq .environment "work" }}
 
 {{- end }}
-{{- if eq .location "home" }}
+{{- if eq .environment "home" }}
 
 mas "1Blocker", id: 1107421413
 mas "Cardhop", id: 1290358394
