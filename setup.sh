@@ -14,26 +14,28 @@ if [[ $system_type == "Darwin"]]; then
 
   # Install Chezmoi
   brew install chezmoi
+
+elif [[ $system_type == "Linux"]]
+    distribution = $(lsb_release -i | cut -f 2-)
+
+    if [[ $distribution == "Ubuntu" ]]
+        sudo apt-get update
+        sudo apt-get -y install git curl
+
+        # Install GitHub CLI
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+        sudo apt update
+        sudo apt install gh
+    else
+        sudo yum update
+        sudo yum -y install git
+    fi
+
+    # Install chezmoi
+    curl -sfL https://git.io/chezmoi | sh
 fi
 
-if [[ $system_type == "Linux"]]
-  echo "Hello Linux User!"
-  sudo yum update #TODO: Handle Ubuntu
-  sudo yum -y install git
-
-  # Install chezmoi
-  curl -sfL https://git.io/chezmoi | sh
-fi
-
-
-ssh_key=~/.ssh/id_rsa
-if [ -f "$ssh_key" ]; then
-
-else
-  ssh-keygen -t ed25519 -C "Mark.Schill@cmschill.net" -f $ssh_key
-fi
-
-brew install gh
 gh auth login
 
 export PATH=$HOME/bin:$PATH
