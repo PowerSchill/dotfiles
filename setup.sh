@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd "$HOME" || return
-system_type = $(uname -s)
+system_type=$(uname -s)
 
-if [[ $system_type == "Darwin"]]; then
+if [ $system_type -eq "Darwin" ]; then
   echo "Hello Mac User!"
   echo "Installing Hombebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -15,10 +15,10 @@ if [[ $system_type == "Darwin"]]; then
   # Install Chezmoi
   brew install chezmoi
 
-elif [[ $system_type == "Linux"]]
-    distribution = $(lsb_release -i | cut -f 2-)
+elif [ $system_type -eq "Linux"]; then
+    distribution=$(lsb_release -i | cut -f 2-)
 
-    if [[ $distribution == "Ubuntu" ]]
+    if [ $distribution -eq "Ubuntu" ]; then
         sudo apt-get update
         sudo apt-get -y install git curl
 
