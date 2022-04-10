@@ -1,17 +1,5 @@
 # Installing
 
 ```bash
-curl -sSL https://github.com/PowerSchill/dotfiles/blob/main/setup.sh | bash
-```
-
-## Using
-
-```bash
-chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
-```
-
-or
-
-```bash
-chezmoi init --apply --verbose https://github.com/PowerSchill/dotfiles.git
+curl -L https://gist.github.com/PowerSchill/b4130925f1811357c8e6dec458cc3814/raw/setup.sh | bash
 ```
