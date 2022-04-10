@@ -1,0 +1,51 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+{{- if eq .osid "linux-ubuntu" -}}
+sudo apt -y install curl \
+    direnv \
+    gem \
+    neofetch \
+    rbenv \
+    ruby \
+    ruby-colorize \
+    ruby-dev \
+    tmux \
+    vim \
+    wget \
+    zsh
+
+{{ else if eq .osid "linux-centos" -}}
+sudo yum -y install curl \
+    gem \
+    tmux \
+    vim \
+    wget \
+    zsh
+
+{{ else if eq .osid "linux-fedora" -}}
+sudo dnf -y install bzip2 \
+    curl \
+    direnv \
+    gcc-c++ \
+    gdbm-devel \
+    gem \
+    git \
+    libffi-devel \
+    libyaml-devel \
+    ncurses-devel \
+    neofetch \
+    openssl-devel \
+    readline-devel \
+    tmux \
+    util-linux-user \
+    vim \
+    wget \
+    zlib-devel \
+    zsh \
+{{ end -}}
+
+# Install Git-Town
+curl -L https://git-town.com/install.sh | sh
+
+{{ end -}}
