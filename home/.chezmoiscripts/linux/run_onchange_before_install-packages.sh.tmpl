@@ -2,6 +2,7 @@
 #!/bin/bash
 
 {{- if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian")) -}}
+
 sudo apt -y install curl \
     direnv \
     gem \
@@ -16,6 +17,7 @@ sudo apt -y install curl \
     zsh
 
 {{ else if eq .osid "linux-centos" -}}
+
 sudo yum -y install curl \
     gem \
     tmux \
@@ -24,6 +26,7 @@ sudo yum -y install curl \
     zsh
 
 {{ else if eq .osid "linux-fedora" -}}
+
 sudo dnf -y install bzip2 \
     curl \
     direnv \
