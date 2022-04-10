@@ -1,7 +1,7 @@
-{{ if eq .chezmoi.os "linux" }}
+{{- if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
-{{ if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian")) }}
+{{ if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian")) -}}
 
 sudo apt -y install curl \
     direnv \
@@ -16,7 +16,7 @@ sudo apt -y install curl \
     wget \
     zsh
 
-{{ else if eq .osid "linux-centos" }}
+{{ else if eq .osid "linux-centos" -}}
 
 sudo yum -y install curl \
     gem \
@@ -25,7 +25,7 @@ sudo yum -y install curl \
     wget \
     zsh
 
-{{ else if eq .osid "linux-fedora" }}
+{{ else if eq .osid "linux-fedora" -}}
 
 sudo dnf -y install bzip2 \
     curl \
@@ -46,9 +46,9 @@ sudo dnf -y install bzip2 \
     wget \
     zlib-devel \
     zsh \
-{{ end }}
+{{ end -}}
 
 # Install Git-Town
 curl -L https://git-town.com/install.sh | sh
 
-{{ end }}
+{{ end -}}
