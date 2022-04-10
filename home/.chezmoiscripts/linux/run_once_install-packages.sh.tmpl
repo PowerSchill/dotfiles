@@ -1,7 +1,7 @@
 {{ if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
-{{- if eq .osid "linux-ubuntu" -}}
+{{- if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian") -}}
 sudo apt -y install curl \
     direnv \
     gem \
