@@ -330,6 +330,10 @@ defaults write com.apple.TextEdit RichText -int 0
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
+# Enable Key Repeating for Vim functionality
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false              # For VS Code
+defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false      # For VS Code Insider
+
 
 for dockItemLabel in \
 	Launchpad \
