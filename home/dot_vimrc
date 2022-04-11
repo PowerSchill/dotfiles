@@ -310,7 +310,7 @@ set pastetoggle=<F2>
 set showmode
 
 " Quick Save
-noremap <leader>s :update<cr>
+noremap <leader>S :update<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking

@@ -78,6 +78,14 @@
   type: git-repo
   url: https://github.com/preservim/nerdcommenter.git
   refreshPeriod: 168h
+.vim/pack/plugins/start/vim-easymotion:
+  type: git-repo
+  url: https://github.com/easymotion/vim-easymotion.git
+  refreshPeriod: 168h
+.vim/pack/plugins/start/commentary:
+  type: git-repo
+  url: https://tpope.io/vim/commentary.git
+  refreshPeriod: 168h
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "Library/Fonts" }}
