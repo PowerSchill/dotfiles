@@ -1,17 +1,9 @@
 prSections:
 - title: My Pull Requests
   filters: is:open author:@me
-- title: Needs My Review
-  filters: is:open review-requested:@me
-- title: Subscribed
-  filters: is:open -author:@me repo:cli/cli repo:dlvhdr/gh-dash
+- title: Ready for Review
+  filters: is:open is:pr team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success
 issuesSections:
-- title: My Issues
-  filters: is:open author:@me
-- title: Assigned
-  filters: is:open assignee:@me
-- title: Subscribed
-  filters: is:open -author:@me repo:cli/cli repo:dlvhdr/gh-dash
 defaults:
   preview:
     open: true
