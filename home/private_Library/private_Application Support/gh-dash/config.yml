@@ -3,12 +3,11 @@ prSections:
   filters: is:open author:@me
 - title: Ready for Review
   filters: is:open is:pr team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success
-  limit: 50
 issuesSections:
 defaults:
   preview:
     open: false
     width: 75
-  prsLimit: 20
+  prsLimit: 50
   issuesLimit: 20
   view: prs
