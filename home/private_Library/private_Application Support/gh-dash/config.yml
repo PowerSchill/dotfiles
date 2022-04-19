@@ -2,7 +2,7 @@ prSections:
 - title: My Pull Requests
   filters: is:open author:@me
 - title: Ready for Review
-  filters: is:open is:pr team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success
+  filters: is:open is:pr team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success sort:updated-asc
 issuesSections:
 defaults:
   preview:
