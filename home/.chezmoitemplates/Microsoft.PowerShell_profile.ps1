@@ -3,10 +3,11 @@
 # Set Path
 if ( $IsMacOS ) {
     $Platform = (uname -m)
+    
+    $(/usr/local/bin/brew shellenv) | Invoke-Expression
 
     switch ($Platform) {
         'arm64' {
-           $Env:PATH += ":/opt/homebrew/bin" 
         }
     }
 }
