@@ -84,6 +84,9 @@ unreleased-changelog = !git diff $(git last-release) -- $(git changelog-filename
 # (lately I've mostly been using git add [-p]; git show --staged; git amend)
 amend = commit --amend --no-edit
 
+# Clean
+clear = clean -d -x -i
+
 # git reword -- edit the last commit message
 reword = commit --amend --only -v
 append = town append
