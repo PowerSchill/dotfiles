@@ -113,7 +113,7 @@ brew "tfsec"
 
 {{- end }}
 
-{{- if eq .environment "home" }}
+{{- if eq .environment "personal" }}
 
 
 {{- end }}
@@ -122,14 +122,13 @@ brew "tfsec"
 # = Homebrew Casks
 # ============================================================================
 
-cask "1password-beta"
+cask "1password"
 cask "1password-cli"
 cask "adoptopenjdk16"
 cask "adoptopenjdk8"
 cask "airbuddy"
 cask "alfred"
 cask "arq"
-cask "bettertouchtool"
 cask "beyond-compare"
 cask "brave-browser"
 cask "cheatsheet"
@@ -147,6 +146,8 @@ cask "font-fira-code-nerd-font"
 cask "font-inconsolata"
 cask "font-jetbrains-mono"
 cask "font-meslo-for-powerline"
+cask "font-meslo-lg-nerd-font"
+cask "goland"
 cask "google-chrome"
 cask "google-cloud-sdk"
 cask "gpg-suite-no-mail"
@@ -156,7 +157,6 @@ cask "iterm2"
 cask "keyboard-maestro"
 cask "logitech-options"
 cask "macupdater"
-cask "maestral"
 cask "microsoft-auto-update"
 cask "microsoft-edge"
 cask "obsidian"
@@ -166,7 +166,6 @@ cask "pycharm"
 cask "raindropio"
 cask "setapp"
 cask "signal"
-cask "silentknight"
 cask "slack"
 cask "snagit"
 cask "soundsource"
@@ -180,9 +179,11 @@ cask "vlc"
 
 {{- if eq .environment "work" }}
 
+cask "maestral"
+
 {{- end }}
 
-{{- if eq .environment "home" }}
+{{- if eq .environment "personal" }}
 
 cask "aerial"
 cask "arq"
@@ -219,7 +220,7 @@ mas "Highlights", id: 1498912833
 mas "Magnet", id: 441258766
 # mas "Marked 2", id: 890031187
 mas "Moom", id: 419330170
-mas "Pocket", id: 568494494
+# mas "Pocket", id: 568494494
 mas "Raindrop.io for Safari", id: 957810159
 mas "Reeder", id: 1529448980
 mas "Save to Raindrop.io", id: 1549370672
@@ -233,7 +234,7 @@ mas "Xcode", id: 497799835
 {{- if eq .environment "work" }}
 
 {{- end }}
-{{- if eq .environment "home" }}
+{{- if eq .environment "personal" }}
 
 mas "1Blocker", id: 1107421413
 mas "Cardhop", id: 1290358394
@@ -247,4 +248,3 @@ mas "Paprika Recipe Manager 3", id: 1303222628
 mas "Pastel", id:413897608
 
 {{- end }}
-0
