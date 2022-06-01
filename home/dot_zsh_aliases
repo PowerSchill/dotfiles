@@ -137,7 +137,7 @@ alias dotdrop='eval $(grep -v "^#" ~/dotfiles/.env) ~/dotfiles/dotdrop.sh'
 
 alias dokken="KITCHEN_LOCAL_YAML=kitchen.dokken.yml kitchen"
 
-alias db="cd ~/Library/CloudStorage/Dropbox/_Data"
+alias db="cd ~/Library/CloudStorage/Dropbox"
 alias zs="source ~/.zshrc"
 alias gum="git pull upstream master"
 
