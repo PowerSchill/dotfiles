@@ -4,7 +4,7 @@
 if ( $IsMacOS ) {
     $Platform = (uname -m)
     
-    $(/usr/local/bin/brew shellenv) | Invoke-Expression
+    $(/opt/homebrew/bin/brew shellenv) | Invoke-Expression
 
     switch ($Platform) {
         'arm64' {
