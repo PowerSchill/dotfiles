@@ -2,7 +2,6 @@
 # = Homebrew Taps
 # ============================================================================
 
-tap "adoptopenjdk/openjdk"
 tap "hashicorp/tap"
 tap "homebrew/bundle"
 tap "homebrew/cask-drivers"
@@ -33,6 +32,7 @@ brew "ctags"
 brew "curl"
 brew "dash"
 brew "direnv"
+brew "dockutil"
 brew "dos2unix"
 brew "findutils"
 brew "freetds"
@@ -123,8 +123,6 @@ brew "tfsec"
 
 cask "1password"
 cask "1password-cli"
-cask "adoptopenjdk16"
-cask "adoptopenjdk8"
 cask "airbuddy"
 cask "alfred"
 cask "arq"
@@ -137,6 +135,7 @@ cask "datagrip"
 cask "devonthink"
 cask "docker"
 cask "dotnet-sdk"
+cask "dropbox-beta"
 cask "elgato-stream-deck"
 cask "elgato-thunderbolt-dock"
 cask "fantastical"
@@ -150,11 +149,12 @@ cask "goland"
 cask "google-chrome"
 cask "google-cloud-sdk"
 cask "gpg-suite-no-mail"
+cask "grammarly-desktop"
 cask "hazel"
 cask "intellij-idea"
 cask "iterm2"
 cask "keyboard-maestro"
-cask "logitech-options"
+cask "logi-options-plus"
 cask "macupdater"
 cask "microsoft-auto-update"
 cask "microsoft-edge"
@@ -169,6 +169,7 @@ cask "slack"
 cask "snagit"
 cask "soundsource"
 cask "sublime-text"
+cask "temurin17"
 cask "textexpander"
 cask "tower"
 cask "transmit"
@@ -178,7 +179,6 @@ cask "vlc"
 
 {{- if eq .environment "work" }}
 
-cask "maestral"
 
 {{- end }}
 
@@ -188,7 +188,6 @@ cask "aerial"
 cask "arq"
 cask "anylist"
 cask "discord"
-cask "dropbox-beta"
 cask "fastscripts"
 cask "gdlauncher"
 cask "kindle"
@@ -227,7 +226,6 @@ mas "Service Station", id: 1503136033
 mas "Slack", id: 803453959
 mas "TableFlip", id: 1462643128
 mas "The Clock", id: 488764545
-mas "Tweetbot", id: 1384080005
 mas "Xcode", id: 497799835
 
 {{- if eq .environment "work" }}
