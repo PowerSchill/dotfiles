@@ -1,0 +1,219 @@
+# ============================================================================
+# = Homebrew Taps
+# ============================================================================
+
+tap "hashicorp/tap"
+tap "homebrew/bundle"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "jandedobbeleer/oh-my-posh"
+tap "warrensbox/tap"
+
+# ============================================================================
+# = Homebrew packages
+# ============================================================================
+
+brew "ack"
+brew "asciinema"
+brew "aspell"
+brew "bat"
+brew "bottom"
+brew "ccat"
+brew "chezmoi"
+brew "chrome-cli"
+brew "clang-format"
+brew "cloc"
+brew "colordiff"
+brew "coreutils"
+brew "ctags"
+brew "curl"
+brew "dash"
+brew "direnv"
+brew "dockutil"
+brew "dos2unix"
+brew "findutils"
+brew "freetds"
+brew "fzf"
+brew "gh"
+brew "ghostscript"
+brew "git-delta"
+brew "git-town"
+brew "git"
+brew "gitleaks"
+brew "glow"
+brew "gmp"
+brew "gnupg2"
+brew "go"
+brew "grep"
+brew "helm"
+brew "highlight"
+brew "htop"
+brew "hub"
+brew "imagemagick"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "jenv"
+brew "jq"
+brew "kubernetes-cli"
+brew "lesspipe"
+brew "libmagic"
+brew "lnav"
+brew "mas"
+brew "mdcat"
+brew "minikube"
+brew "multimarkdown"
+brew "mysql"
+brew "ncdu"
+brew "neofetch"
+brew "nmap"
+brew "node"
+brew "openssl"
+brew "p7zip"
+brew "packer"
+brew "pandoc"
+brew "pinentry-mac"
+brew "pygments"
+brew "python"
+brew "pipx"
+brew "rbenv"
+brew "rename"
+brew "ruby-build"
+brew "sipcalc"
+brew "source-highlight"
+brew "speedtest-cli"
+brew "ssh-copy-id"
+brew "streamlink"
+brew "switchaudio-osx"
+brew "terraform", link: false
+brew "tmux"
+brew "tmuxinator"
+brew "trash"
+brew "tree"
+brew "vagrant-completion"
+brew "vim"
+brew "warrensbox/tap/tfswitch"
+brew "watch"
+brew "wget"
+brew "whatmask"
+brew "whois"
+brew "wifi-password"
+brew "yamllint"
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-syntax-highlighting"
+brew "zsh"
+
+# ============================================================================
+# = Homebrew Casks
+# ============================================================================
+
+cask "1password"
+cask "1password-cli"
+cask "airbuddy"
+cask "alfred"
+cask "arq"
+cask "beyond-compare"
+cask "brave-browser"
+cask "cheatsheet"
+cask "choosy"
+cask "dash"
+cask "datagrip"
+cask "devonthink"
+cask "docker"
+cask "dotnet-sdk"
+cask "dropbox-beta"
+cask "elgato-stream-deck"
+cask "elgato-thunderbolt-dock"
+cask "fantastical"
+cask "firefox"
+cask "font-fira-code-nerd-font"
+cask "font-inconsolata"
+cask "font-jetbrains-mono"
+cask "font-meslo-for-powerline"
+cask "font-meslo-lg-nerd-font"
+cask "goland"
+cask "google-chrome"
+cask "google-cloud-sdk"
+cask "gpg-suite-no-mail"
+cask "grammarly-desktop"
+cask "hazel"
+cask "intellij-idea"
+cask "iterm2"
+cask "keyboard-maestro"
+cask "logi-options-plus"
+cask "macupdater"
+cask "microsoft-auto-update"
+cask "microsoft-edge"
+cask "obsidian"
+cask "omnifocus"
+cask "powershell"
+cask "pycharm"
+cask "raindropio"
+cask "setapp"
+cask "signal"
+cask "slack"
+cask "snagit"
+cask "soundsource"
+cask "sublime-text"
+cask "temurin17"
+cask "textexpander"
+cask "tower"
+cask "transmit"
+cask "visual-studio-code-insiders"
+cask "visual-studio-code"
+cask "vlc"
+
+cask "aerial"
+cask "arq"
+cask "anylist"
+cask "discord"
+cask "fastscripts"
+cask "gdlauncher"
+cask "kindle"
+cask "mailmate"
+cask "minecraft"
+cask "parallels"
+cask "private-internet-access"
+cask "silentknight"
+cask "skim"
+cask "tor-browser-alpha"
+cask "twitch"
+cask "viscosity"
+
+# ============================================================================
+# = Mac App Store
+# ============================================================================
+
+mas "Battery Monitor", id:413678017
+mas "CARROT Weather", id:993487541
+mas "DaisyDisk", id: 411643860
+mas "Deliveries", id:290986013
+mas "Drafts", id: 1435957248
+mas "DuckDuckGo Privacy Essentials", id: 1482920575
+mas "Grammarly for Safari", id: 1462114288
+mas "Highlights", id: 1498912833
+mas "Magnet", id: 441258766
+# mas "Marked 2", id: 890031187
+mas "Moom", id: 419330170
+# mas "Pocket", id: 568494494
+mas "Raindrop.io for Safari", id: 957810159
+mas "Reeder", id: 1529448980
+mas "Save to Raindrop.io", id: 1549370672
+mas "Service Station", id: 1503136033
+mas "Slack", id: 803453959
+mas "TableFlip", id: 1462643128
+mas "The Clock", id: 488764545
+mas "Xcode", id: 497799835
+
+mas "1Blocker", id: 1107421413
+mas "Cardhop", id: 1290358394
+mas "Day One", id: 1055511498
+mas "Fantastical", id: 975937182
+mas "Instapaper", id: 288545208
+mas "Mactracker", id: 430255202
+mas "Numbers", id:409203825
+mas "Pages", id: 409201541
+mas "Paprika Recipe Manager 3", id: 1303222628
+mas "Pastel", id:413897608
