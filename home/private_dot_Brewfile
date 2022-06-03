@@ -105,18 +105,6 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 brew "zsh"
 
-{{- if eq .environment "work" }}
-
-brew "docker"
-brew "tfsec"
-
-{{- end }}
-
-{{- if eq .environment "personal" }}
-
-
-{{- end }}
-
 # ============================================================================
 # = Homebrew Casks
 # ============================================================================
@@ -177,13 +165,6 @@ cask "visual-studio-code-insiders"
 cask "visual-studio-code"
 cask "vlc"
 
-{{- if eq .environment "work" }}
-
-
-{{- end }}
-
-{{- if eq .environment "personal" }}
-
 cask "aerial"
 cask "arq"
 cask "anylist"
@@ -200,8 +181,6 @@ cask "skim"
 cask "tor-browser-alpha"
 cask "twitch"
 cask "viscosity"
-
-{{- end }}
 
 # ============================================================================
 # = Mac App Store
@@ -228,11 +207,6 @@ mas "TableFlip", id: 1462643128
 mas "The Clock", id: 488764545
 mas "Xcode", id: 497799835
 
-{{- if eq .environment "work" }}
-
-{{- end }}
-{{- if eq .environment "personal" }}
-
 mas "1Blocker", id: 1107421413
 mas "Cardhop", id: 1290358394
 mas "Day One", id: 1055511498
@@ -243,5 +217,3 @@ mas "Numbers", id:409203825
 mas "Pages", id: 409201541
 mas "Paprika Recipe Manager 3", id: 1303222628
 mas "Pastel", id:413897608
-
-{{- end }}
