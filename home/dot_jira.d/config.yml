@@ -1,0 +1,22 @@
+project: SREDBK
+endpoint: https://jira.ncr.com
+password-source: keyring
+
+custom-commands:
+  - name: env
+    help: print the JIRA environment variables available to custom commands
+    script: |
+      env | grep JIRA
+  - name: print-project
+    help: print the name of the configured project
+    script: "echo $JIRA_PROJECT"
+  - name: mine
+    help: display issues assigned to me
+    script: |-
+      if [ -n "$JIRA_PROJECT" ]; then
+          # if `project: ...` configured just list the issues for current project
+          {{jira}} list --template table --query "resolution = unresolved and assignee=currentuser() and project in (SREDBK, DBSRE) AND status not in (Closed, Canceled, Withdrawn) ORDER BY priority asc, created"
+      else
+          # otherwise list issues for all project
+          {{jira}} list --template table --query "resolution = unresolved and assignee=currentuser() AND status not in (Closed, Canceled, Withdrawn) project in (SREDBK, DBSRE) ORDER BY priority asc, created"
+      fi
