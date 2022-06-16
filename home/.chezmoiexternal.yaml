@@ -86,6 +86,10 @@
   type: git-repo
   url: https://tpope.io/vim/commentary.git
   refreshPeriod: 168h
+.vim/pack/plugins/start/vim-go:
+  type: git-repo
+  url: https://github.com/fatih/vim-go.git
+  refreshPeriod: 168h
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "Library/Fonts" }}
