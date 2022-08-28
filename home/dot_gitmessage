@@ -1,22 +1,39 @@
-# Title: Summary, imperative, start upper case, don't end with a period
-# No more than 50 chars. #### 50 chars is here:  #
-
-# Remember blank line between title and body.
-
-# Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
-# Wrap at 72 chars. ################################## which is here:  #
+## Remember to follow: https://www.conventionalcommits.org/en/v1.0.0/#summary
+#
+# <type>[!][optional scope]: <description>          #
 
 
-# At the end: Include Co-authored-by for all contributors.
-# Include at least one empty line before it. Format:
-# Co-authored-by: name <user@users.noreply.github.com>
+# [optional body]
+# Provide additional contextual information about the code changes:    #
+
+
+# [optional footer(s)]
+# BREAKING CHANGE:
+# Reviewed by:
+# Refs:
+#
+## Types
+# fix: A bug fix. Correlates with PATCH in SemVer
+# feat: A new feature. Correlates with MINOR in SemVer
+# docs: Documentation only changes
+# style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+# refactor: A code change that neither fixes a bug nor adds a feature
+# perf: A code change that improves performance
+# test: Adding missing or correcting existing tests
+# build: Changes that affect the build system or external dependencies (example scopes: pip, docker, npm)
+# ci: Changes to our CI configuration files and scripts (example scopes: GitLabCI)
+# revert:
+#
+# Description: Write a short and imperative summary of the code changes: (lower case and no period)
+#
+
 #
 # How to Write a Git Commit Message:
 # https://chris.beams.io/posts/git-commit/
 #
 # 1. Separate subject from body with a blank line
 # 2. Limit the subject line to 50 characters
-# 3. Capitalize the subject line
+# 3. Do not capitalize the subject line (conventional)
 # 4. Do not end the subject line with a period
 # 5. Use the imperative mood in the subject line
 # 6. Wrap the body at 72 characters
