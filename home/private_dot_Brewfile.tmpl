@@ -22,6 +22,7 @@ tap "warrensbox/tap"
 brew "ack"
 brew "asciinema"
 brew "aspell"
+brew "bash"
 brew "bat"
 brew "bottom"
 brew "ccat"
@@ -116,7 +117,10 @@ brew "zsh"
 
 {{- if eq .environment "work" }}
 
+brew "checkov"
+brew "gitmoji"
 brew "go-jira"
+brew "terraform-docs"
 
 {{- end }}
 
@@ -167,6 +171,7 @@ cask "microsoft-edge"
 cask "microsoft-teams"
 cask "obsidian"
 cask "omnifocus"
+cask "postman"
 cask "powershell"
 cask "pycharm"
 cask "raindropio"
