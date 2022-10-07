@@ -13,3 +13,9 @@ Host *
 
 HOST *.int.dbk.ncr.com
     USER ms185570_ncr_com
+
+HOST 10.49.*
+    USER ms185570_ncr_com
+
+HOST 10.99.*
+    USER ms185570_ncr_com
