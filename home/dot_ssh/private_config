@@ -10,3 +10,6 @@ Host *
 	ForwardAgent yes
 	GSSAPIAuthentication no
 	GSSAPIDelegateCredentials no
+
+HOST *.int.dbk.ncr.com
+    USER ms185570_ncr_com
