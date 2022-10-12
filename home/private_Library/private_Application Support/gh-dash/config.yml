@@ -18,7 +18,7 @@ defaults:
   view: prs
 
 repoPaths:
-  ncr-digital-banking/*: ~/Documents/60 Professional/61 Projects/61.00 Repositories/*
+  ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
 
 pager:
   diff: delta
@@ -29,7 +29,7 @@ keybindings:
       command: >
         tmux new-window -c {{.RepoPath}} '
           gh pr checkout {{.PrNumber}} &&
-          vim -c ":DiffviewOpen master...{{.HeadRefName}}"
+          vim .
         '
     - key: c
       command: >
