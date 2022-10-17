@@ -2,6 +2,8 @@
 prSections:
   - title: My Pull Requests
     filters: is:open author:@me
+  - title: Mentioned
+    filters: is:open mentions:@me archived:false
   - title: Ready for My Review
     filters: is:open user-review-requested:@me archived:false status:success
   - title: Ready for Team Review
