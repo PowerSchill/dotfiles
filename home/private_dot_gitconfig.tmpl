@@ -1,150 +1,151 @@
 [core]
-autocrlf = input
-excludesFile = ~/.gitignore_global
-pager = delta
+    autocrlf = input
+    excludesFile = ~/.gitignore_global
+    pager = delta
 
 [color]
-ui = auto
-diff = auto
-status = auto
+    ui = auto
+    diff = auto
+    status = auto
 
 [help]
-autoCorrect = 1
+    autoCorrect = 1
 
 [log]
-abbrevCommit = true
-decorate = short
+    abbrevCommit = true
+    decorate = short
 
 [apply]
-ignoreWhitespace = change
+    ignoreWhitespace = change
 
 [rerere]
-enabled = true
-autoUpdate = true
+    enabled = true
+    autoUpdate = true
 
 [am]
-threeWay = true
+    threeWay = true
 
 [user]
-name = Mark E. Schill
-email = {{ .email }}
-signingkey = {{ .gpg_key }}
+    name = Mark E. Schill
+    email = {{ .email }}
+    signingkey = {{ .gpg_key }}
 
 [alias]
-# Because I constantly forget how to do this
-# https://git-scm.com/docs/git-fetch#git-fetch--p
-prune = fetch --prune
+    # Because I constantly forget how to do this
+    # https://git-scm.com/docs/git-fetch#git-fetch--p
+    prune = fetch --prune
 
-# Not quite as common as an amend, but still common
-# https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
-undo = reset --soft HEAD^
+    # Not quite as common as an amend, but still common
+    # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
+    undo = reset --soft HEAD^
 
-# We wanna grab those pesky un-added files!
-# https://git-scm.com/docs/git-stash
-stash-all = stash save --include-untracked
+    # We wanna grab those pesky un-added files!
+    # https://git-scm.com/docs/git-stash
+    stash-all = stash save --include-untracked
 
-# No need for a GUI - a nice, colorful, graphical representation
-# https://git-scm.com/docs/git-log
-# via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a
-glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    # No need for a GUI - a nice, colorful, graphical representation
+    # https://git-scm.com/docs/git-log
+    # via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a
+    glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
-# A safer git push --force
-fpush = push --force-with-lease
+    # A safer git push --force
+    fpush = push --force-with-lease
 
-# These are extremely nice
-ignore = "!f() { for arg in \"$@\"; do echo \"$arg\" >> .gitignore; done; git add .gitignore 2>/dev/null; }; f"
-exclude = "!f() { for arg in \"$@\"; do echo \"$arg\" >> \"$(git rev-parse --git-dir)/info/exclude\"; done; }; f"
-# The incantation to list ignored files is terrible
-# (but maybe I should use git status --ignored?)
-ignored = ls-files --others -i --exclude-standard
+    # These are extremely nice
+    ignore = "!f() { for arg in \"$@\"; do echo \"$arg\" >> .gitignore; done; git add .gitignore 2>/dev/null; }; f"
+    exclude = "!f() { for arg in \"$@\"; do echo \"$arg\" >> \"$(git rev-parse --git-dir)/info/exclude\"; done; }; f"
+    # The incantation to list ignored files is terrible
+    # (but maybe I should use git status --ignored?)
+    ignored = ls-files --others -i --exclude-standard
 
-# When you git pull and want to see what you've just pulled in, do git new [branch] [git log options]
-# inspired by https://git.wiki.kernel.org/index.php/Aliases
-new = "!f() { case \"$1\" in -*|\"\") b=;; *) b=$1; shift;; esac; git log $b@{1}..$b@{0} \"$@\"; }; f"
+    # When you git pull and want to see what you've just pulled in, do git new [branch] [git log options]
+    # inspired by https://git.wiki.kernel.org/index.php/Aliases
+    new = "!f() { case \"$1\" in -*|\"\") b=;; *) b=$1; shift;; esac; git log $b@{1}..$b@{0} \"$@\"; }; f"
 
-# show tag name of the last release tag on current branch
-last-release = describe --tags --abbrev=0 --exclude=last*
-penultimate-release = !git describe --tags --abbrev=0 --exclude=last* --exclude=$(git last-release)
+    # show tag name of the last release tag on current branch
+    last-release = describe --tags --abbrev=0 --exclude=last*
+    penultimate-release = !git describe --tags --abbrev=0 --exclude=last* --exclude=$(git last-release)
 
-# show commits after the last release
-unreleased = !git shortlog $(git last-release)..
-unreleased-log = !git log $(git last-release)..
+    # show commits after the last release
+    unreleased = !git shortlog $(git last-release)..
+    unreleased-log = !git log $(git last-release)..
 
-# show diff since the last release
-unreleased-diff = !git diff $(git last-release)
+    # show diff since the last release
+    unreleased-diff = !git diff $(git last-release)
 
-# git changelog-filename [name] -- get or set the filename of the changelog file (default: CHANGES.rst)
-# used by other aliases such as 'git unreleased-changelog'
-changelog-filename = "!f() { git config alias.changelog.filename \"$@\" || echo CHANGES.rst; }; f"
+    # git changelog-filename [name] -- get or set the filename of the changelog file (default: CHANGES.rst)
+    # used by other aliases such as 'git unreleased-changelog'
+    changelog-filename = "!f() { git config alias.changelog.filename \"$@\" || echo CHANGES.rst; }; f"
 
-# show changelog since the last release
-unreleased-changelog = !git diff $(git last-release) -- $(git changelog-filename)
+    # show changelog since the last release
+    unreleased-changelog = !git diff $(git last-release) -- $(git changelog-filename)
 
-# git amend [-a|-p|FILE] to just add something to the last commit
-# (lately I've mostly been using git add [-p]; git show --staged; git amend)
-amend = commit --amend --no-edit
+    # git amend [-a|-p|FILE] to just add something to the last commit
+    # (lately I've mostly been using git add [-p]; git show --staged; git amend)
+    amend = commit --amend --no-edit
 
-# Clean
-clear = clean -d -x -i
+    # Clean
+    clear = clean -d -x -i
 
-# git reword -- edit the last commit message
-reword = commit --amend --only -v
-append = town append
-hack = town hack
-kill = town kill
-new-pull-request = town new-pull-request
-prepend = town prepend
-prune-branches = town prune-branches
-rename-branch = town rename-branch
-repo = town repo
-ship = town ship
-sync = town sync
+    # git reword -- edit the last commit message
+    reword = commit --amend --only -v
+    append = town append
+    hack = town hack
+    kill = town kill
+    new-pull-request = town new-pull-request
+    prepend = town prepend
+    prune-branches = town prune-branches
+    rename-branch = town rename-branch
+    repo = town repo
+    ship = town ship
+    sync = town sync
 
 [init]
-templatedir = ~/.git_template
-defaultBranch = main
+    templatedir = ~/.git_template
+    defaultBranch = main
 
 [push]
-default = current
-# "push the current branch back to the branch whose changes are usually integrated into the current branch"
-# "refuse to push if the upstream branch’s name is different from the local one"
-# https://git-scm.com/docs/git-config#git-config-pushdefault
+    default = current
+    # "push the current branch back to the branch whose changes are usually integrated into the current branch"
+    # "refuse to push if the upstream branch’s name is different from the local one"
+    # https://git-scm.com/docs/git-config#git-config-pushdefault
 
 followTags = true
-# Because I get sick of telling git to do it manually
-# https://git-scm.com/docs/git-config#git-config-pushfollowTags
+    # Because I get sick of telling git to do it manually
+    # https://git-scm.com/docs/git-config#git-config-pushfollowTags
 
 [status]
-showUntrackedFiles = all
-# Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
-# https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+    showUntrackedFiles = all
+    # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+    # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
 
 [transfer]
-fsckobjects = true
-# To combat repository corruption!
-# Note: this global option applies during receive and transmit
-# https://git-scm.com/docs/git-config#git-config-transferfsckObjects
-# via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
+    fsckobjects = true
+    # To combat repository corruption!
+    # Note: this global option applies during receive and transmit
+    # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
+    # via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
 
-# Some settings pulled from https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
+    # Some settings pulled from https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
+
 [pull]
-ff = only
-rebase = true
+    ff = only
+    rebase = true
 
 [diff]
 	tool = Kaleidoscope
-colorMoved = default
+    colorMoved = default
 
 [difftool]
-prompt = false
-
+    prompt = false
 	trustExitCode = true
+
 [difftool "bcomp"]
-trustExitCode = true
-cmd = "/usr/local/bin/bcomp  "
+    trustExitCode = true
+    cmd = "/usr/local/bin/bcomp  "
 
 [interactive]
-diffFilter = delta --color-only
+    diffFilter = delta --color-only
 
 [merge]
 	tool = Kaleidoscope
@@ -153,8 +154,8 @@ diffFilter = delta --color-only
 prompt = false
 
 [mergetool "bcomp"]
-trustExitCode = true
-cmd = "/usr/local/bin/bcomp    "
+    trustExitCode = true
+    cmd = "/usr/local/bin/bcomp    "
 
 [commit]
   template = ~/.gitmessage
@@ -165,18 +166,21 @@ cmd = "/usr/local/bin/bcomp    "
   program = {{ output "which" "gpg" | trim }}
 
 [delta]
-features = side-by-side line-numbers decorations
-syntax-theme = "Solarized (dark)"
-whitespace-error-style = 22 reverse
-[delta "decorations"]
+    features = side-by-side line-numbers decorations
+    syntax-theme = "Solarized (dark)"
+    whitespace-error-style = 22 reverse
 
-commit-decoration-style = bold yellow box ul
-file-style = bold yellow ul
-file-decoration-style = none
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+
 [credential]
 	helper = osxkeychain
+
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+    
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustExitCode = true
