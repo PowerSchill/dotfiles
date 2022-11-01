@@ -1,12 +1,12 @@
 ---
 prSections:
-  - title: My Pull Requests
+  - title: Mine
     filters: is:open author:@me
   - title: Mentioned
     filters: is:open mentions:@me archived:false
-  - title: Ready for My Review
+  - title: My Review
     filters: is:open user-review-requested:@me archived:false status:success
-  - title: Ready for Team Review
+  - title: Team Review
     filters: is:open -author:@me team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success
 
 issuesSections:
