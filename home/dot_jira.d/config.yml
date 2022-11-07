@@ -1,6 +1,7 @@
 project: SREDBK
 endpoint: https://jira.ncr.com
 password-source: keyring
+editor: vim
 
 custom-commands:
   - name: env
