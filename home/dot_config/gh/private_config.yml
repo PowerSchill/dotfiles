@@ -10,4 +10,5 @@ aliases:
     pte: pr create --base pte --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
     stg: pr create --base stg --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
     prd: pr create --base prd --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    prd: production create --base production --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
 pager: delta
