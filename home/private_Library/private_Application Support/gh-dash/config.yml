@@ -14,6 +14,8 @@ issuesSections:
 defaults:
   layout:
     prs:
+      author:
+        hidden: true
       base:
         hidden: false
   preview:
