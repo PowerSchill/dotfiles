@@ -12,7 +12,7 @@ prSections:
 issuesSections:
 
 defaults:
-  layouts:
+  layout:
     prs:
       base:
         hidden: false
