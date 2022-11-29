@@ -12,6 +12,10 @@ prSections:
 issuesSections:
 
 defaults:
+  layouts:
+    prs:
+      base:
+        hidden: false
   preview:
     open: false
     width: 75
