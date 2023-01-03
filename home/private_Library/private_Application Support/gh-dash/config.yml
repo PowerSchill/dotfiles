@@ -45,4 +45,6 @@ keybindings:
 
     - key: t
       command: >
+        cd {{.RepoPath}} &&
+        gh pr checkout {{.PrNumber}}
         gittower {{.RepoPath}} 
