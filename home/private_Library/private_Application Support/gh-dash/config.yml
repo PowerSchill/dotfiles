@@ -33,6 +33,11 @@ pager:
 
 keybindings:
   prs:
+    - key: e
+      command: >
+        tmux new-window -c {{.RepoPath}} '
+          gh pr checkout {{.PrNumber}} &&
+        '
     - key: v
       command: >
         tmux new-window -c {{.RepoPath}} '
