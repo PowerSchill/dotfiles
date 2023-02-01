@@ -5,9 +5,9 @@ prSections:
   - title: Mentioned
     filters: is:open mentions:@me archived:false
   - title: My Review
-    filters: is:open user-review-requested:@me archived:false status:success
+    filters: is:open user-review-requested:@me archived:false
   - title: Team Review
-    filters: is:open -author:@me team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false status:success
+    filters: is:open -author:@me team-review-requested:ncr-digital-banking/ncr-dbk-sre archived:false 
   - title: TF v1 Upgrade
     filters: is:open is:pr archived:false user:ncr-digital-banking  author:app/renovate "update hashicorp/terraform docker tag to v1"
 
