@@ -211,7 +211,7 @@
 
   ##################################[ dir: current directory ]##################################
   # Current directory background color.
-  typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
+  typeset -g POWERLEVEL9K_DIR_BACKGROUND=57
   # Default current directory foreground color.
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=254
   # If directory is too long, shorten some of its segments to the shortest possible unique
@@ -850,7 +850,7 @@
   # - P9K_TODO_FILTERED_TASK_COUNT  The number of tasks after filtering.
   #
   # These variables correspond to the last line of the output of `todo.sh -p ls`:
-  #
+  #POWERLEVEL9K_DIR_BACKGROUND
   #   TODO: 24 of 42 tasks shown
   #
   # Here 24 is P9K_TODO_FILTERED_TASK_COUNT and 42 is P9K_TODO_TOTAL_TASK_COUNT.

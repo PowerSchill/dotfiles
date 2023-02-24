@@ -90,6 +90,10 @@
   type: git-repo
   url: https://github.com/fatih/vim-go.git
   refreshPeriod: 168h
+.tmux/plugins/tpm:
+  type: git-repo
+  url: https://github.com/tmux-plugins/tpm
+  refreshPeriod: 168h
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "Library/Fonts" }}
@@ -112,4 +116,3 @@
   type: file
   url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Bold Italic.ttf
   refreshPeriod: 168h
-
