@@ -11,11 +11,17 @@ Host *
 	GSSAPIAuthentication no
 	GSSAPIDelegateCredentials no
 
-HOST *.int.dbk.ncr.com
-    USER ms185570_ncr_com
+Host YorkTown
+	User powerschill
+	HostName yorktown
+	IdentityFile ~/.ssh/id_yorktown.pub
+	IdentitiesOnly yes
 
-HOST 10.49.*
-    USER ms185570_ncr_com
+Host *.int.dbk.ncr.com
+	User ms185570_ncr_com
 
-HOST 10.99.*
-    USER ms185570_ncr_com
+Host 10.49.*
+	User ms185570_ncr_com
+
+Host 10.99.*
+	User ms185570_ncr_com
