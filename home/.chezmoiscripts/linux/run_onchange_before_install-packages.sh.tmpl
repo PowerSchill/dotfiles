@@ -50,7 +50,7 @@ sudo dnf -y install bzip2 \
 
 # Install Git-Town
 
-{{ if ne osid "linux-raspbian" -}}
+{{ if ne .osid "linux-raspbian" -}}
 curl -L https://git-town.com/install.sh | sh
 {{ end -}}
 
