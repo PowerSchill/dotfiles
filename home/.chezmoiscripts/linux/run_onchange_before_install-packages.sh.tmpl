@@ -1,7 +1,7 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
-{{ if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian")) -}}
+{{ if (or (eq .osid "linux-ubuntu") (eq .osid "linux-debian") (eq .osid "linux-raspbian")) -}}
 
 sudo apt -y install curl \
     direnv \

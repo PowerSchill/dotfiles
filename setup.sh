@@ -19,7 +19,7 @@ elif [[ $system_type == "Linux" ]]; then
 
     distribution=$(lsb_release -i | cut -f 2-)
 
-    if [[ $distribution == "Ubuntu" ]]; then
+    if [[ $distribution == "Ubuntu" ||  $distribution == "Raspbian"  ]]; then
         sudo apt-get update
         sudo apt-get -y install git curl
 
@@ -34,6 +34,9 @@ elif [[ $system_type == "Linux" ]]; then
         sudo dnf install 'dnf-command(config-manager)'
         sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
         sudo dnf -y install gh
+    else
+      echo "Unable to identify OS distribution"
+      exit
     fi
 
     # Install chezmoi
