@@ -25,7 +25,7 @@ sudo yum -y install curl \
     wget \
     zsh
 
-{{ else if eq .osid "linux-fedora" -}}
+{{ else if eq .osid "linux-fedora" "linux-rocky" -}}
 
 sudo dnf -y install bzip2 \
     curl \
