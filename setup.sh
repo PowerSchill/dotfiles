@@ -17,33 +17,45 @@ if [[ $system_type == "Darwin" ]]; then
 
 elif [[ $system_type == "Linux" ]]; then
 
-    distribution=$(lsb_release -i | cut -f 2-)
+    . /etc/os-release
 
-    if [[ $distribution == "Ubuntu" ||  $distribution == "Raspbian"  ]]; then
-        sudo apt-get update
-        sudo apt-get -y install git curl
-
-        # Install GitHub CLI
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-        sudo apt update
-        sudo apt install gh
-    elif [[ $distribution == "Fedora" ]]; then
+    case $ID in
+      centos)
+        echo "Distribution is CentOS"
         sudo yum -y install git
 
         sudo dnf install 'dnf-command(config-manager)'
         sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
         sudo dnf -y install gh
-    else
-      echo "Unable to identify OS distribution"
-      exit
-    fi
+        ;;
+      *)
+        echo "Unable to identify OS distribution"
+        exit
+        ;;
+    esac
+
+
+    # distribution=$(lsb_release -i | cut -f 2-)
+
+    # if [[ $distribution == "Ubuntu" ||  $distribution == "Raspbian"  ]]; then
+    #     sudo apt-get update
+    #     sudo apt-get -y install git curl
+
+    #     # Install GitHub CLI
+    #     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    #     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    #     sudo apt update
+    #     sudo apt install gh
+
 
     # Install chezmoi
     curl -sfL https://git.io/chezmoi | sh
 fi
 
-gh auth login
+
+ssh-keygen -f ~/.ssh/github.key -N "" -q
+
+gh auth login --git-protocol ssh
 
 export PATH=$HOME/bin:$PATH
 chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git

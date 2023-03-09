@@ -25,6 +25,10 @@ sudo yum -y install curl \
     wget \
     zsh
 
+sudo yum -y install dnf-plugins-core
+sudo dnf -y copr enable konimex/neofetch
+sudo dnf -y install neofetch
+
 {{ else if eq .osid "linux-fedora" "linux-rocky" -}}
 
 sudo dnf -y install bzip2 \
