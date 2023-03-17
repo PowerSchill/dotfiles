@@ -1,4 +1,4 @@
-{{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
+{{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian" "linux-amzn") -}}
 #!/bin/bash
 
 set -euo pipefail
@@ -20,6 +20,6 @@ mv op ${HOME}/.local/bin
 
 
 # Colorls
-#sudo gem install colorls
+sudo gem install colorls
 
 {{ end -}}

@@ -28,6 +28,12 @@ elif [[ $system_type == "Linux" ]]; then
         sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
         sudo dnf -y install gh
         ;;
+      amzn)
+        echo "Distribution is Amazon Linux"
+        sudo yum -y install git
+
+        sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+        sudo yum -y install gh
       *)
         echo "Unable to identify OS distribution"
         exit
