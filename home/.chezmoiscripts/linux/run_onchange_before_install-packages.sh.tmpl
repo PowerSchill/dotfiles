@@ -50,6 +50,18 @@ sudo dnf -y install bzip2 \
     wget \
     zlib-devel \
     zsh \
+
+
+{{ else if eq .osid "linux-amzn" -}}
+
+sudo yum -y install curl \
+    gem \
+    tmux \
+    vim \
+    wget \
+    zsh
+
+
 {{ end -}}
 
 # Install Git-Town
