@@ -20,7 +20,7 @@ elif [[ $system_type == "Linux" ]]; then
     . /etc/os-release
 
     case $ID in
-      centos)
+      centos | rocky)
         echo "Distribution is CentOS"
         sudo yum -y install git
 
@@ -34,32 +34,32 @@ elif [[ $system_type == "Linux" ]]; then
 
         sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
         sudo yum -y install gh
+        ;;
+      debian)
+         echo "Distribution is Debian"
+        sudo apt-get update
+        sudo apt-get -y install git curl
+
+        # Install GitHub CLI
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+        sudo apt update
+        sudo apt install gh
+        ;;
       *)
         echo "Unable to identify OS distribution"
+
+
         exit
         ;;
     esac
-
-
-    # distribution=$(lsb_release -i | cut -f 2-)
-
-    # if [[ $distribution == "Ubuntu" ||  $distribution == "Raspbian"  ]]; then
-    #     sudo apt-get update
-    #     sudo apt-get -y install git curl
-
-    #     # Install GitHub CLI
-    #     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-    #     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-    #     sudo apt update
-    #     sudo apt install gh
-
 
     # Install chezmoi
     curl -sfL https://git.io/chezmoi | sh
 fi
 
 
-ssh-keygen -f ~/.ssh/github.key -N "" -q
+ssh-keygen -N "" -q
 
 gh auth login --git-protocol ssh
 
