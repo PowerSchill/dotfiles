@@ -155,7 +155,7 @@ prompt = false
 
 [mergetool "bcomp"]
     trustExitCode = true
-    cmd = "/usr/local/bin/bcomp    "
+    cmd = "/usr/local/bin/bcomp"
 
 [commit]
   template = ~/.gitmessage
@@ -167,6 +167,7 @@ prompt = false
 
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  allowedSignersFile = "~/.config/git/allowed_signers"
 
 [delta]
     features = side-by-side line-numbers decorations
