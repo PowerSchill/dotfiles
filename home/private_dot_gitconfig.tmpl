@@ -28,7 +28,7 @@
 [user]
     name = Mark E. Schill
     email = {{ .email }}
-    signingkey = {{ .gpg_key }}
+    signingkey = {{ .github_ssh_key }}
 
 [alias]
     # Because I constantly forget how to do this
@@ -163,7 +163,10 @@ prompt = false
   verbose = true
 
 [gpg]
-  program = {{ output "which" "gpg" | trim }}
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
 [delta]
     features = side-by-side line-numbers decorations
@@ -180,7 +183,7 @@ prompt = false
 
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-    
+
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustExitCode = true

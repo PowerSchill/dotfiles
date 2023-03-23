@@ -18,8 +18,10 @@
 {{- else -}}
 {{-   if eq $environment "personal" -}}
 {{-     $gpg_key = "FAAFAF0EBAB3CC10CD5D51FA3A643C8EDF173DCC" -}}
+{{-     $github_ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJiHQKLIWf95xqxtYzmmUDTWAKRdUwdXznTgkh37MSZR" -}}
 {{-   else -}}
 {{-     $gpg_key = "21BF846150573BD3557CABB90BFC25F27D4D5207" -}}
+{{-     $github_ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQM63/8yrOoEq7/H3vWmwykwmn0FtVGmQFsOfAFTLQS" -}}
 {{-   end -}}
 {{- end -}}
 
@@ -36,6 +38,6 @@ diff:
   pager: delta
 data:
     email: {{ $email | quote }}
-    gpg_key: {{ $gpg_key | quote }}
+    github_ssh_key: {{ $github_ssh_key | quote }}
     environment: {{ $environment | quote }}
     osid: {{ $osid | quote }}

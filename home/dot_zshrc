@@ -71,7 +71,7 @@ export LANG=en_US.UTF-8
 export EDITOR=vim
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# export github_ssh_key_PATH="~/.ssh/dsa_id"
 
 
 # ostype returns the lowercase OS name
