@@ -245,7 +245,21 @@ fi
 ###############################################################################
 
 # iTerm2 Shell Integration
-test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    ##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
+    #
+    test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
+    #
+    ###### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
+fi
+
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    ##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
+    #
+    #    # POWERLEVEL10K or Other Unsupported Custom Prompt Code
+    #
+    #    ##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
+fi
 
 # Adds syntax highlighting to less
 # export LESSOPEN='|~/.lessfilter %s'
