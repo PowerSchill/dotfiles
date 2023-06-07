@@ -161,6 +161,11 @@ alias tfinit="tfswitch;terraform init"
 alias tfplan="tfswitch;terraform init;terraform plan -out=tfplan.out"
 alias tfapply="terraform apply tfplan.out"
 
+## Terragrunt
+alias tginit="tfswitch;tgswitch;terragrunt init"
+alias tgplan="tginit;terraform plan -out=tfplan.out"
+alias tgapply="terragrunt apply tfplan.out"
+
 # Prevent myself from doing something stupid
 alias rm="echo Use 'trash', or the full path i.e. '/bin/rm'"
 alias shred="shred -u"
