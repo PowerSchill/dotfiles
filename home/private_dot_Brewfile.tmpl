@@ -136,6 +136,7 @@ brew "checkov"
 brew "gem-overcommit"
 brew "gitmoji"
 brew "go-jira"
+brew "iam-policy-json-to-terraform"
 brew "terraform-docs"
 
 {{- end }}
@@ -211,6 +212,8 @@ cask "vlc"
 cask "zoom"
 
 {{- if eq .environment "work" }}
+
+cask "openlens"
 
 {{- end }}
 
