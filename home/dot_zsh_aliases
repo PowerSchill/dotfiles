@@ -166,6 +166,12 @@ alias tginit="terragrunt init"
 alias tgplan='tginit;terragrunt plan -out=tfplan.out | grep -v "Refreshing state...\|Reading...\|Read complete after"'
 alias tgapply="terragrunt apply tfplan.out"
 
+alias tginitall="terragrunt run-all init"
+alias tgplanall='tginitall;terragrunt run-all plan -out=tfplan.out | grep -v "Refreshing state...\|Reading...\|Read complete after"'
+alias tgapplyall="terragrunt run-all apply tfplan.out"
+
+
+
 # Prevent myself from doing something stupid
 alias rm="echo Use 'trash', or the full path i.e. '/bin/rm'"
 alias shred="shred -u"
