@@ -158,12 +158,12 @@ function t() {
 
 ## Terraform
 alias tfinit="tfswitch;terraform init"
-alias tfplan="tfswitch;terraform init;terraform plan -out=tfplan.out"
+alias tfplan="tfswitch;terraform init;terraform plan -out=tfplan.out | grep -v `"Refreshing state...\|Reading...\|Read complete after`""
 alias tfapply="terraform apply tfplan.out"
 
 ## Terragrunt
 alias tginit="terragrunt init"
-alias tgplan="tginit;terragrunt plan -out=tfplan.out"
+alias tgplan="tginit;terragrunt plan -out=tfplan.out | grep -v `"Refreshing state...\|Reading...\|Read complete after`""
 alias tgapply="terragrunt apply tfplan.out"
 
 # Prevent myself from doing something stupid
