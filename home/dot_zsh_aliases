@@ -170,7 +170,7 @@ alias tginitall="terragrunt run-all init"
 alias tgplanall='tginitall;terragrunt run-all plan -out=tfplan.out | grep -v "Refreshing state...\|Reading...\|Read complete after"'
 alias tgapplyall="terragrunt run-all apply tfplan.out"
 
-
+alias tgpurge='find . -type d -name ".terragrunt-cache" -prune -exec rm -rf {} \;'
 
 # Prevent myself from doing something stupid
 alias rm="echo Use 'trash', or the full path i.e. '/bin/rm'"
