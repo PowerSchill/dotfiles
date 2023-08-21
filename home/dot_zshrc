@@ -338,5 +338,14 @@ source ~/bin/fzf.sh
 # direnv
 eval "$(direnv hook zsh)"
 
+# Johnny Decimal
+
+cdj() {
+  # Update with your document root folder
+  pushd ~/Documents/*/*/${1}*
+}
+
+export cdj
+
 source ~/.zshrc_local
 
