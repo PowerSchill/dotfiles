@@ -4,17 +4,26 @@
   exact: true
   stripComponents: 1
   refreshPeriod: 168h
-.oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
-  type: archive
-  url: https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz
-  exact: true
-  stripComponents: 1
-  refreshPeriod: 168h
+# .oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
+#   type: archive
+#   url: https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz
+#   exact: true
+#   stripComponents: 1
+#   refreshPeriod: 168h
+#   include:
+#     - "*/*.zsh"
+#     - "*/.version"
+#     - "*/.revision-hash"
+    # - "*/highlighters/**"
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
   type: archive
   url: https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz
   exact: true
   stripComponents: 1
+  refreshPeriod: 168h
+.oh-my-zsh/custom/plugins/fast-syntax-highlighting:
+  type: git-repo
+  url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
   refreshPeriod: 168h
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: git-repo
