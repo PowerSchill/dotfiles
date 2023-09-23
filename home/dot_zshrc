@@ -15,6 +15,7 @@ DISABLE_AUTO_UPDATE="true"
 # time that oh-my-zsh is loaded.
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
+
 # Set default user for prompt
 DEFAULT_USER=`whoami`
 
@@ -304,6 +305,9 @@ source ~/bin/fzf.sh
 
 # direnv
 eval "$(direnv hook zsh)"
+
+
+fast-theme XDG:catppuccin-mocha
 
 # Johnny Decimal
 

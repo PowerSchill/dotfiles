@@ -25,6 +25,10 @@
   type: git-repo
   url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
   refreshPeriod: 168h
+.config/fsh/catppuccin-mocha.ini:
+  type: file
+  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-mocha.ini
+  refreshPeriod: 168h
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: git-repo
   url: https://github.com/romkatv/powerlevel10k.git
