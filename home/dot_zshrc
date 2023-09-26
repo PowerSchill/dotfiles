@@ -306,9 +306,6 @@ source ~/bin/fzf.sh
 # direnv
 eval "$(direnv hook zsh)"
 
-
-fast-theme XDG:catppuccin-mocha
-
 # Johnny Decimal
 
 cdj() {
