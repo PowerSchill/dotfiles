@@ -1,38 +1,81 @@
+{{- /* "chezmoi" is present as work around for https://github.com/twpayne/chezmoi/discussions/1724 */ -}}
+{{- $cache := dict "chezmoi" .chezmoi -}}
+
+{{- template "read-versions-and-revisions-cache" $cache -}}
+
 .oh-my-zsh:
   type: archive
-  url: https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz
-  exact: true
+  {{ $omzRevision := includeTemplate "get-github-head-revision" (list "ohmyzsh/ohmyzsh" $cache) }}
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/{{ $omzRevision }}.tar.gz"
   stripComponents: 1
-  refreshPeriod: 168h
-# .oh-my-zsh/custom/plugins/zsh-syntax-highlighting:
-#   type: archive
-#   url: https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz
-#   exact: true
-#   stripComponents: 1
-#   refreshPeriod: 168h
-#   include:
-#     - "*/*.zsh"
-#     - "*/.version"
-#     - "*/.revision-hash"
-    # - "*/highlighters/**"
+  # waiting for https://github.com/twpayne/chezmoi/issues/1614#issuecomment-966524408
+  exact: true
+
+.oh-my-zsh/custom/themes/powerlevel10k:
+  type: archive
+  {{ $p10kRevision := includeTemplate "get-github-head-revision" (list "romkatv/powerlevel10k" $cache) }}
+  url: "https://github.com/romkatv/powerlevel10k/archive/{{ $p10kRevision }}.tar.gz"
+  stripComponents: 1
+  exact: true
+
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
   type: archive
-  url: https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz
-  exact: true
+  {{ $zshAutoSuggestionsRevision := includeTemplate "get-github-head-revision" (list "zsh-users/zsh-autosuggestions" $cache) }}
+  url: "https://github.com/zsh-users/zsh-autosuggestions/archive/{{ $zshAutoSuggestionsRevision }}.tar.gz"
   stripComponents: 1
-  refreshPeriod: 168h
+  exact: true
+
 .oh-my-zsh/custom/plugins/fast-syntax-highlighting:
   type: git-repo
   url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
   refreshPeriod: 168h
+
 .config/fsh/catppuccin-mocha.ini:
   type: file
   url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-mocha.ini
   refreshPeriod: 168h
-.oh-my-zsh/custom/themes/powerlevel10k:
-  type: git-repo
-  url: https://github.com/romkatv/powerlevel10k.git
+
+.config/fsh/catppuccin-latte.ini:
+  type: file
+  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-mocha.ini
   refreshPeriod: 168h
+
+.config/gitalias/gitalias.txt:
+  type: file
+  {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
+  url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
+
+.local/bin/kubecolor:
+  type: archive-file
+  {{ $kubecolorVersion := includeTemplate "get-github-latest-version" (list "hidetatz/kubecolor" $cache) }}
+  url: "https://github.com/hidetatz/kubecolor/releases/download/v{{ $kubecolorVersion }}/kubecolor_{{ $kubecolorVersion }}_Linux_{{ .uname_arch }}.tar.gz"
+  path: kubecolor
+
+.local/bin/kubectx:
+  type: archive-file
+  {{ $kubectxVersion := includeTemplate "get-github-latest-version" (list "ahmetb/kubectx" $cache) }}
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubectx_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+  path: kubectx
+
+.oh-my-zsh/custom/plugins/my-completions/_kubectx.zsh:
+  type: file
+  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubectx.zsh"
+
+.local/bin/kubens:
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubens_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+  path: kubens
+
+.oh-my-zsh/custom/plugins/my-completions/_kubens.zsh:
+  type: file
+  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
+
+.local/bin/stern:
+  type: archive-file
+  {{ $sternVersion := includeTemplate "get-github-latest-version" (list "stern/stern" $cache) }}
+  url: "https://github.com/stern/stern/releases/download/v{{ $sternVersion }}/stern_{{ $sternVersion }}_linux_{{ .chezmoi.arch }}.tar.gz"
+  path: stern
+
 .vim/pack/vendor/start/alker0/chezmoi.vim:
   type: git-repo
   url: https://github.com/alker0/chezmoi.vim.git
@@ -105,12 +148,15 @@
   type: git-repo
   url: https://github.com/tmux-plugins/tpm
   refreshPeriod: 168h
+
+
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "Library/Fonts" }}
 {{-   else if eq .chezmoi.os "linux" }}
 {{-     $fontDir = ".local/share/fonts" }}
 {{-   end }}
+
 {{ $fontDir }}/MesloLGS NF Regular.ttf:
   type: file
   url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Regular.ttf
