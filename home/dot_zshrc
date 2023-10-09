@@ -30,24 +30,34 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  # knife
+  1password
+  aws
+  branch
   brew
   colored-man-pages
   dash
+  docker
+  dotenv
   extract
   fast-syntax-highlighting
+  forklift
+  fzfj
   gcloud
   gem
+  gh
   git
   git-extras
   git-flow
   gitignore
   golang
   history
+  jira
   jsontools
   kubectl
+  kubectx
   macos
   marked2
+  pre-commit
   shrink-path
   ssh-agent
   sublime
