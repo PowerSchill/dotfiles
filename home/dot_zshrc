@@ -41,7 +41,7 @@ plugins=(
   extract
   fast-syntax-highlighting
   forklift
-  fzfj
+  fzf
   gcloud
   gem
   gh
