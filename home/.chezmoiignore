@@ -7,6 +7,8 @@
 .oh-my-zsh/custom/themes
 .oh-my-zsh/custom/plugins
 
+*.zwc
+
 {{ if ne .chezmoi.os "darwin" }}
 Library/Application Support
 {{ end }}
