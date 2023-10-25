@@ -1,22 +1,24 @@
 prSections:
-- title: My Pull Requests
-  filters: is:open author:@me
-- title: Needs My Review
-  filters: is:open review-requested:@me
-- title: Involved
-  filters: is:open involves:@me -author:@me
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Needs My Review
+    filters: is:open review-requested:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+
 issuesSections:
-- title: My Issues
-  filters: is:open author:@me
-- title: Assigned
-  filters: is:open assignee:@me
-- title: Involved
-  filters: is:open involves:@me -author:@me
+  - title: My Issues
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+
 defaults:
   preview:
-    open: true
+    open: false
     width: 50
-  prsLimit: 20
+  prsLimit: 50
   issuesLimit: 20
   view: prs
   layout:
@@ -46,13 +48,43 @@ defaults:
         width: 20
         hidden: true
   refetchIntervalMinutes: 30
+
+​
 keybindings:
-  issues: []
-  prs: []
-repoPaths: {}
+  prs:
+    - key: v
+      command: >
+        tmux new-window -c {{.RepoPath}} '
+          gh pr checkout {{.PrNumber}} &&
+          vim .
+        '
+    - key: z
+      command: >
+        cd {{.RepoPath}} &&
+        code . &&
+        gh pr checkout {{.PrNumber}}
+
+repoPaths:
+  ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
+
 theme:
   ui:
     table:
       showSeparator: true
+  colors:
+    text:
+      primary: "#ced5f1"
+      secondary: "#ced5f1"
+      inverted: "#585a6e"
+      faint: "#CDD6F4"
+      warning: "#F38BA8"
+      success: "#A6E3A1"
+    background:
+      selected: "#585a6e"
+    border:
+      primary: "#383B5B"
+      secondary: "#39386B"
+      faint: "#2B2B40"
+
 pager:
-  diff: ""
+  diff: delta
