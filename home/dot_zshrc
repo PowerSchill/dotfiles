@@ -1,3 +1,6 @@
+# Execute neofetch
+neofetch
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -290,8 +293,7 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-# Execute neofetch
-neofetch
+
 
 autoload -U +X bashcompinit && bashcompinit
 
