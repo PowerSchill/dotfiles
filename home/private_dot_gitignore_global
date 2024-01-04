@@ -501,3 +501,6 @@ MigrationBackup/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudio,visualstudiocode,intellij
 
+# Direnv stuff
+.direnv
+.envrc
