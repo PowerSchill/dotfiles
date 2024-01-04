@@ -1,85 +1,5 @@
 {{- if eq .environment "work" }}
 
-[profile administrator-d3banking]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 087633845042
-
-[profile administrator-d3corp]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 740083677251
-
-[profile administrator-d3dankops]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 322653688247
-
-[profile administrator-dbkdi]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 604967826023
-
-[profile administrator-d3sandbox]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 789706088473
-
-[profile read-only-d3banking]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = read-only
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 087633845042
-
-[profile read-only-d3corp]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = read-only
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 740083677251
-
-[profile read-only-d3dankops]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = read-only
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 322653688247
-
-[profile read-only-d3sandbox]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = read-only
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 789706088473
 
 # D3 Global Networking
 [profile d3globalnetworking-admin]
@@ -91,22 +11,45 @@ output = yaml
 region = us-west-2
 sso_account_id = 089290167525
 
-[profile administrator-d3secuprod]
+################################################################################
+# Sandbox
+################################################################################
+
+# D3 Sandbox
+[profile sandbox-admin]
+sso_region = us-west-2
+sso_registration_scopes = sso:account:access
+sso_role_name = administrator
+sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+output = yaml
+region = us-west-2
+sso_account_id = 789706088473
+
+################################################################################
+# FHN
+################################################################################
+
+# D3 FHN NonProd
+[profile fhnnonprod-admin]
 sso_region = us-west-2
 sso_registration_scopes = sso:account:access
 sso_role_name = AWSAdministratorAccess
 sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
 output = yaml
-region = us-east-2
-sso_account_id = 511722726439
+region = us-west-2
+sso_account_id = 228874976728
 
-[profile readonly-d3secuprod]
+
+# D3 FHN Prod
+[profile fhnprod-admin]
 sso_region = us-west-2
 sso_registration_scopes = sso:account:access
-sso_role_name = read-only
+sso_role_name = AWSAdministratorAccess
 sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
 output = yaml
-region = us-east-2
-sso_account_id = 511722726439
+region = us-west-2
+sso_account_id = 699063096817
+
+
 
 {{- end }}
