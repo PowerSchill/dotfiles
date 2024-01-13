@@ -192,16 +192,14 @@ alias lc='colorls -lA --sd --gs'
 # chezmoi
 alias cm='chezmoi'
 
-<<<<<<< HEAD
 # Network functions from Jesse Buffington
 whereip () { curl -s "https://api.ipgeolocation.io/ipgeo?apiKey=e48648602503456590f864ef21d721e0&ip=$1" | jq '.'; }
 whothat () { curl -s "https://api.securitytrails.com/v1/domain/$1" -H 'apikey: nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL' | jq '.'; }
 whohist () { curl -s "https://api.securitytrails.com/v1/history/$1/whois?apikey=nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL" | jq '.'; }
 sslcheck () { echo | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -issuer -subject -dates; }
-=======
+
 # Get TLS certificate details
 function show_cert () {
       nslookup $1
         (openssl s_client -showcerts -servername $1 -connect $1:443 <<< "Q" | openssl x509 -text | grep -iA2 "Validity")
     }
->>>>>>> 6b254fb (Update home/.chezmoiexternal.yaml)
