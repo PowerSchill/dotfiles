@@ -1,5 +1,22 @@
 {{- if eq .environment "work" }}
 
+################################################################################
+# Legacy
+################################################################################
+
+# D3 Hosting Account
+[profile d3banking-admin]
+sso_region = us-west-2
+sso_registration_scopes = sso:account:access
+sso_role_name = administrator
+sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+output = yaml
+region = us-west-2
+sso_account_id = 087633845042
+
+################################################################################
+# Global Networking
+################################################################################
 
 # D3 Global Networking
 [profile d3globalnetworking-admin]
