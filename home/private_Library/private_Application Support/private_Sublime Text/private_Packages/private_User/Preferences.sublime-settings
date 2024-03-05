@@ -1,0 +1,20 @@
+{
+	"ignored_packages":
+	[
+		"SublimeCodeIntel",
+		"Vintage",
+	],
+	"theme": "Cobalt2.sublime-theme",
+	"color_scheme": "Catppuccin Mocha.sublime-color-scheme",
+	"bold_folder_labels": true,
+	"font_face": "MesloLGS NF",
+	"font_size": 11,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
+	"rulers":
+	[
+		80,
+		120
+	],
+	"index_files": true,
+}
