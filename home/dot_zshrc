@@ -315,6 +315,9 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 # fzf
 source ~/bin/fzf.sh
 
+# GO setup
+export GOROOT="$(brew --prefix golang)/libexec"
+
 # direnv
 eval "$(direnv hook zsh)"
 
