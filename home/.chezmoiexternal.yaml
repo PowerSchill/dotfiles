@@ -5,16 +5,14 @@
 
 .oh-my-zsh:
   type: archive
-  {{ $omzRevision := includeTemplate "get-github-head-revision" (list "ohmyzsh/ohmyzsh" $cache) }}
-  url: "https://github.com/ohmyzsh/ohmyzsh/archive/{{ $omzRevision }}.tar.gz"
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   stripComponents: 1
-  # waiting for https://github.com/twpayne/chezmoi/issues/1614#issuecomment-966524408
+  refreshPeriod: 168h
   exact: true
 
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: archive
-  {{ $p10kRevision := includeTemplate "get-github-head-revision" (list "romkatv/powerlevel10k" $cache) }}
-  url: "https://github.com/romkatv/powerlevel10k/archive/{{ $p10kRevision }}.tar.gz"
+  url: "https://github.com/romkatv/powerlevel10k/archive/v1.15.0.tar.gz"
   stripComponents: 1
   exact: true
 
@@ -26,8 +24,10 @@
   exact: true
 
 .oh-my-zsh/custom/plugins/fast-syntax-highlighting:
-  type: git-repo
-  url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+  type: archive
+  url: "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+  stripComponents: 1
+  exact: true
   refreshPeriod: 168h
 
 .config/fsh/catppuccin-mocha.ini:
