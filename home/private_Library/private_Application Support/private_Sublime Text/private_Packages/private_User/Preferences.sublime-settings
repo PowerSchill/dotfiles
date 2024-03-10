@@ -1,7 +1,6 @@
 {
 	"ignored_packages":
 	[
-		"SublimeCodeIntel",
 		"Vintage",
 	],
 	"theme": "Cobalt2.sublime-theme",

@@ -9,7 +9,7 @@
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/{{ $omzRevision }}.tar.gz"
   stripComponents: 1
   # waiting for https://github.com/twpayne/chezmoi/issues/1614#issuecomment-966524408
-  exact: false
+  exact: true
 
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: archive
