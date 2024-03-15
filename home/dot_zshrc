@@ -328,6 +328,8 @@ cdj() {
   pushd ~/Documents/*/*/${1}*
 }
 
+export PATH="/opt/homebrew/bin:$PATH"
+
 export cdj
 
 source ~/.zshrc_local
