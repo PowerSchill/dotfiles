@@ -10,11 +10,12 @@
   refreshPeriod: 168h
   exact: true
 
+{{- $powerlevel10kVersionTag := (gitHubLatestRelease "romkatv/powerlevel10k").TagName }}
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: archive
-  url: "https://github.com/romkatv/powerlevel10k/archive/v1.15.0.tar.gz"
-  stripComponents: 1
+  url: "https://github.com/romkatv/powerlevel10k/archive/{{ $powerlevel10kVersionTag }}.tar.gz"
   exact: true
+  stripComponents: 1
 
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
   type: archive
@@ -37,7 +38,7 @@
 
 .config/fsh/catppuccin-latte.ini:
   type: file
-  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-latte.ini
+  url: "https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-latte.ini"
   refreshPeriod: 168h
 
 .config/gitalias/gitalias.txt:
@@ -70,11 +71,6 @@
   type: file
   url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
 
-.local/bin/stern:
-  type: archive-file
-  {{ $sternVersion := includeTemplate "get-github-latest-version" (list "stern/stern" $cache) }}
-  url: "https://github.com/stern/stern/releases/download/v{{ $sternVersion }}/stern_{{ $sternVersion }}_linux_{{ .chezmoi.arch }}.tar.gz"
-  path: stern
 
 .vim/pack/vendor/start/alker0/chezmoi.vim:
   type: git-repo

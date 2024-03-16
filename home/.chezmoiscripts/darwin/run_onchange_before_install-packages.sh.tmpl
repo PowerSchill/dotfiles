@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# https://github.com/stuartcampbell/dotfiles/blob/main/.chezmoiscripts/darwin/run_onchange_before_install-packages.sh.tmpl
+
+set -eufo pipefail
+
+{{ $brews := list
+  "curl"
+  "dockutil"
+  "eza"
+  "gdu"
+  "git-delta"
+  "git-town"
+  "gnupg"
+  "jq"
+  "neofetch"
+  "pinentry-mac"
+  "tmux"
+  "vim"
+  "zsh-autosuggestions"
+  "zsh-completions"
+  "zsh-syntax-highlighting"
+  "zsh" -}}
+{{ $casks := list
+  "google-chrome"
+  "iterm2"
+  "visual-studio-code" -}}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range ($brews | sortAlpha | uniq) -}}
+brew "{{ . }}"
+{{ end -}}
+{{ range ($casks | sortAlpha | uniq) -}}
+cask "{{ . }}"
+{{ end -}}
+EOF

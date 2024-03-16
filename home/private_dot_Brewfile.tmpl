@@ -116,7 +116,7 @@ brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 brew "zsh"
 
-{{- if eq .environment "work" }}
+{{- if eq .work true }}
 
 brew "aws-auth"
 brew "awscli"
@@ -132,7 +132,7 @@ brew "terraform-docs"
 
 {{- end }}
 
-{{- if eq .environment "personal" }}
+{{- if eq .personal true }}
 
 {{- end }}
 
@@ -203,7 +203,7 @@ cask "vlc"
 cask "zoom"
 cask "zotero"
 
-{{- if eq .environment "work" }}
+{{- if eq .work true }}
 
 cask "1password"
 cask "amazon-chime"
@@ -214,7 +214,7 @@ cask "wireshark"
 
 {{- end }}
 
-{{- if eq .environment "personal" }}
+{{- if eq .personal true }}
 
 cask "1password-beta"
 cask "anylist"
@@ -267,11 +267,11 @@ cask "warp"
 # mas "Vinegar", id: 1591303229
 # mas "Xcode", id: 497799835
 
-# {{- if eq .environment "work" }}
+# {{- if eq .work true }}
 
 # {{- end }}
 
-# {{- if eq .environment "personal" }}
+# {{- if eq .personal true }}
 
 # mas "Cardhop", id: 1290358394
 # mas "Day One", id: 1055511498

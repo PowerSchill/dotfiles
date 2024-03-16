@@ -1,105 +1,73 @@
-{{- $name := "Mark Schill" -}}
-{{- $email := "Mark.Schill@cmschill.net" -}}
-{{- $environment := "personal" -}}
+
+
+{{/* feature tags */}}
+{{- $headless := false -}}  {{/* true if this machine does not have a screen and keyboard */}}
+{{- $transient := false -}} {{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
+{{- $wsl := false -}}       {{/* true if running within Windows Subsystem for Linux (WSL) */}}
+{{- $work := false -}}      {{/* true if this machine should have work config */}}
+{{- $personal := false -}}  {{/* true if this machine should have personal secrets and config */}}
+{{- $shared := false -}}    {{/* true if this is a shared machine */}}
+{{- "" -}}
+
 
 {{- $chezmoiForce := or (has "--force" .chezmoi.args) (has "--force=true" .chezmoi.args) -}}
 {{- $interactive := and stdinIsATTY (not $chezmoiForce) -}}
 
-{{- if hasKey . "name" -}}
-{{-   $name = .name -}}
-{{- end -}}
-{{- if $interactive -}}
-{{-   range $i := until 99 -}}
-{{-     $question := "❔ What is your full name" -}}
-{{-     $answer := "" -}}
-{{-     if $name -}}
-{{-       $answer = promptString $question $name -}}
-{{-     else -}}
-{{-       $answer = promptString $question -}}
-{{-     end -}}
-{{-     if regexMatch "^[A-Z][-' a-zA-Z]+$" $answer -}}
-{{-       $name = $answer -}}
-{{-       writeToStdout (printf "✅ Name set as '%s'\n" $name) -}}
-{{-       break -}}
-{{-     end -}}
-{{-     writeToStdout (printf "❌ '%s' is an invalid name\n" $answer) -}}
-{{-     if eq $i 98 -}}
-{{-       writeToStdout "❌ ERROR: maximum tries exceeded\n" -}}
-{{-       exit 1 -}}
-{{-     end -}}
-{{-   end -}}
-{{- end -}}
+# Gather CPU info
+{{/*- includeTemplate "cpu" . */}}
 
-{{- if hasKey . "email" -}}
-{{-   $email = .email -}}
-{{- end -}}
-{{- if $interactive -}}
-{{-   range $i := until 99 -}}
-{{-     $question := "❔ What is your email" -}}
-{{-     $answer := "" -}}
-{{-     if $email -}}
-{{-       $answer = promptString $question $email -}}
-{{-     else -}}
-{{-       $answer = promptString $question -}}
-{{-     end -}}
-{{-     $answer = lower $answer -}}
-{{-     if regexMatch "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" $answer -}}
-{{-       $email = $answer -}}
-{{-       writeToStdout (printf "✅ Email set as '%s'\n" $email) -}}
-{{-       break -}}
-{{-     end -}}
-{{-     writeToStdout (printf "❌ '%s' is an invalid email\n" $answer) -}}
-{{-     if eq $i 98 -}}
-{{-       writeToStdout "❌ ERROR: maximum tries exceeded\n" -}}
-{{-       exit 1 -}}
-{{-     end -}}
-{{-   end -}}
-{{- end -}}
-
-{{- if hasKey . "environment" -}}
-{{-   $environment = .environment -}}
-{{- end -}}
-{{- if $interactive -}}
-{{-   range $i := until 99 -}}
-{{-     $question := "❔ What is your environment" -}}
-{{-     $answer := "" -}}
-{{-     if $environment -}}
-{{-       $answer = promptString $question $environment -}}
-{{-     else -}}
-{{-       $answer = promptString $question -}}
-{{-     end -}}
-{{-     $answer = lower $answer -}}
-{{-     if regexMatch "^(personal|work)$" $answer -}}
-{{-       $environment = $answer -}}
-{{-       writeToStdout (printf "✅ environment set as '%s'\n" $environment) -}}
-{{-       break -}}
-{{-     end -}}
-{{-     writeToStdout (printf "❌ '%s' is an invalid environment\n" $answer) -}}
-{{-     if eq $i 98 -}}
-{{-       writeToStdout "❌ ERROR: maximum tries exceeded\n" -}}
-{{-       exit 1 -}}
-{{-     end -}}
-{{-   end -}}
-{{- end -}}
-
-{{- $github_ssh_key := "" -}}
-{{- if hasKey . "github_ssh_key" -}}
-{{-   $github_ssh_key = .github_ssh_key -}}
-{{- else -}}
-{{-   if eq $environment "personal" -}}
-{{-     $github_ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJiHQKLIWf95xqxtYzmmUDTWAKRdUwdXznTgkh37MSZR" -}}
-{{-   else -}}
-{{-     $github_ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQM63/8yrOoEq7/H3vWmwykwmn0FtVGmQFsOfAFTLQS" -}}
-{{-   end -}}
-{{- end -}}
-
-{{- if $interactive -}}
-{{-   writeToStdout "\n💡 Tip: you can always make chezmoi ask this again by running `chezmoi init` without `--force`.\n" -}}
-{{- end -}}
-
-{{- $osid := .chezmoi.os -}}
+{{- $osID := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
-{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* Detect Windows Subsystem for Linux (WSL) */}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-    $wsl = true -}}
+{{-   end -}}
+{{- end -}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $transient = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+{{- $hostname := .chezmoi.hostname -}}
+{{- $fqdn := .chezmoi.fqdnHostname -}}
+
+{{/* On macOS the hostname can change depending on the network, this gives a more stable result */}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $computerName := output "scutil" "--get" "ComputerName" | trim -}}
+{{-   if eq $computerName "Copernicus" -}}
+{{-     $hostname = "copernicus" -}}
+{{-   else -}}
+{{-     $hostname = $computerName -}}
+{{-   end -}}
+{{- end -}}
+
+{{- if not $transient -}}
+{{-   if eq $hostname "copernicus" -}}
+{{-     $work = false -}}
+{{-     $personal = true -}}
+{{-     $shared = false -}}
+// {{-   else if contains ".nsls2.bnl.local" $fqdn -}}
+// {{-     $work = true -}}
+// {{-     $shared = true -}}
+{{-   else -}}
+{{-     $transient = true -}}
+{{-     $headless = true -}}
+{{-   end -}}
+{{- end -}}
+
+
+{{- $name := "Mark E. Schill" -}}
+{{- $email := "" -}}
+{{- if $work -}}
+{{-   $email = "Mark.Schill@ncrvoyix.com" -}}
+{{- else -}}
+{{-   $email = "Mark.Schill@cmschill.net" -}}
 {{- end -}}
 
 scriptTempDir: "~/tmp"
@@ -112,7 +80,12 @@ diff:
 data:
     name: {{ $name | quote }}
     email: {{ $email | quote }}
-    github_ssh_key: {{ $github_ssh_key | quote }}
-    environment: {{ $environment | quote }}
-    osid: {{ $osid | quote }}
+    transient: {{ $transient }}
+    headless: {{ $headless }}
+    hostname: {{ $hostname | quote }}
+    personal: {{ $personal }}
+    work: {{ $work }}
+    osid: {{ $osID | quote }}
+    wsl: {{ $wsl }}
+    shared: {{ $shared }}
     uname_arch: "{{ output "uname" "-m" | trim }}"
