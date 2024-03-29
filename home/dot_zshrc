@@ -320,6 +320,7 @@ export GOROOT="$(brew --prefix golang)/libexec"
 
 # direnv
 eval "$(direnv hook zsh)"
+export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
 # Johnny Decimal
 
