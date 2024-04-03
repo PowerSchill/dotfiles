@@ -49,7 +49,6 @@ defaults:
         hidden: true
   refetchIntervalMinutes: 30
 
-​
 keybindings:
   prs:
     - key: v
