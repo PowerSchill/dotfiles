@@ -1,10 +1,13 @@
 prSections:
   - title: My Pull Requests
     filters: is:open author:@me
+    limit: 10
   - title: Needs My Review
     filters: is:open review-requested:@me
+    limit: 10
   - title: Involved
     filters: is:open involves:@me -author:@me
+    limit: 10
 
 issuesSections:
   - title: My Issues
@@ -64,7 +67,7 @@ keybindings:
         gh pr checkout {{.PrNumber}}
 
 repoPaths:
-  ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
+  # ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
 
 theme:
   ui:
