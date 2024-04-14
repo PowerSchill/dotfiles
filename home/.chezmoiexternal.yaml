@@ -8,7 +8,7 @@
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   stripComponents: 1
   refreshPeriod: 168h
-  exact: true
+  exact: false
 
 {{- $powerlevel10kVersionTag := (gitHubLatestRelease "romkatv/powerlevel10k").TagName }}
 .oh-my-zsh/custom/themes/powerlevel10k:
