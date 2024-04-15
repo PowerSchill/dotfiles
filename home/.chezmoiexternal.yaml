@@ -14,7 +14,7 @@
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: archive
   url: "https://github.com/romkatv/powerlevel10k/archive/{{ $powerlevel10kVersionTag }}.tar.gz"
-  exact: true
+  exact: false
   stripComponents: 1
 
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
