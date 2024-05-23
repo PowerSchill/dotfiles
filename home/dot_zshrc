@@ -69,7 +69,10 @@ plugins=(
   kubectx
   macos
   marked2
+  pip
+  pipenv
   pre-commit
+  python
   shrink-path
   ssh-agent
   sublime
