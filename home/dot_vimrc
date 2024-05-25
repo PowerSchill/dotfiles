@@ -33,6 +33,8 @@
 " Sets how many lines of history VIM has to remember
 set history=500
 
+packadd chezmoi.vim
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -455,7 +457,7 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 
 " syntastic
