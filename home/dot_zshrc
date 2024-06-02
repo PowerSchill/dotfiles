@@ -46,7 +46,6 @@ plugins=(
   aws
   branch
   brew
-  colored-man-pages
   dash
   docker
   dotenv
@@ -337,6 +336,9 @@ export GOROOT="$(brew --prefix golang)/libexec"
 # direnv
 eval "$(direnv hook zsh)"
 export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+
+# bat
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # Johnny Decimal
 
