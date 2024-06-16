@@ -331,6 +331,8 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 source ~/bin/fzf.sh
 
 # GO setup
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
 export GOROOT="$(brew --prefix golang)/libexec"
 
 # direnv
