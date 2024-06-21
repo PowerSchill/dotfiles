@@ -349,7 +349,7 @@ cdj() {
   pushd ~/Documents/*/*/${1}*
 }
 
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/opt/ruby/bin:$PATH"
 
 export cdj
 
