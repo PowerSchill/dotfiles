@@ -50,7 +50,6 @@ plugins=(
   docker
   dotenv
   extract
-  fast-syntax-highlighting
   forklift
   fzf
   gcloud
