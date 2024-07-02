@@ -1,0 +1,43 @@
+# https://www.thoughtasylum.com/2024/06/30/setting-up-marked2-conductor-for-drafts/
+tracks:
+  - tile: Pre-processing
+    condition: phase is pre
+    tracks:
+      # - title: Drafts Pre-processor
+      #   condition: "text contains source: Drafts.app"
+      #   continue: true
+      #   sequence:
+      #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)"
+
+      - title: Add Mermaid Support
+        condition: "text contains ```mermaid"
+        continue: true
+        sequence:
+          - filter: "appendRaw(mermaid.html)"
+
+      # - title: BMAC Pre-processor
+      #   condition: "text contains <!-- Marked Style: bmac -->"
+      #   continue: true
+      #   sequence:
+      #     - filter: "prependRaw(fontawesome4.7.0.html)"
+      #     - filter: 'replaceAll(/%%(.*?)%%/,<div class="image_placeholder_title">&nbsp;<i class="fa fa-picture-o"></i>&nbsp;&nbsp;IMAGE PLACEHOLDER</div><div class="image_placeholder">$1</div>)'
+      #     - filter: "appendRaw(bmac_post_end.html)"
+
+      - title: GitHub - Standard Files
+        condition: "filename is readme.md OR filename is license.md"
+        continue: true
+        sequence:
+          - filter: setStyle(GitHub Dark)
+          - script: url2mdlink.sh
+
+      # - title: Obsidian Markdown document
+      #   condition: tree contains .obsidian AND (extension is md OR extension is markdown)
+      #   sequence:
+      #     - script: obsidian-md-filter
+      #     - script: obsidian-callouts
+      #     - filter: insertCSS(callouts)
+
+      - title: Always applied
+        condition: any
+        sequence:
+          - script: build_footer.sh
