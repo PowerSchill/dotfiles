@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+puts 'NOCUSTOM'
+Process.exit 0
+require 'shellwords'
+
+input = $stdin.read.force_encoding('utf-8')
+
+# puts `echo #{Shellwords.escape(input)} | /Users/ttscoff/.asdf/shims/rdiscount`

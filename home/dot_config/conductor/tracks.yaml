@@ -1,19 +1,40 @@
 # https://www.thoughtasylum.com/2024/06/30/setting-up-marked2-conductor-for-drafts/
 tracks:
-  - tile: Pre-processing
+  - title: Pre-processing
     condition: phase is pre
     tracks:
-      # - title: Drafts Pre-processor
-      #   condition: "text contains source: Drafts.app"
-      #   continue: true
-      #   sequence:
-      #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)"
+      - title: Test File
+        condition: filename is test.md
+        sequence:
+          - filter: insertTitle
+          - filter: insertScript(test.js)
+          - filter: prependFile(test_include.md)
+          - filter: insertTOC(3, h1)
+          - filter: insertCSS(callouts)
 
-      - title: Add Mermaid Support
-        condition: "text contains ```mermaid"
+      - title: MindNode map
+        condition: filename ends with mindnode
+        filter: setStyle(ink)
+
+      - title: Obsidian Markdown document
+        condition: tree contains .obsidian AND (extension is md OR extension is markdown)
+        sequence:
+          # - script: obsidian-md-filter
+          - script: obsidian-callouts
+          # - filter: insertCSS(callouts)
+
+      - title: GitHub - Standard Files
+        condition: "filename is readme.md OR filename is license.md"
         continue: true
         sequence:
-          - filter: "appendRaw(mermaid.html)"
+          - filter: setStyle(GitHub Dark)
+          - script: url2mdlink.sh
+
+      # - title: Add Mermaid Support
+      # condition: "text contains ```mermaid"
+      # continue: true
+      # sequence:
+      #   - filter: "appendRaw(mermaid.html)"
 
       # - title: BMAC Pre-processor
       #   condition: "text contains <!-- Marked Style: bmac -->"
@@ -23,13 +44,6 @@ tracks:
       #     - filter: 'replaceAll(/%%(.*?)%%/,<div class="image_placeholder_title">&nbsp;<i class="fa fa-picture-o"></i>&nbsp;&nbsp;IMAGE PLACEHOLDER</div><div class="image_placeholder">$1</div>)'
       #     - filter: "appendRaw(bmac_post_end.html)"
 
-      - title: GitHub - Standard Files
-        condition: "filename is readme.md OR filename is license.md"
-        continue: true
-        sequence:
-          - filter: setStyle(GitHub Dark)
-          - script: url2mdlink.sh
-
       # - title: Obsidian Markdown document
       #   condition: tree contains .obsidian AND (extension is md OR extension is markdown)
       #   sequence:
@@ -37,7 +51,29 @@ tracks:
       #     - script: obsidian-callouts
       #     - filter: insertCSS(callouts)
 
+      # - title: Drafts Pre-processor
+      #   condition: "text contains source: Drafts.app"
+      #   continue: true
+      #   sequence:
+      #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)"
+
       - title: Always applied
         condition: any
         sequence:
           - script: build_footer.sh
+
+  # - title: Processing
+  #   condition: phase is pro
+  #   tracks:
+
+  #     - title: Confluence conversion
+  #       condition: path contains Confluence
+  #       command: markdown_py
+
+  #     - title: TaskPaper file
+  #       condition: ext is taskpaper OR text contains @taskpaper
+  #       script: taskpaper
+
+  #     - title: GitHub README
+  #       condition: filename is README.md
+  #       script: github-pro
