@@ -21,7 +21,7 @@ tracks:
         sequence:
           # - script: obsidian-md-filter
           - script: obsidian-callouts
-          # - filter: insertCSS(callouts)
+          - filter: insertCSS(callouts)
 
       - title: GitHub - Standard Files
         condition: "filename is readme.md OR filename is license.md"
@@ -57,10 +57,10 @@ tracks:
       #   sequence:
       #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)"
 
-      - title: Always applied
-        condition: any
-        sequence:
-          - script: build_footer.sh
+      # - title: Always applied
+      #   condition: any
+      #   sequence:
+      #     - script: build_footer.sh
 
   # - title: Processing
   #   condition: phase is pro

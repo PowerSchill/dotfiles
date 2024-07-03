@@ -97,7 +97,8 @@ class Vault
       convert_tags: config['convert_tags'] || false,
       obsidian_links: config['obsidian_links'] || false,
       convert_markdown_links: config['convert_markdown_links'] || false,
-      marked_processor: config['marked_processor'].downcase || 'discount'
+      marked_processor: 'discount'
+      # marked_processor: config['marked_processor'].downcase || 'discount'
     }
   end
 end
