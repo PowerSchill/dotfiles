@@ -348,6 +348,9 @@ cdj() {
   pushd ~/Documents/*/*/${1}*
 }
 
+# Enable grc for commands that support it
+[[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh
+
 export PATH="/opt/homebrew/bin:/opt/homebrew/opt/ruby/bin:$PATH"
 
 export cdj

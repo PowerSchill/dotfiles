@@ -46,6 +46,7 @@ packages:
       - "go"
       - "golangci-lint"
       - "graphviz"
+      - "grc"
       - "grep"
       - "helm"
       - "highlight"
