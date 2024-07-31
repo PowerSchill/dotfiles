@@ -70,23 +70,38 @@ repoPaths:
   # ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
 
 theme:
+  colors:
+    # Mocha Blue
+    text:
+      primary: "#cdd6f4"
+      secondary: "#89b4fa"
+      inverted: "#11111b"
+      faint: "#bac2de"
+      warning: "#f38ba8"
+      success: "#a6e3a1"
+    background:
+      selected: "#313244"
+    border:
+      primary: "#89b4fa"
+      secondary: "#45475a"
+      faint: "#313244"
+    # Latte Blue
+    # text:
+    #   primary: "#4c4f69"
+    #   secondary: "#1e66f5"
+    #   inverted: "#dce0e8"
+    #   faint: "#5c5f77"
+    #   warning: "#d20f39"
+    #   success: "#40a02b"
+    # background:
+    #   selected: "#ccd0da"
+    # border:
+    #   primary: "#1e66f5"
+    #   secondary: "#bcc0cc"
+    #   faint: "#ccd0da"
   ui:
     table:
       showSeparator: true
-  colors:
-    text:
-      primary: "#ced5f1"
-      secondary: "#ced5f1"
-      inverted: "#585a6e"
-      faint: "#CDD6F4"
-      warning: "#F38BA8"
-      success: "#A6E3A1"
-    background:
-      selected: "#585a6e"
-    border:
-      primary: "#383B5B"
-      secondary: "#39386B"
-      faint: "#2B2B40"
 
 pager:
   diff: delta
