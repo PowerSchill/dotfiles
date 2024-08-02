@@ -179,6 +179,14 @@ followTags = true
     file-style = bold yellow ul
     file-decoration-style = none
 
+{{- $ghPath := lookPath "gh" }}
+{{- if $ghPath }}
+[credential "https://github.com"]
+	helper = !{{ $ghPath }} auth git-credential
+[credential "https://gist.github.com"]
+	helper = !{{ $ghPath }} auth git-credential
+{{- end }}
+
 [credential]
 	helper = osxkeychain
 
