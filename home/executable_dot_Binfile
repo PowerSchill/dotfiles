@@ -15,6 +15,9 @@ gem install erb -v '4.0.3'
 # Executables: irb
 gem install irb -v '1.13.1'
 
+# Executables: conductor
+gem install marked-conductor -v '1.0.32'
+
 # Executables: racc
 gem install racc -v '1.7.3'
 
