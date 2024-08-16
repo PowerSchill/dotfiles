@@ -115,6 +115,7 @@ packages:
       - "alfred"
       - "arc"
       - "beyond-compare"
+      - "bunch"
       - "caldigit-docking-utility"
       - "caldigit-thunderbolt-charging"
       - "camo-studio"

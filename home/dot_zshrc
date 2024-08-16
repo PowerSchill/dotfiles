@@ -61,7 +61,6 @@ plugins=(
   gitignore
   golang
   history
-  jira
   jsontools
   kubectl
   kubectx
@@ -356,6 +355,9 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
 eval "$(rbenv init -)"
 
 export cdj
+
+# Set theme
+source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
 source ~/.zshrc_local
 
