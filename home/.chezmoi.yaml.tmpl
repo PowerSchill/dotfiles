@@ -96,4 +96,4 @@ data:
     osid: {{ $osID | quote }}
     wsl: {{ $wsl }}
     shared: {{ $shared }}
-    uname_arch: "{{ output "uname" "-m" | trim }}"
+    uname_arch: "{{ if eq (output "uname" "-m" | trim) "aarch64" }}arm64{{ else }}{{ output "uname" "-m" | trim }}{{ end }}"
