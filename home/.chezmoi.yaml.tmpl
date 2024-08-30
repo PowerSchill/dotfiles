@@ -1,5 +1,3 @@
-
-
 {{/* feature tags */}}
 {{- $headless := false -}}  {{/* true if this machine does not have a screen and keyboard */}}
 {{- $transient := false -}} {{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
@@ -13,7 +11,7 @@
 {{- $interactive := and stdinIsATTY (not $chezmoiForce) -}}
 
 # Gather CPU info
-{{/*- includeTemplate "cpu" . */}}
+{{- includeTemplate "cpu" . }}
 
 {{- $osID := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
@@ -51,9 +49,10 @@
 {{-     $work = false -}}
 {{-     $personal = true -}}
 {{-     $shared = false -}}
-// {{-   else if contains ".nsls2.bnl.local" $fqdn -}}
-// {{-     $work = true -}}
-// {{-     $shared = true -}}
+{{-   else if contains ".cmschill.net" $fqdn -}}
+{{-     $work = false -}}
+{{-     $personal = true -}}
+{{-     $shared = true -}}
 {{-   else -}}
 {{-     $transient = true -}}
 {{-     $headless = true -}}
