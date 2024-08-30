@@ -160,11 +160,20 @@ packages:
       - "visual-studio-code"
       - "zoom"
   linux:
-    - "curl"
-    - "direnv"
-    - "neofetch"
-    - "rbenv"
-    - "tmux"
-    - "vim"
-    - "wget"
-    - "zsh"
+    packages:
+      - "curl"
+      - "direnv"
+      - "neofetch"
+      - "rbenv"
+      - "tmux"
+      - "vim"
+      - "wget"
+      - "zsh"
+    snaps:
+      - "code"
+  windows:
+    winget:
+      - "Microsoft.PowerToys"
+      - "Microsoft.WindowsTerminal"
+      - "Microsoft.VisualStudioCode"
+      - "Microsoft.PowerShell"

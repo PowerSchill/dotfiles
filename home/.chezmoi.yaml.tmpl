@@ -10,13 +10,21 @@
 {{- $chezmoiForce := or (has "--force" .chezmoi.args) (has "--force=true" .chezmoi.args) -}}
 {{- $interactive := and stdinIsATTY (not $chezmoiForce) -}}
 
-# Gather CPU info
-{{- template "home/cpu" . }}
-
 {{- $osID := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
 {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
+
+{{/* Override some arch designations */}}
+{{- $uname_arch := "" -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{- 	if eq (output "uname" "-m" | trim) "aarch64" -}}
+{{- 		$uname_arch = "arm64" -}}
+{{- 	else -}}
+{{-			$uname_arch = output "uname" "-m" | trim -}}
+{{- 	end -}}
+{{- end -}}
+
 
 {{/* Detect Windows Subsystem for Linux (WSL) */}}
 {{- if eq .chezmoi.os "linux" -}}
@@ -95,4 +103,4 @@ data:
     osid: {{ $osID | quote }}
     wsl: {{ $wsl }}
     shared: {{ $shared }}
-    uname_arch: "{{ if eq (output "uname" "-m" | trim) "aarch64" }}arm64{{ else }}{{ output "uname" "-m" | trim }}{{ end }}"
+    uname_arch: {{ $uname_arch }}

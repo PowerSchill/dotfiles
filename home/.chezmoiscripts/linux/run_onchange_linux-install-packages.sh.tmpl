@@ -1,31 +1,27 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
+echo "Installing Packages: {{ .osid }}"
+
+
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
+
 
 # Update package list
 sudo apt-get update
 
 # Install packages
 sudo apt-get install -y \
-{{- range .packages.linux }}
+{{- range .packages.linux.packages }}
     {{ . }} \
 {{- end }}
 
-{{ else if eq .osid "linux-centos" -}}
-
-{{ else if eq .osid "linux-fedora" "linux-rocky" -}}
-
-
-{{ else if eq .osid "linux-amzn" -}}
-
+# Install Snaps
+sudo snap install --classic \
+{{- range .packages.linux.snaps }}
+    {{ . }} \
+{{- end }}
 
 {{ end -}}
-
-// # Install Git-Town
-
-// {{ if ne .osid "linux-raspbian" -}}
-// curl -L https://git-town.com/install.sh | sh
-// {{ end -}}
 
 {{ end -}}

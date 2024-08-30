@@ -2,6 +2,9 @@
     autocrlf = input
     excludesFile = ~/.gitignore_global
     pager = delta
+{{- if eq .chezmoi.os "windows" }}
+	  sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- end }}
 
 [color]
     ui = auto
@@ -181,11 +184,16 @@ followTags = true
 
 {{- $ghPath := lookPath "gh" }}
 {{- if $ghPath }}
+
 [credential "https://github.com"]
-	helper = !{{ $ghPath }} auth git-credential
+	helper = !"{{ $ghPath }}" auth git-credential
 [credential "https://gist.github.com"]
-	helper = !{{ $ghPath }} auth git-credential
+	helper = !"{{ $ghPath }}" auth git-credential
 {{- end }}
+
+
+
+{{- if eq .chezmoi.os "darwin" -}}
 
 [credential]
 	helper = osxkeychain
@@ -197,10 +205,9 @@ followTags = true
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustExitCode = true
 
-[credential "https://github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+{{- end -}}
 
-[credential "https://gist.github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+
+{{- if eq .chezmoi.os "windows" -}}
+
+{{- end -}}

@@ -1,45 +1,43 @@
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export LSCOLORS='Gxfxcxdxdxegedabagacad'
 if [[ $(get_os) == 'linux' || $(get_os) == 'cygwin' ]]; then
-    alias ls='ls --color=auto'
-    alias lx='ls -lXB'         #  Sort by extension.
-    alias ll="ls -lv --group-directories-first"
-    alias chgrp='chgrp --preserve-root'
-    alias chmod='chmod --preserve-root'
-    alias chown='chown --preserve-root'
+  alias ls='ls --color=auto'
+  alias lx='ls -lXB' #  Sort by extension.
+  alias ll="ls -lv --group-directories-first"
+  alias chgrp='chgrp --preserve-root'
+  alias chmod='chmod --preserve-root'
+  alias chown='chown --preserve-root'
 elif [[ $(get_os) == 'osx' ]]; then
-    # Commented out because I use the coreutils
-    # alias ls='ls --color=auto'
-    alias ll='ls -alF'
-    alias preview="open -a '$PREVIEW'"
-    alias safari="open -a safari"
-    alias firefox="open -a firefox"
-    alias chrome="open -a google\ chrome"
-    alias f='open -a Finder '
+  # Commented out because I use the coreutils
+  # alias ls='ls --color=auto'
+  alias ll='ls -alF'
+  alias preview="open -a '$PREVIEW'"
+  alias safari="open -a safari"
+  alias firefox="open -a firefox"
+  alias chrome="open -a google\ chrome"
+  alias f='open -a Finder '
 
-    alias brewup='brew update; brew upgrade; brew cleanup; brew cask upgrade; brew doctor'
+  alias brewup='brew update; brew upgrade; brew cleanup; brew cask upgrade; brew doctor'
 
-    # Get rid of those .DS_Store files
-     alias dsclean='find . -type f -name .DS_Store -delete'
+  # Get rid of those .DS_Store files
+  alias dsclean='find . -type f -name .DS_Store -delete'
 fi
 #-------------------------------------------------------------
 # The 'ls' family (this assumes you use a recent GNU ls).
 #-------------------------------------------------------------
 # Add colors for filetype and  human-readable sizes by default on 'ls':
-alias lk='ls -lSr'         #  Sort by size, biggest last.
-alias lt='ls -ltr'         #  Sort by date, most recent last.
-alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
-alias lu='ls -ltur'        #  Sort by/show access time,most recent last.
-alias lm='ll |more'        #  Pipe through 'more'
-alias lr='ll -R'           #  Recursive ls.
-alias la='ll -A'           #  Show hidden files.
-alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
+alias lk='ls -lSr'      #  Sort by size, biggest last.
+alias lt='ls -ltr'      #  Sort by date, most recent last.
+alias lc='ls -ltcr'     #  Sort by/show change time,most recent last.
+alias lu='ls -ltur'     #  Sort by/show access time,most recent last.
+alias lm='ll |more'     #  Pipe through 'more'
+alias lr='ll -R'        #  Recursive ls.
+alias la='ll -A'        #  Show hidden files.
+alias tree='tree -Csuh' #  Nice alternative to 'recursive ls' ...
 alias l='ls -CF'
-
 
 # TMUX aliases
 alias takeover='tmux detach -a'
@@ -50,7 +48,7 @@ export GREP_COLOR='1;33'
 
 # Clear DNS cache
 if [[ $PLATFORM == 'osx' ]]; then
-    alias cleardns='sudo killall -HUP mDNSResponder'
+  alias cleardns='sudo killall -HUP mDNSResponder'
 fi
 
 # various aliases
@@ -68,7 +66,6 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias wget='wget -c'
 
-
 # top
 alias cpu='top -o cpu'
 alias mem='top -o rsize' # memory
@@ -78,11 +75,11 @@ alias b="bundle"
 alias bi="bundle install"
 alias bu="bundle update"
 function be() {
-    if [[ ! $1 =~ / ]]; then
-        bundle exec "bin/$1"
-    else
-        bundle exec $@
-    fi
+  if [[ ! $1 =~ / ]]; then
+    bundle exec "bin/$1"
+  else
+    bundle exec $@
+  fi
 }
 
 # npm global install
@@ -130,7 +127,6 @@ alias psgrep='psgrep -saien'
 
 # Print argument right aligned
 alias right="printf '%*s' $(tput cols)"
-
 
 # DotDrop alias
 alias dotdrop='eval $(grep -v "^#" ~/dotfiles/.env) ~/dotfiles/dotdrop.sh'
@@ -185,21 +181,17 @@ alias dotdrop="$DOTREPO/dotdrop.sh"
 alias dotgit="git -C $DOTREPO"
 alias dotsync="dotgit pull && dotgit add -A && dotgit commit && dotgit push; dotdrop install"
 
-
-# colorls
-alias lc='colorls -lA --sd --gs'
-
 # chezmoi
 alias cm='chezmoi'
 
 # Network functions from Jesse Buffington
-whereip () { curl -s "https://api.ipgeolocation.io/ipgeo?apiKey=e48648602503456590f864ef21d721e0&ip=$1" | jq '.'; }
-whothat () { curl -s "https://api.securitytrails.com/v1/domain/$1" -H 'apikey: nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL' | jq '.'; }
-whohist () { curl -s "https://api.securitytrails.com/v1/history/$1/whois?apikey=nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL" | jq '.'; }
-sslcheck () { echo | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -issuer -subject -dates; }
+whereip() { curl -s "https://api.ipgeolocation.io/ipgeo?apiKey=e48648602503456590f864ef21d721e0&ip=$1" | jq '.'; }
+whothat() { curl -s "https://api.securitytrails.com/v1/domain/$1" -H 'apikey: nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL' | jq '.'; }
+whohist() { curl -s "https://api.securitytrails.com/v1/history/$1/whois?apikey=nFo75o6yMZ9byXt0o9Mjuor5MlhHtVVL" | jq '.'; }
+sslcheck() { echo | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -issuer -subject -dates; }
 
 # Get TLS certificate details
-function show_cert () {
-      nslookup $1
-        (openssl s_client -showcerts -servername $1 -connect $1:443 <<< "Q" | openssl x509 -text | grep -iA2 "Validity")
-    }
+function show_cert() {
+  nslookup $1
+  (openssl s_client -showcerts -servername $1 -connect $1:443 <<<"Q" | openssl x509 -text | grep -iA2 "Validity")
+}

@@ -1,0 +1,14 @@
+{{- if eq .chezmoi.os "windows" -}}
+
+echo "Installing Packages: {{ .osid }}"
+
+
+# Install packages
+
+{{- range .packages.windows.winget }}
+winget install  {{ . | quote }}
+{{- end }}
+
+
+{{ end -}}
+
