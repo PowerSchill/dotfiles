@@ -1,0 +1,31 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+{{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
+
+# Update package list
+sudo apt-get update
+
+# Install packages
+sudo apt-get install -y \
+{{- range .packages.linux }}
+    {{ . }} \
+{{- end }}
+
+{{ else if eq .osid "linux-centos" -}}
+
+{{ else if eq .osid "linux-fedora" "linux-rocky" -}}
+
+
+{{ else if eq .osid "linux-amzn" -}}
+
+
+{{ end -}}
+
+// # Install Git-Town
+
+// {{ if ne .osid "linux-raspbian" -}}
+// curl -L https://git-town.com/install.sh | sh
+// {{ end -}}
+
+{{ end -}}
