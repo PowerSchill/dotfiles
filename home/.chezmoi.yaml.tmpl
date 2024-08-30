@@ -11,7 +11,7 @@
 {{- $interactive := and stdinIsATTY (not $chezmoiForce) -}}
 
 # Gather CPU info
-{{- includeTemplate "cpu" . }}
+{{- template "home/cpu" . }}
 
 {{- $osID := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
