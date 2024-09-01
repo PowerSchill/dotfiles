@@ -182,6 +182,7 @@ followTags = true
     file-style = bold yellow ul
     file-decoration-style = none
 
+{{- if ne .chezmoi.os "windows" -}}
 {{- $ghPath := lookPath "gh" }}
 {{- if $ghPath }}
 
@@ -192,7 +193,7 @@ followTags = true
 	helper =
   helper = !'{{ $ghPath }}' auth git-credential
 {{- end }}
-
+{{- end }}
 
 
 {{- if eq .chezmoi.os "darwin" -}}
@@ -211,5 +212,10 @@ followTags = true
 
 
 {{- if eq .chezmoi.os "windows" -}}
-
+[credential "https://github.com"]
+helper =
+helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+[credential "https://gist.github.com"]
+helper =
+helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
 {{- end -}}
