@@ -50,30 +50,30 @@
   {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
   url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
 
-.local/bin/kubecolor:
-  type: archive-file
-  {{ $kubecolorVersion := includeTemplate "get-github-latest-version" (list "hidetatz/kubecolor" $cache) }}
-  url: "https://github.com/hidetatz/kubecolor/releases/download/v{{ $kubecolorVersion }}/kubecolor_{{ $kubecolorVersion }}_Linux_{{ .uname_arch }}.tar.gz"
-  path: kubecolor
+# .local/bin/kubecolor:
+#   type: archive-file
+#   {{ $kubecolorVersion := includeTemplate "get-github-latest-version" (list "hidetatz/kubecolor" $cache) }}
+#   url: "https://github.com/hidetatz/kubecolor/releases/download/v{{ $kubecolorVersion }}/kubecolor_{{ $kubecolorVersion }}_Linux_{{ .uname_arch }}.tar.gz"
+#   path: kubecolor
 
-.local/bin/kubectx:
-  type: archive-file
-  {{ $kubectxVersion := includeTemplate "get-github-latest-version" (list "ahmetb/kubectx" $cache) }}
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubectx_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
-  path: kubectx
+# .local/bin/kubectx:
+#   type: archive-file
+#   {{ $kubectxVersion := includeTemplate "get-github-latest-version" (list "ahmetb/kubectx" $cache) }}
+#   url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubectx_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+#   path: kubectx
 
-.oh-my-zsh/custom/plugins/my-completions/_kubectx.zsh:
-  type: file
-  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubectx.zsh"
+# .oh-my-zsh/custom/plugins/my-completions/_kubectx.zsh:
+#   type: file
+#   url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubectx.zsh"
 
-.local/bin/kubens:
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubens_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
-  path: kubens
+# .local/bin/kubens:
+#   type: archive-file
+#   url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubens_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+#   path: kubens
 
-.oh-my-zsh/custom/plugins/my-completions/_kubens.zsh:
-  type: file
-  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
+# .oh-my-zsh/custom/plugins/my-completions/_kubens.zsh:
+#   type: file
+#   url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
 
 
 .vim/pack/vendor/start/alker0/chezmoi.vim:

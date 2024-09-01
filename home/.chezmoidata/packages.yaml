@@ -109,6 +109,7 @@ packages:
       - "zsh-completions"
       - "zsh-syntax-highlighting"
       - "zsh"
+      - "jandedobbeleer/oh-my-posh/oh-my-posh"
     casks:
       - "1password-cli"
       - "airbuddy"
