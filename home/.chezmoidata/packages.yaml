@@ -177,3 +177,4 @@ packages:
       - "Microsoft.WindowsTerminal"
       - "Microsoft.VisualStudioCode"
       - "Microsoft.PowerShell"
+      - "JanDeDobbeleer.OhMyPosh"
