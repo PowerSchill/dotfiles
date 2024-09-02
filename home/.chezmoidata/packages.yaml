@@ -171,11 +171,11 @@ packages:
       - "wget"
       - "zsh"
     snaps:
-      # - "code" # Not available on arm platforms
+      - "brave"
   windows:
     winget:
-      - "Microsoft.PowerToys"
-      - "Microsoft.WindowsTerminal"
-      - "Microsoft.VisualStudioCode"
-      - "Microsoft.PowerShell"
       - "JanDeDobbeleer.OhMyPosh"
+      - "Microsoft.PowerShell"
+      - "Microsoft.PowerToys"
+      - "Microsoft.VisualStudioCode"
+      - "Microsoft.WindowsTerminal"
