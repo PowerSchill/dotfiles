@@ -55,7 +55,7 @@ plugins=(
   gcloud
   gem
   gh
-  git
+#  git
   git-extras
   git-flow
   gitignore
