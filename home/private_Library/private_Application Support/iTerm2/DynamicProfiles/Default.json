@@ -52,7 +52,7 @@
         "Alpha Component": 1,
         "Green Component": 0.8784313725490196
       },
-      "Initial Text": "tmux attach -t main || tmux new -s main",
+      "Initial Text": "",
       "Selection Color (Dark)": {
         "Red Component": 0.34509803921568627,
         "Color Space": "sRGB",

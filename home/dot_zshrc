@@ -5,10 +5,10 @@ SAVEHIST=10000000
 
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd|history|mount|man)*"
 
-
-
 # Execute neofetch
 fastfetch
+
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -37,10 +37,10 @@ DEFAULT_USER=`whoami`
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+################################################################################
+# Oh My Zsh Plugins
+################################################################################
+
 plugins=(
   1password
   aws
@@ -82,10 +82,14 @@ plugins=(
   z
   )
 
+
+
+
+
+
 # User configuration
 
 export PATH=$PATH:~/bin
-
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
@@ -249,8 +253,7 @@ fi
 # fi
 
 
-ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_AUTOCONNECT=true
+
 
 # Source alias file
 source ~/.zsh_aliases
@@ -331,7 +334,7 @@ export GOBIN=$GOPATH/bin
 export GOROOT="$(brew --prefix golang)/libexec"
 
 # direnv
-eval "$(direnv hook zsh)"
+(( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
 export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
 # bat
