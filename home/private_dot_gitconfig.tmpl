@@ -136,29 +136,22 @@ followTags = true
     rebase = true
 
 [diff]
-	tool = Kaleidoscope
-    colorMoved = default
-
-[difftool]
-    prompt = false
-	trustExitCode = true
+	  tool = bcomp
 
 [difftool "bcomp"]
+    prompt = false
     trustExitCode = true
-    cmd = "/usr/local/bin/bcomp  "
+
 
 [interactive]
     diffFilter = delta --color-only
 
 [merge]
-	tool = bcomp
-
-[mergetool]
-    prompt = false
+	  tool = bcomp
 
 [mergetool "bcomp"]
-    trustExitCode = true
-    cmd = "/usr/local/bin/bcomp"
+    prompt = false
+	  trustExitCode = true
 
 [commit]
   template = ~/.gitmessage
