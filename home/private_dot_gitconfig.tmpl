@@ -136,20 +136,17 @@ followTags = true
     rebase = true
 
 [diff]
-	  tool = bcomp
+	  tool = bc
 
-[difftool "bcomp"]
-    prompt = false
-    trustExitCode = true
-
+[difftool "bc"]
 
 [interactive]
     diffFilter = delta --color-only
 
 [merge]
-	  tool = bcomp
+	  tool = bc
 
-[mergetool "bcomp"]
+[mergetool "bc"]
     prompt = false
 	  trustExitCode = true
 
