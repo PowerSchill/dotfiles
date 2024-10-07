@@ -172,6 +172,13 @@ followTags = true
     file-style = bold yellow ul
     file-decoration-style = none
 
+[git-town]
+  contribution-regex = '^renovate/'
+  create-prototype-branches= true
+{{- if eq .work true }}
+  perennial-branches = dev qal pte stg prd nonprod prod production
+{{- end }}
+
 {{- if ne .chezmoi.os "windows" -}}
 {{- $ghPath := lookPath "gh" }}
 {{- if $ghPath }}
