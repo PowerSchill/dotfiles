@@ -290,6 +290,9 @@ if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
     #    ##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
 fi
 
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
+
 # Adds syntax highlighting to less
 # export LESSOPEN='|~/.lessfilter %s'
 
