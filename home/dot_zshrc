@@ -20,7 +20,10 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 DISABLE_AUTO_UPDATE="true"
-ITERM_SHELL_INTEGRATION_INSTALLED=Yes
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
+fi
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
