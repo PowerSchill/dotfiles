@@ -27,5 +27,8 @@ gh auth login \
   --hostname github.com
 
 
+# Initalize
+export PATH=$HOME/bin:$PATH
+chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
 ```
 

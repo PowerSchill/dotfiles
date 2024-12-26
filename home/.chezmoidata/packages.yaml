@@ -1,5 +1,10 @@
 packages:
   darwin:
+    taps:
+      - "ttscoff/thelab"
+      - "1password/tap"
+      - "jandedobbeleer/oh-my-posh"
+      - "warrensbox/tap"
     brews:
       - "ack"
       - "asciinema"
@@ -50,7 +55,6 @@ packages:
       - "helm"
       - "highlight"
       - "htop"
-      - "hub"
       - "imagemagick"
       - "ipcalc"
       - "jenv"
