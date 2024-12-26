@@ -28,7 +28,9 @@ gh auth login \
 
 
 # Initalize
+
 export PATH=$HOME/bin:$PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
 chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
 ```
 

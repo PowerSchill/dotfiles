@@ -17,7 +17,6 @@ packages:
       - "ccat"
       - "cheat"
       - "chezmoi"
-      - "chrome-cli"
       - "clang-format"
       - "cloc"
       - "colordiff"
