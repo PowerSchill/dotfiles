@@ -26,9 +26,10 @@ gh auth login \
   --git-protocol ssh \
   --hostname github.com
 
+# Install Rosetta
+sudo softwareupdate --install-rosetta --agree-to-license
 
 # Initalize
-
 export PATH=$HOME/bin:$PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
 chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
