@@ -99,7 +99,7 @@ packages:
       - "tmux"
       - "trash"
       - "tree"
-      - "ttscoff/thelab/gather-cli"
+      # - "ttscoff/thelab/gather-cli"
       - "viddy"
       - "vim"
       - "virtualenv"
