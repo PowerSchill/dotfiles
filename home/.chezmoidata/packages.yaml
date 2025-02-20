@@ -140,7 +140,6 @@ packages:
       - "goland"
       - "google-chrome"
       - "google-cloud-sdk"
-      - "grammarly-desktop"
       - "hazel"
       - "iterm2"
       - "kaleidoscope"
