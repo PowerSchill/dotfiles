@@ -1,7 +1,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
-cat <<EOF
+cat >~/.Brewfile <<EOF
 
 
 ####################################################################################################
@@ -100,3 +100,5 @@ cask {{ . | quote }}
 
 EOF
 {{ end -}}
+
+brew bundle --file=~/.Brewfile
