@@ -6,6 +6,7 @@ packages:
         - "1password/tap"
         - "jandedobbeleer/oh-my-posh"
         - "warrensbox/tap"
+        - "buo/cask-upgrade"
       personal:
       work:
     brews:
@@ -117,6 +118,8 @@ packages:
         - "jandedobbeleer/oh-my-posh/oh-my-posh"
       personal:
         - "rust"
+        - "gum"
+
       work:
         - "warrensbox/tap/tfswitch"
         - "helm"
@@ -146,6 +149,7 @@ packages:
         - "keyboard-maestro"
         - "keyboardcleantool"
         - "logi-options-plus"
+        - "macupdater"
         - "microsoft-auto-update"
         - "microsoft-edge"
         - "microsoft-teams"
@@ -166,9 +170,25 @@ packages:
         - "yubico-yubikey-manager"
         - "zoom"
       personal:
+        - "anylist"
         - "arc"
+        - "calibre"
+        - "curseforge"
+        - "discord"
         - "dropbox"
+        - "elgato-stream-deck"
+        - "fastscripts"
+        - "firefox"
+        - "imazing"
+        - "little-snitch"
+        - "mailmate"
+        - "minecraft"
+        - "private-internet-access"
         - "signal"
+        - "silentknight"
+        - "vlc"
+        - "zen-browser"
+        - "zotero@beta"
       work:
         - "google-cloud-sdk"
         - "postman"
