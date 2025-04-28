@@ -133,6 +133,7 @@ packages:
         - caldigit-docking-utility
         - caldigit-thunderbolt-charging
         - camo-studio
+        - cyberduck
         - dash
         - devonthink
         - docker
@@ -153,6 +154,7 @@ packages:
         - microsoft-auto-update
         - microsoft-edge
         - microsoft-teams
+        - mountain-duck
         - moom
         - obsidian
         - powershell
@@ -166,6 +168,7 @@ packages:
         - tower
         - transmit
         - visual-studio-code
+        - visual-studio-code@insiders
         - yubico-authenticator
         - yubico-yubikey-manager
         - zoom
