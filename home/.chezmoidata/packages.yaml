@@ -119,79 +119,78 @@ packages:
       personal:
         - rust
         - gum
-
       work:
         - warrensbox/tap/tfswitch
         - helm
     casks:
       global:
-        - 1password
         - 1password-cli
-        - airbuddy
-        - alfred
-        - beyond-compare
-        - caldigit-docking-utility
-        - caldigit-thunderbolt-charging
-        - camo-studio
-        - cyberduck
-        - dash
-        - devonthink
-        - docker
         - dotnet-sdk
         - font-fira-code-nerd-font
         - font-inconsolata
         - font-jetbrains-mono
         - font-meslo-for-powerline
         - font-meslo-lg-nerd-font
-        - google-chrome
-        - hazel
-        - iterm2
         - kaleidoscope
-        - keyboard-maestro
-        - keyboardcleantool
         - logi-options-plus
-        - macupdater
-        - microsoft-auto-update
-        - microsoft-edge
-        - microsoft-teams
-        - mountain-duck
         - moom
         - obsidian
         - powershell
         - raindropio
-        - setapp # Installed once manually
         - sf-symbols
-        - slack
         - snagit
-        - soundsource
         - textexpander
         - tower
-        - transmit
-        - visual-studio-code
-        - visual-studio-code@insiders
-        - yubico-authenticator
-        - yubico-yubikey-manager
-        - zoom
       personal:
+        - 1password
+        - airbuddy
+        - alfred
         - anylist
         - arc
+        - beyond-compare
+        - caldigit-docking-utility
+        - caldigit-thunderbolt-charging
         - calibre
+        - camo-studio
         - curseforge
+        - cyberduck
+        - dash
+        - devonthink
         - discord
+        - docker
         - dropbox
         - elgato-stream-deck
         - fastscripts
         - firefox
+        - google-chrome
         - grammarly-desktop
+        - hazel
         - imazing
+        - iterm2
+        - keyboard-maestro
+        - keyboardcleantool
         - little-snitch
+        - macupdater
         - mailmate
+        - microsoft-auto-update
+        - microsoft-edge
+        - microsoft-teams
         - minecraft
+        - mountain-duck
         - private-internet-access
+        - setapp # Installed once manually
         - signal
         - silentknight
+        - slack
+        - soundsource
+        - transmit
+        - visual-studio-code
+        - visual-studio-code@insiders
         - vlc
+        - yubico-authenticator
+        - yubico-yubikey-manager
         - zen-browser
+        - zoom
         - zotero@beta
       work:
         - google-cloud-sdk
