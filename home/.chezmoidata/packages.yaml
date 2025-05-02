@@ -124,7 +124,10 @@ packages:
         - helm
     casks:
       global:
+        - alfred
         - 1password-cli
+        - beyond-compare
+        - cyberduck
         - dotnet-sdk
         - font-fira-code-nerd-font
         - font-inconsolata
@@ -135,6 +138,7 @@ packages:
         - logi-options-plus
         - moom
         - obsidian
+        - omnifocus
         - powershell
         - raindropio
         - sf-symbols
@@ -144,16 +148,13 @@ packages:
       personal:
         - 1password
         - airbuddy
-        - alfred
         - anylist
         - arc
-        - beyond-compare
         - caldigit-docking-utility
         - caldigit-thunderbolt-charging
         - calibre
         - camo-studio
         - curseforge
-        - cyberduck
         - dash
         - devonthink
         - discord
