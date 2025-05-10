@@ -83,6 +83,9 @@ cask {{ . | quote }}
 #######################################
 # Personal
 #######################################
+
+cask "1password", args: { appdir: "/Applications" }
+cask "little-snitch", args: { appdir: "/Applications" }
 {{ range .packages.darwin.casks.personal }}
 cask {{ . | quote }}
 {{- end }}

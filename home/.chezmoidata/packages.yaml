@@ -146,7 +146,6 @@ packages:
         - textexpander
         - tower
       personal:
-        - 1password
         - airbuddy
         - anylist
         - arc
@@ -170,7 +169,6 @@ packages:
         - iterm2
         - keyboard-maestro
         - keyboardcleantool
-        - little-snitch
         - macupdater
         - mailmate
         - microsoft-auto-update
@@ -178,6 +176,7 @@ packages:
         - microsoft-teams
         - minecraft
         - mountain-duck
+        - openaudible
         - private-internet-access
         - setapp # Installed once manually
         - signal
