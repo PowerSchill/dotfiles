@@ -400,6 +400,9 @@ load-nvmrc
 
 export cdj
 
+# Install Homebrew Casks in user's Applications directory
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+
 # Set theme
 source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
