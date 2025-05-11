@@ -1,4 +1,4 @@
 #!/opt/homebrew/bin/bash
 
 
-brew upgrade && brew cu -facy && chezmoi update
+chezmoi update && brew upgrade && brew cu -facy
