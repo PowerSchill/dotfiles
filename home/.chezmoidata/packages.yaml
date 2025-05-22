@@ -34,8 +34,10 @@ packages:
         - direnv
         - dockutil
         - dos2unix
+        - exiftool
         - eza
         - fastfetch
+        - fd
         - findutils
         - freetds
         - fzf
@@ -62,6 +64,7 @@ packages:
         - jenv
         - jq
         - jsonlint
+        - krb5
         - kubernetes-cli
         - less
         - lesspipe
@@ -77,6 +80,8 @@ packages:
         - openssl@3
         - p7zip
         - pandoc
+        - php
+        - pillow
         - pinentry-mac
         - pipx
         - pre-commit
@@ -135,12 +140,13 @@ packages:
         - font-meslo-for-powerline
         - font-meslo-lg-nerd-font
         - kaleidoscope
-        - logi-options-plus
+        - logi-options+
         - moom
         - obsidian
         - omnifocus
         - powershell
         - raindropio
+        - reader
         - sf-symbols
         - snagit
         - textexpander
@@ -153,6 +159,7 @@ packages:
         - caldigit-thunderbolt-charging
         - calibre
         - camo-studio
+        - chatgpt
         - curseforge
         - dash
         - devonthink
@@ -189,7 +196,7 @@ packages:
         - vlc
         - yubico-authenticator
         - yubico-yubikey-manager
-        - zen-browser
+        - zen
         - zoom
         - zotero@beta
       work:
