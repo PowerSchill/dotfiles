@@ -41,6 +41,7 @@ alias l='ls -CF'
 
 # TMUX aliases
 alias takeover='tmux detach -a'
+alias tmac='tmux new -A -s'
 
 # User Color with grep. TODO: Test on OSX
 alias grep='grep --color=auto'
