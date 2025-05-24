@@ -75,7 +75,11 @@ brew {{ . | quote }}
 # Global
 #######################################
 {{ range .packages.darwin.casks.global -}}
+{{- if typeIs "string" . }}
 cask {{ . | quote }}
+{{- else if (hasKey . "name") }}
+cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
+{{- end }}
 {{ end -}}
 
 
@@ -83,11 +87,12 @@ cask {{ . | quote }}
 #######################################
 # Personal
 #######################################
-
-cask "1password", args: { appdir: "/Applications" }
-cask "little-snitch", args: { appdir: "/Applications" }
 {{ range .packages.darwin.casks.personal }}
+{{- if typeIs "string" . }}
 cask {{ . | quote }}
+{{- else if (hasKey . "name") }}
+cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
+{{- end }}
 {{- end }}
 {{- end }}
 
@@ -97,7 +102,11 @@ cask {{ . | quote }}
 # Work
 #######################################
 {{ range .packages.darwin.casks.work }}
+{{- if typeIs "string" . }}
 cask {{ . | quote }}
+{{- else if (hasKey . "name") }}
+cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
+{{- end }}
 {{- end }}
 {{- end }}
 

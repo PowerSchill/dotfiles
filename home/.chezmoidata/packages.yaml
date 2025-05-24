@@ -124,84 +124,90 @@ packages:
       personal:
         - rust
         - gum
+        - mas
       work:
         - warrensbox/tap/tfswitch
         - helm
     casks:
       global:
-        - alfred
-        - 1password-cli
-        - beyond-compare
-        - cyberduck
-        - dotnet-sdk
-        - font-fira-code-nerd-font
-        - font-inconsolata
-        - font-jetbrains-mono
-        - font-meslo-for-powerline
-        - font-meslo-lg-nerd-font
-        - kaleidoscope
-        - logi-options+
-        - moom
-        - obsidian
-        - omnifocus
-        - powershell
-        - raindropio
-        - reader
-        - sf-symbols
-        - snagit
-        - textexpander
-        - tower
+        - name: alfred
+        - name: 1password-cli
+        - name: beyond-compare
+        - name: cyberduck
+        - name: dotnet-sdk
+        - name: font-fira-code-nerd-font
+        - name: font-jetbrains-mono
+        - name: font-meslo-for-powerline
+        - name: font-meslo-lg-nerd-font
+        - name: kaleidoscope
+        - name: logi-options+
+        - name: moom
+        - name: obsidian
+        - name: omnifocus
+        - name: powershell
+        - name: raindropio
+        - name: reader
+        - name: sf-symbols
+        - name: snagit
+        - name: textexpander
+        - name: tower
       personal:
-        - airbuddy
-        - anylist
-        - arc
-        - caldigit-docking-utility
-        - caldigit-thunderbolt-charging
-        - calibre
-        - camo-studio
-        - chatgpt
-        - curseforge
-        - dash
-        - devonthink
-        - discord
-        - docker
-        - dropbox
-        - elgato-stream-deck
-        - fastscripts
-        - firefox
-        - google-chrome
-        - grammarly-desktop
-        - hazel
-        - imazing
-        - iterm2
-        - keyboard-maestro
-        - keyboardcleantool
-        - macupdater
-        - mailmate
-        - microsoft-auto-update
-        - microsoft-edge
-        - microsoft-teams
-        - minecraft
-        - mountain-duck
-        - openaudible
-        - private-internet-access
-        - setapp # Installed once manually
-        - signal
-        - silentknight
-        - slack
-        - soundsource
-        - transmit
-        - visual-studio-code
-        - visual-studio-code@insiders
-        - vlc
-        - yubico-authenticator
-        - yubico-yubikey-manager
-        - zen
-        - zoom
-        - zotero@beta
+        - name: airbuddy
+        - name: anylist
+        - name: arc
+        - name: caldigit-docking-utility
+        - name: caldigit-thunderbolt-charging
+        - name: calibre
+        - name: camo-studio
+        - name: chatgpt
+        - name: curseforge
+        - name: dash
+        - name: devonthink
+        - name: discord
+        - name: docker
+        - name: dropbox
+        - name: elgato-stream-deck
+        - name: fastscripts
+        - name: firefox
+        - name: google-chrome
+        - name: grammarly-desktop
+        - name: hazel
+        - name: imazing
+        - name: iterm2
+        - name: keyboard-maestro
+        - name: keyboardcleantool
+        - name: macupdater
+        - name: mailmate
+        - name: microsoft-auto-update
+        - name: microsoft-edge
+        - name: microsoft-teams
+        - name: minecraft
+        - name: mountain-duck
+        - name: openaudible
+        - name: private-internet-access
+        - name: setapp # Installed once manually
+        - name: signal
+        - name: silentknight
+        - name: slack
+        - name: soundsource
+        - name: transmit
+        - name: visual-studio-code
+        - name: visual-studio-code@insiders
+        - name: vlc
+        - name: yubico-authenticator
+        - name: yubico-yubikey-manager
+        - name: zen
+        - name: zoom
+        - name: zotero@beta
+        - name: 1password
+          args:
+            appdir: "/Applications"
+        - name: little-snitch
+          args:
+            appdir: "/Applications"
       work:
-        - google-cloud-sdk
-        - postman
+        - name: google-cloud-sdk
+        - name: postman
   linux:
     packages:
       - curl
