@@ -213,7 +213,6 @@ packages:
       work:
         - name: google-cloud-sdk
         - name: postman
-        - name: windows-app
   linux:
     packages:
       - curl

@@ -1,0 +1,21 @@
+# terraform grc colorizer configuration
+-
+# Reading
+regexp=(.*): Reading\.\.\.
+colours=unchanged,magenta,unchanged,cyan
+-
+# Refreshing state/Read Complete
+regexp=(.*): (Refreshing state\.\.\.|Read complete after \d+s) \[id=(.*)\]
+colours=unchanged,magenta,unchanged,cyan
+-
+# updated records
+regexp=# (.*) will be updated in-place
+colours=unchanged,bold yellow
+-
+# created records
+regexp=# (.*) will be created
+colours=unchanged,bold green
+-
+# summary
+regexp=Plan: (\d+) to add, (\d+) to change, (\d+) to destroy
+colours=unchanged,bold green,bold yellow,bold red
