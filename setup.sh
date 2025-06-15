@@ -10,7 +10,7 @@ if [[ $system_type == "Darwin" ]]; then
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>/Users/powerschill/.zprofile
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  brew install git
+  brew install gh git
 
   # Install Chezmoi
   brew install chezmoi
