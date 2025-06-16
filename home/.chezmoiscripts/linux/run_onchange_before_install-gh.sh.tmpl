@@ -1,4 +1,4 @@
-{{ if and (eq .osid "linux-fedora" "linux-nobara") (not .transient) -}}
+{{ if and (eq .osid "linux-fedora" "linux-nobara") (not .ephemeral) -}}
 
 #!/bin/sh
 
@@ -16,7 +16,7 @@ sudo dnf install -y gh
 
 {{ end -}}
 
-{{- if and (eq .osid "linux-pop" "linux-ubuntu") (not .transient) -}}
+{{- if and (eq .osid "linux-pop" "linux-ubuntu") (not .ephemeral) -}}
 
 #!/bin/sh
 

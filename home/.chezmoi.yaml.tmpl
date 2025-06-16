@@ -1,6 +1,6 @@
 {{/* feature tags */}}
 {{- $headless := false -}}  {{/* true if this machine does not have a screen and keyboard */}}
-{{- $transient := false -}} {{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
+{{- $ephemeral := false -}} {{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $wsl := false -}}       {{/* true if running within Windows Subsystem for Linux (WSL) */}}
 {{- $work := false -}}      {{/* true if this machine should have work config */}}
 {{- $personal := false -}}  {{/* true if this machine should have personal secrets and config */}}
@@ -35,7 +35,7 @@
 
 {{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
-{{-   $transient = true -}}
+{{-   $ephemeral = true -}}
 {{-   $headless = true -}}
 {{- end -}}
 
@@ -52,8 +52,8 @@
 {{-   end -}}
 {{- end -}}
 
-{{- if not $transient -}}
-{{-   if eq $hostname "copernicus" -}}
+{{- if not $ephemeral -}}
+{{-   if contains "copernicus" $hostname -}}
 {{-     $work = false -}}
 {{-     $personal = true -}}
 {{-     $shared = false -}}
@@ -61,8 +61,11 @@
 {{-     $work = false -}}
 {{-     $personal = true -}}
 {{-     $shared = true -}}
+{{-   else if stdinIsATTY -}}
+{{-     $headless = promptBoolOnce . "headless" "headless" -}}
+{{-     $ephemeral = promptBoolOnce . "ephemeral" "ephemeral" -}}
 {{-   else -}}
-{{-     $transient = true -}}
+{{-     $ephemeral = true -}}
 {{-     $headless = true -}}
 {{-   end -}}
 {{- end -}}
@@ -95,7 +98,7 @@ textconv:
 data:
     name: {{ $name | quote }}
     email: {{ $email | quote }}
-    transient: {{ $transient }}
+    ephemeral: {{ $ephemeral }}
     headless: {{ $headless }}
     hostname: {{ $hostname | quote }}
     personal: {{ $personal }}

@@ -12,127 +12,128 @@ packages:
         - hashicorp/tap
     brews:
       global:
-        - ack
-        - asciinema
-        - aspell
-        - bash
-        - bat
-        - bat-extras
-        - bottom
-        - brew-gem
-        - ccat
-        - cheat
-        - chezmoi
-        - clang-format
-        - cloc
-        - colordiff
-        - commitizen
-        - coreutils
-        - ctags
-        - curl
-        - dash
-        - delve
-        - direnv
-        - dockutil
-        - dos2unix
-        - exiftool
-        - eza
-        - fastfetch
-        - fd
-        - findutils
-        - freetds
-        - fzf
-        - gcc
-        - gdu
-        - gh
-        - ghostscript
-        - git
-        - git-delta
-        - git-lfs
-        - git-town
-        - github-keygen
-        - glow
-        - gnupg
-        - go
-        - golangci-lint
-        - graphviz
-        - grc
-        - grep
-        - highlight
-        - htop
-        - imagemagick
-        - ipcalc
-        - jandedobbeleer/oh-my-posh/oh-my-posh
-        - jenv
-        - jq
-        - jsonlint
-        - krb5
-        - kubernetes-cli
-        - less
-        - lesspipe
-        - lnav
-        - lsd
-        - minikube
-        - multimarkdown
-        - mysql
-        - ncdu
-        - nmap
-        - node
-        - numpy
-        - nvm
-        - openssl@3
-        - p7zip
-        - pandoc
-        - php
-        - pillow
-        - pinentry-mac
-        - pipx
-        - pre-commit
-        - pygments
-        - rbenv
-        - rbenv-gemset
-        - rbenv-vars
-        - readline
-        - rename
-        - ripgrep
-        - ruby-build
-        - sipcalc
-        - source-highlight
-        - speedtest-cli
-        - ssh-copy-id
-        - streamlink
-        - switchaudio-osx
-        - terragrunt
-        - tflint
-        - the_silver_searcher
-        - tldr
-        - tmux
-        - trash
-        - tree
-        - viddy
-        - vim
-        - virtualenv
-        - watch
-        - wget
-        - whois
-        - wifi-password
-        - yamllint
-        - yarn
-        - yubikey-agent
-        - zsh
-        - zsh-autosuggestions
-        - zsh-completions
-        - zsh-syntax-highlighting
+        - name: ack
+        - name: asciinema
+        - name: aspell
+        - name: bash
+        - name: bat
+        - name: bat-extras
+        - name: bottom
+        - name: brew-gem
+        - name: ccat
+        - name: cheat
+        - name: chezmoi
+        - name: clang-format
+        - name: cloc
+        - name: colordiff
+        - name: commitizen
+        - name: coreutils
+        - name: ctags
+        - name: curl
+        - name: dash
+        - name: delve
+        - name: direnv
+        - name: dockutil
+        - name: dos2unix
+        - name: exiftool
+        - name: eza
+        - name: fastfetch
+        - name: fd
+        - name: findutils
+        - name: freetds
+        - name: fzf
+        - name: gcc
+        - name: gdu
+        - name: gh
+        - name: ghostscript
+        - name: git
+        - name: git-delta
+        - name: git-lfs
+        - name: git-town
+        - name: github-keygen
+        - name: glow
+        - name: gnupg
+        - name: go
+        - name: golangci-lint
+        - name: graphviz
+        - name: grc
+        - name: grep
+        - name: highlight
+        - name: htop
+        - name: imagemagick
+        - name: ipcalc
+        - name: jandedobbeleer/oh-my-posh/oh-my-posh
+        - name: jenv
+        - name: jq
+        - name: jsonlint
+        - name: krb5
+        - name: kubernetes-cli
+        - name: less
+        - name: lesspipe
+        - name: lnav
+        - name: lsd
+        - name: minikube
+        - name: multimarkdown
+        - name: mysql
+        - name: ncdu
+        - name: nmap
+        - name: node
+        - name: numpy
+        - name: nvm
+        - name: openssl@3
+        - name: p7zip
+        - name: pandoc
+        - name: php
+        - name: pillow
+        - name: pinentry-mac
+        - name: pipx
+        - name: pre-commit
+        - name: pygments
+        - name: rbenv
+        - name: rbenv-gemset
+        - name: rbenv-vars
+        - name: readline
+        - name: rename
+        - name: ripgrep
+        - name: ruby-build
+        - name: sipcalc
+        - name: source-highlight
+        - name: speedtest-cli
+        - name: ssh-copy-id
+        - name: streamlink
+        - name: switchaudio-osx
+        - name: terragrunt
+        - name: tflint
+        - name: the_silver_searcher
+        - name: tldr
+        - name: tmux
+        - name: trash
+        - name: tree
+        - name: viddy
+        - name: vim
+        - name: virtualenv
+        - name: watch
+        - name: wget
+        - name: whois
+        - name: wifi-password
+        - name: yamllint
+        - name: yarn
+        - name: yubikey-agent
+        - name: zsh
+        - name: zsh-autosuggestions
+        - name: zsh-completions
+        - name: zsh-syntax-highlighting
       personal:
-        - gum
-        - mas
-        - rust
+        - name: gum
+        - name: mas
+        - name: rust
+          excludeEphemeral: true
       work:
-        - ansible
-        - checkov
-        - hashicorp/tap/packer
-        - helm
-        - warrensbox/tap/tfswitch
+        - name: ansible
+        - name: checkov
+        - name: hashicorp/tap/packer
+        - name: helm
+        - name: warrensbox/tap/tfswitch
     casks:
       global:
         - name: 1password-cli
@@ -171,36 +172,48 @@ packages:
         - name: anylist
         - name: arc
         - name: caldigit-docking-utility
+          excludeEphemeral: true
         - name: caldigit-thunderbolt-charging
+          excludeEphemeral: true
         - name: calibre
         - name: chatgpt
         - name: curseforge
         - name: dash
         - name: discord
         - name: docker
+          excludeEphemeral: true
         - name: dropbox
+          excludeEphemeral: true
         - name: elgato-stream-deck
+          excludeEphemeral: true
         - name: fastscripts
         - name: firefox
         - name: google-chrome
         - name: grammarly-desktop
         - name: hazel
         - name: imazing
+          excludeEphemeral: true
         - name: iterm2
         - name: keyboard-maestro
         - name: keyboardcleantool
+          excludeEphemeral: true
         - name: little-snitch
           args:
             appdir: "/Applications"
+          excludeEphemeral: true
         - name: macupdater
+          excludeEphemeral: true
         - name: mailmate
         - name: microsoft-auto-update
         - name: microsoft-edge
         - name: microsoft-teams
         - name: minecraft
+          excludeEphemeral: true
         - name: mountain-duck
         - name: openaudible
+          excludeEphemeral: true
         - name: private-internet-access
+          excludeEphemeral: true
         - name: silentknight
         - name: slack
         - name: transmit
@@ -209,6 +222,7 @@ packages:
         - name: yubico-yubikey-manager
         - name: zen
         - name: zoom
+          excludeEphemeral: true
         - name: zotero@beta
       work:
         - name: google-cloud-sdk

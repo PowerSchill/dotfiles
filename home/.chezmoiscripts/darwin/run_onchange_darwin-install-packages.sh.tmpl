@@ -43,8 +43,11 @@ tap {{ . | quote }}
 #######################################
 # Global
 #######################################
+{{ $isEphemeral := or (and (hasKey . "ephemeral") .ephemeral) (eq (env "EPHEMERAL") "true") }}
 {{ range .packages.darwin.brews.global -}}
-brew {{ . | quote }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
+brew {{ .name | quote }}
+  {{- end }}
 {{ end -}}
 
 
@@ -53,7 +56,9 @@ brew {{ . | quote }}
 # Personal
 #######################################
 {{ range .packages.darwin.brews.personal }}
-brew {{ . | quote }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
+brew {{ .name | quote }}
+  {{- end }}
 {{- end }}
 {{- end }}
 
@@ -63,7 +68,9 @@ brew {{ . | quote }}
 # Work
 #######################################
 {{ range .packages.darwin.brews.work }}
-brew {{ . | quote }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
+brew {{ .name | quote }}
+  {{- end }}
 {{- end }}
 {{- end }}
 
@@ -75,11 +82,9 @@ brew {{ . | quote }}
 # Global
 #######################################
 {{ range .packages.darwin.casks.global -}}
-{{- if typeIs "string" . }}
-cask {{ . | quote }}
-{{- else if (hasKey . "name") }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
 cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-{{- end }}
+  {{- end }}
 {{ end -}}
 
 
@@ -88,11 +93,9 @@ cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{
 # Personal
 #######################################
 {{ range .packages.darwin.casks.personal }}
-{{- if typeIs "string" . }}
-cask {{ . | quote }}
-{{- else if (hasKey . "name") }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
 cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-{{- end }}
+  {{- end }}
 {{- end }}
 {{- end }}
 
@@ -102,11 +105,9 @@ cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{
 # Work
 #######################################
 {{ range .packages.darwin.casks.work }}
-{{- if typeIs "string" . }}
-cask {{ . | quote }}
-{{- else if (hasKey . "name") }}
+  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
 cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-{{- end }}
+  {{- end }}
 {{- end }}
 {{- end }}
 
