@@ -223,8 +223,9 @@ packages:
         - name: transmit
         - name: vlc
         - name: yubico-authenticator
+          excludeEphemeral: true
         - name: yubico-yubikey-manager
-        - name: zen
+          excludeEphemeral: true
         - name: zoom
           excludeEphemeral: true
         - name: zotero@beta
