@@ -142,6 +142,7 @@ packages:
         - name: camo-studio
         - name: cyberduck
         - name: devonthink
+          excludeEphemeral: true
         - name: dotnet-sdk
         - name: font-fira-code-nerd-font
         - name: font-jetbrains-mono
@@ -149,6 +150,7 @@ packages:
         - name: font-meslo-lg-nerd-font
         - name: kaleidoscope
         - name: logi-options+
+          excludeEphemeral: true
         - name: moom
         - name: obsidian
         - name: omnifocus
@@ -158,6 +160,7 @@ packages:
         - name: setapp # Installed once manually
         - name: sf-symbols
         - name: signal
+          excludeEphemeral: true
         - name: snagit
         - name: soundsource
         - name: textexpander
@@ -215,6 +218,7 @@ packages:
         - name: private-internet-access
           excludeEphemeral: true
         - name: silentknight
+          excludeEphemeral: true
         - name: slack
         - name: transmit
         - name: vlc
