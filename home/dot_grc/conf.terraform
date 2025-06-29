@@ -16,6 +16,10 @@ colours=unchanged,bold yellow
 regexp=# (.*) will be created
 colours=unchanged,bold green
 -
+# destroyed records
+regexp=# (.*) will be destroyed
+colours=unchanged,bold red
+-
 # summary
 regexp=Plan: (\d+) to add, (\d+) to change, (\d+) to destroy
 colours=unchanged,bold green,bold yellow,bold red
