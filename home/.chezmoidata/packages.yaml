@@ -68,6 +68,7 @@ packages:
         - name: jsonlint
         - name: krb5
         - name: kubernetes-cli
+        - name: markdownlint-cli
         - name: less
         - name: lesspipe
         - name: lnav
@@ -83,11 +84,13 @@ packages:
         - name: openssl@3
         - name: p7zip
         - name: pandoc
+        - name: parallel
         - name: php
         - name: pillow
         - name: pinentry-mac
         - name: pipx
         - name: pre-commit
+        - name: prettier
         - name: pygments
         - name: rbenv
         - name: rbenv-gemset
@@ -130,9 +133,13 @@ packages:
           excludeEphemeral: true
       work:
         - name: ansible
+        - name: awscli
         - name: checkov
         - name: hashicorp/tap/packer
         - name: helm
+        - name: pytest
+        - name: shellcheck
+        - name: terraform-docs
         - name: warrensbox/tap/tfswitch
     casks:
       global:
