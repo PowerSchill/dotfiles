@@ -135,6 +135,7 @@ packages:
         - name: ansible
         - name: awscli
         - name: checkov
+        - name: git-filter-repo
         - name: hashicorp/tap/packer
         - name: helm
         - name: pytest
@@ -148,6 +149,7 @@ packages:
         - name: beyond-compare
         - name: camo-studio
         - name: cyberduck
+        - name: daisydisk
         - name: devonthink
           excludeEphemeral: true
         - name: dotnet-sdk
@@ -155,6 +157,7 @@ packages:
         - name: font-jetbrains-mono
         - name: font-meslo-for-powerline
         - name: font-meslo-lg-nerd-font
+        - name: hazel
         - name: kaleidoscope
         - name: logi-options+
           excludeEphemeral: true
@@ -200,7 +203,6 @@ packages:
         - name: firefox
         - name: google-chrome
         - name: grammarly-desktop
-        - name: hazel
         - name: imazing
           excludeEphemeral: true
         - name: iterm2
