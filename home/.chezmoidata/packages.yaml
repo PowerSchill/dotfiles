@@ -248,6 +248,7 @@ packages:
       - neofetch
       - rbenv
       - tmux
+      - util-linux-user
       - vim
       - wget
       - zsh

@@ -25,3 +25,16 @@ Host 10.49.*
 
 Host 10.99.*
 	User ms185570_ncr_com
+
+Host emu-migration-workstation
+	HostName compute.5196069742918749646
+	IdentityFile /Users/mark.schill/.ssh/google_compute_engine
+	CheckHostIP no
+	HashKnownHosts no
+	HostKeyAlias compute.5196069742918749646
+	IdentitiesOnly yes
+	StrictHostKeyChecking yes
+	UserKnownHostsFile /Users/mark.schill/.ssh/google_compute_known_hosts
+	ProxyCommand /Users/mark.schill/.config/gcloud/virtenv/bin/python3 /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/lib/gcloud.py compute start-iap-tunnel 'emu-migration-workstation' '%p' --listen-on-stdin --project dbk-iaas-tools --zone=us-west2-c --verbosity=warning
+	ProxyUseFdpass no
+	User ms185570_ncr_com
