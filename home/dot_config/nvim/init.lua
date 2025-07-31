@@ -91,19 +91,38 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
+
+---Get env value, with default
+---@param env_var_name string
+---@param default? boolean
+---@return boolean
+local function get_env(env_var_name, default)
+  default = default or false
+  local value = os.getenv(env_var_name)
+  if not value then return default end
+  value = value:lower()
+  return value == 'true' or value == '1' or value == 'yes' or value == 'on'
+end
+
+vim.g.plugins_dev = get_env('NVIM_PLUGINS_DEV', true)
+vim.g.plugins_extra = get_env('NVIM_PLUGINS_EXTRA')
+vim.g.plugins_fun = get_env('NVIM_PLUGINS_FUN')
 
 -- [[ Setting options ]]
-require 'options'
+require('options')
+
+-- [[ Autocmds ]]
+require('autocmds')
 
 -- [[ Basic Keymaps ]]
-require 'keymaps'
+require('keymaps')
 
 -- [[ Install `lazy.nvim` plugin manager ]]
-require 'lazy-bootstrap'
+require('lazy-bootstrap')
 
 -- [[ Configure and install plugins ]]
-require 'lazy-plugins'
+require('lazy-plugins')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

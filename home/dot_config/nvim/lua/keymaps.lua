@@ -37,29 +37,54 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
+-- https://github.com/cameronr/dotfiles/blob/main/nvim/lua/keymaps.lua
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.hl.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.hl.on_yank()
-  end,
-})
+-- Map jk as alternate escape sequence
+vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  pattern = { os.getenv 'HOME' .. '/.local/share/chezmoi/*' },
-  callback = function(ev)
-    local bufnr = ev.buf
-    local edit_watch = function()
-      require('chezmoi.commands.__edit').watch(bufnr)
-    end
-    vim.schedule(edit_watch)
-  end,
-})
+-- <leader>w
+-- Some more convenient keymaps for split management
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Window split vertically' })
+vim.keymap.set('n', '<leader>w<Bslash>', '<C-w>v', { desc = 'Window split vertically' })
+vim.keymap.set('n', '<leader>w|', '<C-w>v', { desc = 'Window split vertically' })
+vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Window split horizontally' })
+vim.keymap.set('n', '<leader>w-', '<C-w>s', { desc = 'Window split horizontally' })
+vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal size' })
+vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal size' })
+vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
+vim.keymap.set('n', '<leader>wm', '<C-w>o', { desc = 'Maximize' })
+vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
+vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
+vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
+vim.keymap.set('n', '<leader>wK', '<C-w>K', { desc = 'Move window up' })
+vim.keymap.set('n', '<leader>wn', '<cmd>vnew<CR>', { desc = 'Window vsplit with new buffer' })
+
+-- Borrowed from LazyVim
+
+-- better up/down
+vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
+
+-- Change windows (most likely overridden by tmux plugin)
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window', remap = true })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window', remap = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window', remap = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window', remap = true })
+
+-- Resize window using <ctrl> arrow keys (mostly likely overridden by tmux plugin)
+vim.keymap.set('n', '<M-k>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
+vim.keymap.set('n', '<M-j>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
+vim.keymap.set('n', '<M-h>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
+vim.keymap.set('n', '<M-l>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
+
+--- better indenting
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
+
+-- Duplicate and comment out
+vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
 
 -- vim: ts=2 sts=2 sw=2 et

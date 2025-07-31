@@ -7,13 +7,7 @@ return {
   priority = 1000,
   config = function()
     require('catppuccin').setup {
-      integrations = {
-        cmp = true,
-        gitsigns = true,
-        neotree = true,
-        nvimtree = true,
-        treesitter = true,
-      },
+      auto_integrations = true,
     }
   end,
 }
