@@ -242,6 +242,7 @@ packages:
       work:
         - name: google-cloud-sdk
         - name: postman
+        - name: zotero
   linux:
     packages:
       - curl
