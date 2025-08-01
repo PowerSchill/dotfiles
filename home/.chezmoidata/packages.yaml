@@ -54,6 +54,9 @@ packages:
         - name: glow
         - name: gnupg
         - name: go
+        - name: gofumpt
+        - name: goimports
+        - name: gopls
         - name: golangci-lint
         - name: graphviz
         - name: grc
@@ -69,10 +72,12 @@ packages:
         - name: krb5
         - name: kubernetes-cli
         - name: markdownlint-cli
+        - name: lazygit
         - name: less
         - name: lesspipe
         - name: lnav
         - name: lsd
+        - name: luarocks
         - name: minikube
         - name: multimarkdown
         - name: mysql
@@ -163,6 +168,7 @@ packages:
         - name: logi-options+
           excludeEphemeral: true
         - name: moom
+        - name: mountain-duck
         - name: obsidian
         - name: omnifocus
         - name: powershell
@@ -222,7 +228,6 @@ packages:
         - name: microsoft-teams
         - name: minecraft
           excludeEphemeral: true
-        - name: mountain-duck
         - name: openaudible
           excludeEphemeral: true
         - name: private-internet-access
@@ -240,6 +245,7 @@ packages:
           excludeEphemeral: true
         - name: zotero@beta
       work:
+        - name: cursor
         - name: google-cloud-sdk
         - name: postman
         - name: zotero
