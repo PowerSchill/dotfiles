@@ -7,6 +7,12 @@
 
 {{- template "read-versions-and-revisions-cache" $cache -}}
 
+.fzf-git.sh:
+  type: file
+  url: https://github.com/junegunn/fzf-git.sh/blob/main/fzf-git.sh
+  refreshPeriod: 168h
+
+
 .oh-my-zsh:
   type: archive
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"

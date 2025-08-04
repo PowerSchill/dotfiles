@@ -331,9 +331,24 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # https://github.com/athityakumar/colorls
 # source $(dirname $(gem which colorls))/tab_complete.sh
 
-# fzf
+# fzf https://www.youtube.com/watch?v=mmqDYw9C30I&t=15s
 eval "$(fzf --zsh)"
-# source ~/bin/fzf.sh
+
+# -- Use fd instead of fzf --
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_Z_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type-d --hidden --strip-cwd-prefix --exclude .git"
+
+_fzf_compgen_path() {
+  fd --hidden --exclude .git . "$1"
+}
+
+_fzf_compgen_dir() {
+  fd --type=d --hidden --exclude .git . "$1"
+}
+
+source ~/.fzf-git.sh
 
 # GO setup
 export GOPATH=$HOME/go
