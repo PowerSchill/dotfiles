@@ -333,7 +333,8 @@ autoload -U +X bashcompinit && bashcompinit
 # source $(dirname $(gem which colorls))/tab_complete.sh
 
 # fzf
-source ~/bin/fzf.sh
+eval "$(fzf --zsh)"
+# source ~/bin/fzf.sh
 
 # GO setup
 export GOPATH=$HOME/go
