@@ -297,8 +297,6 @@ fi
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 
-# Adds syntax highlighting to less
-# export LESSOPEN='|~/.lessfilter %s'
 
 alias more='less'
 export LESS='-R'
@@ -329,6 +327,7 @@ autoload -U +X bashcompinit && bashcompinit
 # }
 
 
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # https://github.com/athityakumar/colorls
 # source $(dirname $(gem which colorls))/tab_complete.sh
 
