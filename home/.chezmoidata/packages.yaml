@@ -192,6 +192,8 @@ packages:
         - name: airbuddy
         - name: anylist
         - name: arc
+        - name: backblaze
+        - name: backblaze-downloader
         - name: caldigit-docking-utility
           excludeEphemeral: true
         - name: caldigit-thunderbolt-charging

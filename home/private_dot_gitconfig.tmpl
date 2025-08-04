@@ -136,7 +136,7 @@ followTags = true
     rebase = true
 
 [diff]
-	  tool = bc
+  colorMoved=default
 
 [difftool "bc"]
 
@@ -144,7 +144,7 @@ followTags = true
     diffFilter = delta --color-only
 
 [merge]
-	  tool = bc
+  conflictstyle = diff3
 
 [mergetool "bc"]
     prompt = false
@@ -163,14 +163,8 @@ followTags = true
   allowedSignersFile = "~/.config/git/allowed_signers"
 
 [delta]
-    features = side-by-side line-numbers decorations
-    syntax-theme = "Solarized (dark)"
-    whitespace-error-style = 22 reverse
-
-[delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
+  navigate = true
+  side-by-side = true
 
 [git-town]
   contribution-regex = '^renovate/'

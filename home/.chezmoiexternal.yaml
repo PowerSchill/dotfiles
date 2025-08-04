@@ -7,9 +7,9 @@
 
 {{- template "read-versions-and-revisions-cache" $cache -}}
 
-.fzf-git.sh:
-  type: file
-  url: https://github.com/junegunn/fzf-git.sh/blob/main/fzf-git.sh
+fzf-git:
+  type: git-repo
+  url: https://github.com/junegunn/fzf-git.sh.git
   refreshPeriod: 168h
 
 
