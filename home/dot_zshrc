@@ -267,7 +267,7 @@ if [[ $PLATFORM == 'osx' ]]; then
   # Requires coreutils from brew
   PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
   MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-  test -e ~/.dir_colors && eval `dircolors -b ~/.dir_colors`
+  export LS_COLORS="$(vivid generate catppuccin-mocha)"
 
 fi
 

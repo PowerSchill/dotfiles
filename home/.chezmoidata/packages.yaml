@@ -121,6 +121,7 @@ packages:
         - name: viddy
         - name: vim
         - name: virtualenv
+        - name: vivid
         - name: watch
         - name: wget
         - name: whois
