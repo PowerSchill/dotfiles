@@ -129,6 +129,7 @@ packages:
         - name: yamllint
         - name: yarn
         - name: yubikey-agent
+        - name: zoxide
         - name: zsh
         - name: zsh-autosuggestions
         - name: zsh-completions

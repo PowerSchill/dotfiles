@@ -11,8 +11,9 @@ if [[ $(get_os) == 'linux' || $(get_os) == 'cygwin' ]]; then
   alias chmod='chmod --preserve-root'
   alias chown='chown --preserve-root'
 elif [[ $(get_os) == 'osx' ]]; then
-  # Commented out because I use the coreutils
+  alias cd="z"
   alias ls="eza --color=always --long --no-filesize --icons=always --no-time --no-user --no-permissions --git"
+
   alias ll='ls -alF'
   alias preview="open -a '$PREVIEW'"
   alias safari="open -a safari"

@@ -6,6 +6,9 @@
 # for a list of all available themes
 --theme="Catppuccin Mocha"
 
+# NOTE: If error is present then cache might need to be rebuilt with
+# `bat cache --build`
+
 # Enable this to use italic text on the terminal. This is not supported on all
 # terminal emulators (like tmux, by default):
 #--italic-text=always
