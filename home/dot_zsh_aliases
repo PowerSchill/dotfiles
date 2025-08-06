@@ -12,7 +12,7 @@ if [[ $(get_os) == 'linux' || $(get_os) == 'cygwin' ]]; then
   alias chown='chown --preserve-root'
 elif [[ $(get_os) == 'osx' ]]; then
   alias cd="z"
-  alias ls="eza --color=always --long --no-filesize --icons=always --no-time --no-user --no-permissions --git"
+  alias ls="eza --color=always --long -icons=always --no-time --no-user --no-permissions --git"
 
   alias ll='ls -alF'
   alias preview="open -a '$PREVIEW'"
