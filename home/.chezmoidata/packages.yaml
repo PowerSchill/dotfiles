@@ -243,8 +243,6 @@ packages:
         - name: vlc
         - name: yubico-authenticator
           excludeEphemeral: true
-        - name: yubico-yubikey-manager
-          excludeEphemeral: true
         - name: zoom
           excludeEphemeral: true
         - name: zotero@beta
