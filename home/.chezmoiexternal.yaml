@@ -3,6 +3,12 @@
 
 {{- template "read-versions-and-revisions-cache" $cache -}}
 
+
+fzf-git:
+  type: git-repo
+  url: https://github.com/junegunn/fzf-git.sh.git
+  refreshPeriod: 168h
+
 .oh-my-zsh:
   type: archive
   {{ $omzRevision := includeTemplate "get-github-head-revision" (list "ohmyzsh/ohmyzsh" $cache) }}
