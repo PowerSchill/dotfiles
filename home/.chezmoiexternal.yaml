@@ -25,10 +25,10 @@
   stripComponents: 1
   exact: true
 
-.oh-my-zsh/custom/plugins/fast-syntax-highlighting:
-  type: git-repo
-  url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
-  refreshPeriod: 168h
+# .oh-my-zsh/custom/plugins/fast-syntax-highlighting:
+#   type: git-repo
+#   url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+#   refreshPeriod: 168h
 
 .config/fsh/catppuccin-mocha.ini:
   type: file
@@ -45,109 +45,36 @@
   {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
   url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
 
-.local/bin/kubecolor:
-  type: archive-file
-  {{ $kubecolorVersion := includeTemplate "get-github-latest-version" (list "hidetatz/kubecolor" $cache) }}
-  url: "https://github.com/hidetatz/kubecolor/releases/download/v{{ $kubecolorVersion }}/kubecolor_{{ $kubecolorVersion }}_Linux_{{ .uname_arch }}.tar.gz"
-  path: kubecolor
+# .local/bin/kubecolor:
+#   type: archive-file
+#   {{ $kubecolorVersion := includeTemplate "get-github-latest-version" (list "hidetatz/kubecolor" $cache) }}
+#   url: "https://github.com/hidetatz/kubecolor/releases/download/v{{ $kubecolorVersion }}/kubecolor_{{ $kubecolorVersion }}_Linux_{{ .uname_arch }}.tar.gz"
+#   path: kubecolor
 
-.local/bin/kubectx:
-  type: archive-file
-  {{ $kubectxVersion := includeTemplate "get-github-latest-version" (list "ahmetb/kubectx" $cache) }}
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubectx_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
-  path: kubectx
+# .local/bin/kubectx:
+#   type: archive-file
+#   {{ $kubectxVersion := includeTemplate "get-github-latest-version" (list "ahmetb/kubectx" $cache) }}
+#   url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubectx_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+#   path: kubectx
 
-.oh-my-zsh/custom/plugins/my-completions/_kubectx.zsh:
-  type: file
-  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubectx.zsh"
-
-.local/bin/kubens:
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubens_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
-  path: kubens
-
-.oh-my-zsh/custom/plugins/my-completions/_kubens.zsh:
-  type: file
-  url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
-
-.local/bin/stern:
-  type: archive-file
-  {{ $sternVersion := includeTemplate "get-github-latest-version" (list "stern/stern" $cache) }}
-  url: "https://github.com/stern/stern/releases/download/v{{ $sternVersion }}/stern_{{ $sternVersion }}_linux_{{ .chezmoi.arch }}.tar.gz"
+# .oh-my-zsh/custom/plugins/my-completions/_kubectx.zsh:
+#   type: file
+#   url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubectx.zsh"
+#
+# .local/bin/kubens:
+#   type: archive-file
+#   url: "https://github.com/ahmetb/kubectx/releases/download/v{{ $kubectxVersion }}/kubens_v{{ $kubectxVersion }}_linux_{{ .uname_arch }}.tar.gz"
+#   path: kubens
+#
+# .oh-my-zsh/custom/plugins/my-completions/_kubens.zsh:
+#   type: file
+#   url: "https://github.com/ahmetb/kubectx/raw/v{{ $kubectxVersion }}/completion/_kubens.zsh"
+#
+# .local/bin/stern:
+#   type: archive-file
+#   {{ $sternVersion := includeTemplate "get-github-latest-version" (list "stern/stern" $cache) }}
+#   url: "https://github.com/stern/stern/releases/download/v{{ $sternVersion }}/stern_{{ $sternVersion }}_linux_{{ .chezmoi.arch }}.tar.gz"
   path: stern
-
-.vim/pack/vendor/start/alker0/chezmoi.vim:
-  type: git-repo
-  url: https://github.com/alker0/chezmoi.vim.git
-  refreshPeriod: 168h
-.vim/pack/vendor/start/nerdtree:
-  type: git-repo
-  url: https://github.com/preservim/nerdtree.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-terraform:
-  type: git-repo
-  url: https://github.com/hashivim/vim-terraform.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/nerdtree-git-plugin:
-  type: git-repo
-  url: https://github.com/Xuyuanp/nerdtree-git-plugin.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-devicons:
-  type: git-repo
-  url: https://github.com/ryanoasis/vim-devicons.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-nerdtree-syntax-highlight:
-  type: git-repo
-  url: https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/fzf.vim:
-  type: git-repo
-  url: https://github.com/junegunn/fzf.vim.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-surround:
-  type: git-repo
-  url: https://github.com/tpope/vim-surround.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/editorconfig-vim:
-  type: git-repo
-  url: https://github.com/editorconfig/editorconfig-vim.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-fugitive:
-  type: git-repo
-  url: https://github.com/tpope/vim-fugitive.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/syntastic:
-  type: git-repo
-  url: https://github.com/vim-syntastic/syntastic.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-airline:
-  type: git-repo
-  url: https://github.com/vim-airline/vim-airline.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-airline-themes:
-  type: git-repo
-  url: https://github.com/vim-airline/vim-airline-themes.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/nerdcommenter:
-  type: git-repo
-  url: https://github.com/preservim/nerdcommenter.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-easymotion:
-  type: git-repo
-  url: https://github.com/easymotion/vim-easymotion.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/commentary:
-  type: git-repo
-  url: https://tpope.io/vim/commentary.git
-  refreshPeriod: 168h
-.vim/pack/plugins/start/vim-go:
-  type: git-repo
-  url: https://github.com/fatih/vim-go.git
-  refreshPeriod: 168h
-.tmux/plugins/tpm:
-  type: git-repo
-  url: https://github.com/tmux-plugins/tpm
-  refreshPeriod: 168h
 
 
 {{-   $fontDir := "" }}
