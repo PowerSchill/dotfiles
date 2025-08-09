@@ -7,9 +7,9 @@ general.import = [
     TERM = "xterm-256color"
 
 [window]
-    decorations = "buttonless"
+    # decorations = "buttonless"
     dynamic_padding = false
-    opacity = 0.5
+    opacity = 0.9
     blur = true
 
     option_as_alt = "Both" # Make Option key behave as Alt for keyboard shortcuts
@@ -26,7 +26,7 @@ general.import = [
     bold_italic.style = "Bold Italic"
     italic.style = "Italic"
 
-    size = 11
+    size = 12
 
 [scrolling]
     history = 10000 # Maximum lines in scrollback buffer
