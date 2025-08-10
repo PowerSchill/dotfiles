@@ -51,13 +51,13 @@ fzf-git:
   {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
   url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
 
-
-
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
 {{-     $fontDir = "Library/Fonts" }}
 {{-   else if eq .chezmoi.os "linux" }}
 {{-     $fontDir = ".local/share/fonts" }}
+{{-   else if eq .chzemoi.os "windows" }}
+{{-     $fontDir = "C:\Windows\Fonts" }}
 {{-   end }}
 
 {{ $fontDir }}/MesloLGS NF Regular.ttf:
