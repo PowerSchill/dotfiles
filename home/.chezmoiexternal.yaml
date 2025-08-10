@@ -56,8 +56,8 @@ fzf-git:
 {{-     $fontDir = "Library/Fonts" }}
 {{-   else if eq .chezmoi.os "linux" }}
 {{-     $fontDir = ".local/share/fonts" }}
-{{-   else if eq .chzemoi.os "windows" }}
-{{-     $fontDir = "C:\Windows\Fonts" }}
+{{-   else if eq .chezmoi.os "windows" }}
+{{-     $fontDir = "C:/Windows/Fonts" }}
 {{-   end }}
 
 {{ $fontDir }}/MesloLGS NF Regular.ttf:
