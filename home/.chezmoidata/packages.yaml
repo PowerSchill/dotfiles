@@ -153,6 +153,7 @@ packages:
     casks:
       global:
         - name: 1password-cli
+        - name: alacritty
         - name: alfred
         - name: beyond-compare
         - name: camo-studio
