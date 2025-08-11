@@ -5,13 +5,23 @@ echo "Installing Packages: {{ .osid }}"
 
 
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
-
+{{- $packageManager := "apt-get" }}
+{{- else if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
+{{- $packageManager := "dnf" }}
+{{- else if (eq .osid "linux-arch") -}}
+{{- $packageManager := "pacman" }}
+{{- else if (eq .osid "linux-alpine") -}}
+{{- $packageManager := "apk" }}
+{{- else if (eq .osid "linux-suse") -}}
+{{- $packageManager := "zypper" }}
+{{- end -}}
+{{ end -}}
 
 # Update package list
-sudo apt-get update
+sudo {{ $packageManager }} update
 
 # Install packages
-sudo apt-get install -y \
+sudo {{ $packageManager }} install -y \
 {{- range .packages.linux.packages }}
     {{ . }} \
 {{- end }}
@@ -22,6 +32,5 @@ sudo snap install --classic \
     {{ . }} \
 {{- end }}
 
-{{ end -}}
 
 {{ end -}}
