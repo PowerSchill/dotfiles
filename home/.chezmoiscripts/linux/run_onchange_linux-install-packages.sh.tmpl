@@ -3,7 +3,7 @@
 
 echo "Installing Packages: {{ .osid }}"
 
-
+{{- $packageManager := "" -}}
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
 {{- $packageManager := "apt-get" }}
 {{- else if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
