@@ -3,28 +3,35 @@
 
 echo "Installing Packages: {{ .osid }}"
 
-{{- $packageManager := "" -}}
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
-{{- $packageManager := "apt-get" }}
-{{- else if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
-{{- $packageManager := "dnf" }}
-{{- else if (eq .osid "linux-arch") -}}
-{{- $packageManager := "pacman" }}
-{{- else if (eq .osid "linux-alpine") -}}
-{{- $packageManager := "apk" }}
-{{- else if (eq .osid "linux-suse") -}}
-{{- $packageManager := "zypper" }}
-{{- end -}}
-{{ end -}}
 
 # Update package list
-sudo {{ $packageManager }} update
+sudo apt-get update
 
 # Install packages
-sudo {{ $packageManager }} install -y \
+sudo apt-get install -y \
+
 {{- range .packages.linux.packages }}
     {{ . }} \
 {{- end }}
+
+{{- else if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
+
+# Update package list
+sudo yum update
+
+# Install packages
+sudo yum install -y \
+
+{{- range .packages.linux.packages }}
+    {{ . }} \
+{{- end }}
+
+{{- else if (eq .osid "linux-arch") -}}
+{{- else if (eq .osid "linux-alpine") -}}
+{{- else if (eq .osid "linux-suse") -}}
+{{ end -}}
+
 
 # Install Snaps
 sudo snap install --classic \
