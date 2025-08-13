@@ -1,4 +1,3 @@
-{{ if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
 set -eufo pipefail
@@ -11,9 +10,9 @@ set -eufo pipefail
 
 # Icons for hard drives, servers, and removable media on the desktop
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowHardDrivesOnDesktop         -bool true
-defaults write com.apple.finder ShowMountedServersOnDesktop     -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop     -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
 # Visibility of hidden files
 defaults write com.apple.finder AppleShowAllFiles -bool true
@@ -162,7 +161,6 @@ defaults write com.apple.dock show-recents -bool false
 # Show only open applications in the Dock
 defaults write com.apple.dock static-only -bool true
 
-
 # Add a spacer to the left side of the Dock (where the applications are)
 #defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
 # Add a spacer to the right side of the Dock (where the Trash is)
@@ -232,34 +230,30 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 #defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false              # For VS Code
 #defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false      # For VS Code Insider
 
-
 for dockItemLabel in \
-	Launchpad \
-	Safari \
-	Mail \
-	FaceTime \
-	Messages \
-	Maps \
-	Photos \
-	Contacts \
-	Calendar \
-	Reminders \
-	Notes \
-	Music \
-	Podcasts \
-	TV \
-	News \
-	Numbers \
-	Keynote \
-	Pages \
-	"App Store" \
-	"System Preferences" ; do
-	dockutil --find "$dockItemLabel" >/dev/null && dockutil --no-restart --remove "$dockItemLabel"
+  Launchpad \
+  Safari \
+  Mail \
+  FaceTime \
+  Messages \
+  Maps \
+  Photos \
+  Contacts \
+  Calendar \
+  Reminders \
+  Notes \
+  Music \
+  Podcasts \
+  TV \
+  News \
+  Numbers \
+  Keynote \
+  Pages \
+  "App Store" \
+  "System Preferences"; do
+  dockutil --find "$dockItemLabel" >/dev/null && dockutil --no-restart --remove "$dockItemLabel"
 done
 
 killall Dock
 
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
-
-{{ end -}}
-
+launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2>/dev/null
