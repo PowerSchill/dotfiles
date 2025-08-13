@@ -1,7 +1,9 @@
-IdentityFile ~/.ssh/id_rsa
-
 Host *
+{{- if eq .chezmoi.os "linux" }}
+	IdentityAgent ~/.1password/agent.sock
+{{- else if eq .chezmoi.os "darwin" }}
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- end }}
 	ServerAliveInterval 240
 	ConnectTimeout 30
 	ControlMaster auto
@@ -11,11 +13,6 @@ Host *
 	GSSAPIAuthentication no
 	GSSAPIDelegateCredentials no
 
-Host YorkTown
-	User powerschill
-	HostName yorktown
-	IdentityFile ~/.ssh/id_yorktown.pub
-	IdentitiesOnly yes
 
 Host *.int.dbk.ncr.com
 	User ms185570_ncr_com
