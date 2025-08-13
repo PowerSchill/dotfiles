@@ -11,7 +11,8 @@
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.ui.treesitter-context",
     "lazyvim.plugins.extras.util.chezmoi",
-    "lazyvim.plugins.extras.util.mini-hipatterns"
+    "lazyvim.plugins.extras.util.mini-hipatterns",
+    "lazyvim.plugins.extras.util.octo"
   ],
   "install_version": 8,
   "news": {
