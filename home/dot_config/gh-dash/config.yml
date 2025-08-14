@@ -19,9 +19,9 @@ issuesSections:
 
 defaults:
   preview:
-    open: false
-    width: 50
-  prsLimit: 50
+    open: true
+    width: 84
+  prsLimit: 20
   issuesLimit: 20
   view: prs
   layout:
@@ -53,20 +53,33 @@ defaults:
   refetchIntervalMinutes: 30
 
 keybindings:
+  universal:
+    - key: g
+      name: lazygit
+      command: >
+        cd {{.RepoPath}} && lazygit
   prs:
-    - key: v
+    - key: O
+      builtin: checkout
+    - key: m
+      command: gh pr merge --admin --repo {{.RepoName}} {{.PrNumber}
+    - key: C
+      name: code review
       command: >
         tmux new-window -c {{.RepoPath}} '
-          gh pr checkout {{.PrNumber}} &&
-          vim .
+        nvim -c ":silent Octo pr edit {{.PrNumber}}"
         '
-    - key: z
+    - key: a
+      name: lazygit add
       command: >
-        cd {{.RepoPath}} &&
-        code . &&
-        gh pr checkout {{.PrNumber}}
+        cd {{.RepoPath}} && git add -A && lazygit
+    - key: v
+      name: approve
+      command: >
+        gh pr review --repo {{.RepoName}} --approve --body "$(gum input --prompt='Approval Comment: ')" {{.PrNumber}}
 
 repoPaths:
+  # TODO: Update paths
   # ncr-digital-banking/*: ~/Documents/60\ Professional/61\ Projects/61.00\ Repositories/*
 
 theme:
