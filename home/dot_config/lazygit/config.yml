@@ -1,0 +1,133 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+notARepository: "skip" # one of: 'prompt' | 'create' | 'skip'
+promptToReturnFromSubprocess: false
+gui:
+  nerdFontsVersion: "3"
+  showIcons: true
+  showFileTree: true
+  scrollHeight: 10
+  scrollPastBottom: true
+  mouseEvents: true
+  skipDiscardChangeWarning: false
+  skipStashWarning: true
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  enlargedSideViewLocation: top
+  mainPanelSplitMode: flexible
+  theme:
+    activeBorderColor:
+      - "#89b4fa"
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8"
+    optionsTextColor:
+      - "#89b4fa"
+    selectedLineBgColor:
+      - "#313244"
+    cherryPickedCommitBgColor:
+      - "#45475a"
+    cherryPickedCommitFgColor:
+      - "#89b4fa"
+    unstagedChangesColor:
+      - "#f38ba8"
+    defaultFgColor:
+      - "#cdd6f4"
+    searchingActiveBorderColor:
+      - "#f9e2af"
+  authorColors:
+    "*": "#b4befe"
+  commitLength:
+    show: true
+  skipNoStagedFilesWarning: false
+  spinner:
+    # The frames of the spinner animation.
+    frames:
+      - "⣷ "
+      - "⣯ "
+      - "⣟ "
+      - "⡿ "
+      - "⢿ "
+      - "⣻ "
+      - "⣽ "
+      - "⣾ "
+    rate: 100
+  # portraitMode: always
+  # windowSize: half
+  statusPanelView: allBranchesLog
+  commandLogSize: 2
+  showRandomTip: false
+os:
+  editPreset: "nvim"
+  # editCommand: "$XDG_CONFIG_HOME/lazygit/edit-nvim"
+  # editCommandTemplate: "{{editor}} {{filename}}"
+git:
+  log:
+    showGraph: always
+    showWholeGraph: false
+  # branchLogCmd:
+  #   'git log --graph --color=always --abbrev-commit --decorate --date=relative
+  #   --pretty=format:"%C(auto)%h: %s (%C(blue)%an %C(white)|
+  #   %C(cyan)%ad%C(white))" {{branchName}} --'
+  branchLogCmd: "git log --color=always --graph --date=relative --pretty=format:'%C(dim yellow)%h %C(reset)%<|(70,trunc)%s %C(dim white)@%an%C(reset) %C(dim white)(%cd)%C(reset)%C(auto)'"
+  overrideGpg: true
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  skipHookPrefix: WIP
+  branchPrefix: "powerschill/"
+  allBranchesLogCmds:
+    - git log --color=always --graph --all --date=relative --pretty=format:'%C(auto)%h %C(reset)%<|(50,trunc)%s %C(bold blue)<%an>%C(reset) %C(green)(%cd)%C(reset)%C(auto)%d'
+customCommands:
+  # - key: "J"
+  #   command: $XDG_CONFIG_HOME/lazygit/create-jira-branch {{index .PromptResponses 0 | quote}}
+  #   description: "create task in JIRA"
+  #   context: "localBranches"
+  #   loadingText: "creating task in JIRA"
+  #   prompts:
+  #     - type: "input"
+  #       title: "JIRA Task Title"
+  #       key: "Title"
+  #       suggestions:
+  #         preset: "branches"
+  # output: popup
+  - key: "R"
+    command: "gh repo view --web"
+    description: "view repo on github"
+    context: "global"
+    loadingText: "opening github..."
+  - key: "o"
+    command: "gh pr view --web"
+    description: "view PR on github"
+    context: "global"
+    loadingText: "opening github..."
+  - key: "o"
+    command: "gh pr view --web {{ .SelectedLocalBranch.Name }}"
+    description: "view PR on github"
+    context: "localBranches"
+    loadingText: "opening github..."
+  - key: "O"
+    command: gh pr create -t "{{index .PromptResponses 0}}" {{ if eq (index .PromptResponses 1) "yes"}}{{ "--draft" }}{{ end }}
+    description: "Create a pull request using the GitHub CLI"
+    context: "localBranches"
+    prompts:
+      - type: "input"
+        title: "Title"
+        initialValue: "{{index .CheckedOutBranch.Name}}"
+      - type: "menu"
+        title: "Mark pull request as draft?"
+        options:
+          - value: "yes"
+          - value: "no"
+    output: terminal
+  - key: "C"
+    command: "commit"
+    description: "commit with gum"
+    context: "files"
+    loadingText: "opening gum commit tool"
+    output: terminal
+  # - key: "P"
+  #   command: 'git push && gh pr checks --watch --json name,state -q ".[] | select(.name == "Mark as draft") | .state == "SUCCESS" or .state == "SKIPPED""'
+  # context: "localBranches"
+  - key: "F"
+    command: "git push --force-with-lease --no-verify"
+    context: "localBranches"

@@ -1,20 +1,17 @@
 # What protocol to use when performing git operations. Supported values: ssh, https
 git_protocol: https
-
 # What editor gh should run when creating issues, pull requests, etc. If blank, will refer to environment.
 editor: nvim
-
 # Aliases allow you to create nicknames for gh commands
 aliases:
-  co: '!id="$(gh pr list -L100 | fzf | cut -f1)"; [ -n "$id" ] && gh pr checkout "$id"'
-  dev: pr create --base dev --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  qal: pr create --base qal --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  pte: pr create --base pte --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  stg: pr create --base stg --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  prd: pr create --base prd --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  production: pr create --base production --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
-  log: f -l
-
+    co: '!id="$(gh pr list -L100 | fzf | cut -f1)"; [ -n "$id" ] && gh pr checkout "$id"'
+    dev: pr create --base dev --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    qal: pr create --base qal --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    pte: pr create --base pte --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    stg: pr create --base stg --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    prd: pr create --base prd --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    production: pr create --base production --assignee @me --reviewer ncr-digitial-banking/ncr-dbk-sre
+    log: f -l
 pager: delta
-
 color_labels: enabled
+version: "1"
