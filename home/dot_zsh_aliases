@@ -140,7 +140,6 @@ alias dokken="KITCHEN_LOCAL_YAML=kitchen.dokken.yml kitchen"
 
 alias db="cd ~/Library/CloudStorage/Dropbox"
 alias zs="source ~/.zshrc"
-alias gum="git pull upstream master"
 
 # Changed your .gitignore _after_ you have added / committed some files?
 # run `gri` to untrack anything in your updated .gitignore
