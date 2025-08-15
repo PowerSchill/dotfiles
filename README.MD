@@ -1,37 +1,21 @@
-# Chezmoi Personal Configuration Management
+# PowerSchill's Dot Files
 
-## Requirements
+## Setup
 
-### MacOS
+- **Terminal**: alacritty
+- **Shell**: zsh
+- **Editor**: neovim
+- **Theme**: catppuccin mocha
 
-```shell
+### Neovim
 
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+- **Distribution**: [LazyVim](https://www.lazyvim.org/)
 
-# Setup shellenv
-eval "$(/opt/homebrew/bin/brew shellenv)"
+## Getting Started
 
-# Install git
-brew install git gh
+<!-- TODO: Add installation script -->
 
-# Install Chezmoi
-brew install chezmoi
+---
 
-# Generate SSH Keys
-echo ssh-keygen -t ed25519 -N "" -C "`whoami`@`hostname`" -f ~/.ssh/id_ed25519-q
-
-# Authenticate GitHub CLI
-gh auth login \
-  --git-protocol ssh \
-  --hostname github.com
-
-# Install Rosetta
-sudo softwareupdate --install-rosetta --agree-to-license
-
-# Initalize
-export PATH=$HOME/bin:$PATH
-eval "$(/opt/homebrew/bin/brew shellenv)"
-chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
-```
-
+Author: Mark Schill
+Email: <mailto:meson3902@gmail.com>
