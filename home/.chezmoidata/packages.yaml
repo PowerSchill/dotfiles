@@ -187,6 +187,7 @@ packages:
         - name: tower
         - name: visual-studio-code
         - name: visual-studio-code@insiders
+        - name: wezterm
       personal:
         - name: 1password
           args:
