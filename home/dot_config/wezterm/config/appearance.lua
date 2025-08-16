@@ -1,4 +1,6 @@
 return function(config, wezterm)
+	local act = wezterm.action
+
 	local function is_dark()
 		if wezterm.gui then
 			local overrides = wezterm.gui.get_appearance()
@@ -28,4 +30,22 @@ return function(config, wezterm)
 	-- Miscellaneous settings
 	config.max_fps = 120
 	config.prefer_egl = true
+
+	wezterm.on("augment-command-palette", function(window)
+		return {
+			{
+				brief = "Toogle terminal transparency",
+				icon = "md_circle_opacity",
+				action = wezterm.action_callback(function()
+					local overrides = window:get_config_overrides() or {}
+					if overrides.window_background_opacity == nil then
+						overrides.window_background_opacity = 0.7
+					else
+						overrides.window_background_opacity = nil
+					end
+					window:set_config_overrides(overrides)
+				end),
+			},
+		}
+	end)
 end
