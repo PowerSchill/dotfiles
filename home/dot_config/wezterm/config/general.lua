@@ -15,4 +15,7 @@ return function(config, wezterm)
     fade_out_duration_ms = 75,
     target = "CursorColor",
   }
+
+  -- Prompt before closing
+  config.window_close_confirmation = "AlwaysPrompt"
 end

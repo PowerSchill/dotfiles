@@ -12,10 +12,15 @@ return function(config, wezterm)
     bottom = 10,
   }
   config.macos_window_background_blur = 30
+  config.window_background_opacity = 0.8
 
   -- Miscellaneous settings
   config.max_fps = 120
   config.prefer_egl = true
+
+  -- Configure command palette appearance
+  config.command_palette_bg_color = "#1e1e2e"
+  config.command_palette_fg_color = "#cdd6f4"
 
   wezterm.on("augment-command-palette", function(window)
     return {
@@ -24,10 +29,10 @@ return function(config, wezterm)
         icon = "md_circle_opacity",
         action = wezterm.action_callback(function()
           local overrides = window:get_config_overrides() or {}
-          if overrides.window_background_opacity == nil then
-            overrides.window_background_opacity = 0.7
+          if overrides.window_background_opacity == 1.0 then
+            overrides.window_background_opacity = 0.8
           else
-            overrides.window_background_opacity = nil
+            overrides.window_background_opacity = 1.0
           end
           window:set_config_overrides(overrides)
         end),
