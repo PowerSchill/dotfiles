@@ -2,6 +2,7 @@ packages:
   darwin:
     taps:
       global:
+        - 1password/tap
         - buo/cask-upgrade
         - jandedobbeleer/oh-my-posh
         - ttscoff/thelab
@@ -154,7 +155,6 @@ packages:
     casks:
       global:
         - name: 1password-cli
-        - name: alacritty
         - name: alfred
         - name: beyond-compare
         - name: camo-studio
@@ -222,7 +222,6 @@ packages:
         - name: grammarly-desktop
         - name: imazing
           excludeEphemeral: true
-        - name: iterm2
         - name: keyboard-maestro
         - name: keyboardcleantool
           excludeEphemeral: true
