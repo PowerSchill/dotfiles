@@ -61,6 +61,7 @@ packages:
         - name: graphviz
         - name: grc
         - name: grep
+        - name: gum
         - name: highlight
         - name: htop
         - name: imagemagick
@@ -135,7 +136,6 @@ packages:
         - name: zsh-completions
         - name: zsh-syntax-highlighting
       personal:
-        - name: gum
         - name: mas
         - name: rust
           excludeEphemeral: true
@@ -146,6 +146,7 @@ packages:
         - name: git-filter-repo
         - name: hashicorp/tap/packer
         - name: helm
+        - name: jira-cli
         - name: pytest
         - name: shellcheck
         - name: terraform-docs
@@ -187,7 +188,7 @@ packages:
         - name: tower
         - name: visual-studio-code
         - name: visual-studio-code@insiders
-        - name: wezterm
+        - name: wezterm@nightly
       personal:
         - name: 1password
           args:
