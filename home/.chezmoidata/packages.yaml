@@ -2,7 +2,6 @@ packages:
   darwin:
     taps:
       global:
-        - 1password/tap
         - buo/cask-upgrade
         - jandedobbeleer/oh-my-posh
         - ttscoff/thelab
@@ -99,6 +98,7 @@ packages:
         - name: pre-commit
         - name: prettier
         - name: pygments
+        - name: python
         - name: rbenv
         - name: rbenv-gemset
         - name: rbenv-vars
@@ -195,14 +195,17 @@ packages:
             appdir: "/Applications"
         - name: airbuddy
         - name: anylist
-        - name: arc
+          excludeEphemeral: true
         - name: backblaze
+          excludeEphemeral: true
         - name: backblaze-downloader
+          excludeEphemeral: true
         - name: caldigit-docking-utility
           excludeEphemeral: true
         - name: caldigit-thunderbolt-charging
           excludeEphemeral: true
         - name: calibre
+          excludeEphemeral: true
         - name: chatgpt
         - name: curseforge
         - name: dash
@@ -230,6 +233,7 @@ packages:
         - name: macupdater
           excludeEphemeral: true
         - name: mailmate
+          excludeEphemeral: true
         - name: microsoft-auto-update
         - name: microsoft-edge
         - name: microsoft-teams
@@ -237,12 +241,15 @@ packages:
           excludeEphemeral: true
         - name: openaudible
           excludeEphemeral: true
+        - name: parallels
+          excludeEphemeral: true
         - name: private-internet-access
           excludeEphemeral: true
         - name: silentknight
           excludeEphemeral: true
         - name: slack
         - name: transmit
+        - name: vivaldi
         - name: vlc
         - name: yubico-authenticator
           excludeEphemeral: true

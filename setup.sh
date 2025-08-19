@@ -4,16 +4,16 @@ cd "$HOME" || return
 system_type=$(uname -s)
 
 if [[ $system_type == "Darwin" ]]; then
-  echo "Hello Mac User!"
-  echo "Installing Hombebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>/Users/powerschill/.zprofile
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  if ! command -v brew &>/dev/null; then
+    echo "Homebrew is not installed. Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>/Users/powerschill/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  else
+    echo "Homebrew is already installed."
+  fi
 
-  brew install gh git
-
-  # Install Chezmoi
-  brew install chezmoi
+  brew install git chezmoi
 
 elif [[ $system_type == "Linux" ]]; then
 
@@ -59,10 +59,6 @@ elif [[ $system_type == "Linux" ]]; then
   # Install chezmoi
   curl -sfL https://git.io/chezmoi | sh
 fi
-
-ssh-keygen -N "" -q
-
-gh auth login --git-protocol ssh
 
 export PATH=$HOME/bin:$PATH
 chezmoi init --apply --verbose git@github.com:PowerSchill/dotfiles.git
