@@ -1,8 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # GitHub CLI updates
 if command -v gh &>/dev/null; then
-  gh extension install github/gh-copilot
-  gh extension install github/gh-dash
-  gh extension install seachicken/gh-poi
+  extensions=(
+    github/gh-copilot
+    github/gh-dash
+    seachicken/gh-poi
+    meiji163/gh-notify
+  )
+
+  for ext in "${extensions[@]}"; do
+    gh extension install "$ext"
+  done
 fi
