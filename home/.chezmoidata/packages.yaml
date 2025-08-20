@@ -24,6 +24,11 @@ packages:
         - name: git
         - name: neovim
         - name: tmux
+        - name: zsh
+        - name: zsh-autosuggestions
+        - name: zsh-completions
+        - name: zsh-syntax-highlighting
+        - name: zoxide
         #######################################
         # Core system utilties
         #######################################
@@ -31,9 +36,12 @@ packages:
         - name: curl
         - name: direnv
         - name: grep
+        - name: trash
+        - name: tree
         - name: jq
         - name: ncdu
         - name: wget
+        - name: rename
         #######################################
         # Development related utilities
         #######################################
@@ -59,6 +67,9 @@ packages:
         - name: rbenv
         - name: rbenv-gemset
         - name: rbenv-vars
+        - name: tflint
+        - name: terragrunt
+        - name: parallel
         #######################################
         - name: ack
         - name: asciinema
@@ -111,27 +122,20 @@ packages:
         - name: openssl@3
         - name: p7zip
         - name: pandoc
-        - name: parallel
         - name: php
         - name: pillow
         - name: pinentry-mac
         - name: pipx
         - name: readline
-        - name: rename
         - name: ripgrep
-        - name: ruby-build
         - name: sipcalc
         - name: source-highlight
         - name: speedtest-cli
         - name: ssh-copy-id
         - name: streamlink
         - name: switchaudio-osx
-        - name: terragrunt
-        - name: tflint
         - name: the_silver_searcher
         - name: tldr
-        - name: trash
-        - name: tree
         - name: viddy
         - name: virtualenv
         - name: vivid
@@ -140,15 +144,8 @@ packages:
         - name: wifi-password
         - name: yamllint
         - name: yubikey-agent
-        - name: zoxide
-        - name: zsh
-        - name: zsh-autosuggestions
-        - name: zsh-completions
-        - name: zsh-syntax-highlighting
       personal:
         - name: mas
-          excludeEphemeral: true
-        - name: rust
           excludeEphemeral: true
       work:
         - name: ansible
