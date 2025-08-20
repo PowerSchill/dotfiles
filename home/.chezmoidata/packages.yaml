@@ -12,55 +12,79 @@ packages:
         - hashicorp/tap
     brews:
       global:
-        - name: ack
-        - name: asciinema
-        - name: aspell
-        - name: bash
+        ########################################
+        # Packages requires for system configuration
+        ########################################
         - name: bat
         - name: bat-extras
-        - name: bottom
-        - name: brew-gem
-        - name: ccat
-        - name: cheat
         - name: chezmoi
-        - name: clang-format
-        - name: cloc
-        - name: colordiff
-        - name: commitizen
-        - name: coreutils
-        - name: ctags
-        - name: curl
-        - name: dash
-        - name: delve
-        - name: direnv
-        - name: dockutil
-        - name: dos2unix
-        - name: exiftool
         - name: eza
         - name: fastfetch
-        - name: fd
-        - name: findutils
-        - name: freetds
         - name: fzf
-        - name: gcc
-        - name: gdu
-        - name: gh
-        - name: ghostscript
         - name: git
+        - name: neovim
+        - name: tmux
+        #######################################
+        # Core system utilties
+        #######################################
+        - name: bash
+        - name: curl
+        - name: direnv
+        - name: grep
+        - name: jq
+        - name: ncdu
+        - name: wget
+        #######################################
+        # Development related utilities
+        #######################################
+        - name: clang-format
+        - name: commitizen
+        - name: gcc
+        - name: gh
         - name: git-delta
         - name: git-lfs
         - name: git-town
         - name: github-keygen
-        - name: glow
-        - name: gnupg
         - name: go
         - name: gofumpt
         - name: goimports
-        - name: gopls
         - name: golangci-lint
+        - name: gopls
+        - name: luarocks
+        - name: pre-commit
+        - name: prettier
+        - name: pygments
+        - name: python
+        - name: pytest
+        - name: rbenv
+        - name: rbenv-gemset
+        - name: rbenv-vars
+        #######################################
+        - name: ack
+        - name: asciinema
+        - name: aspell
+        - name: bottom
+        - name: brew-gem
+        - name: ccat
+        - name: cheat
+        - name: cloc
+        - name: colordiff
+        - name: coreutils
+        - name: ctags
+        - name: dash
+        - name: delve
+        - name: dockutil
+        - name: dos2unix
+        - name: exiftool
+        - name: fd
+        - name: findutils
+        - name: freetds
+        - name: gdu
+        - name: ghostscript
+        - name: glow
+        - name: gnupg
         - name: graphviz
         - name: grc
-        - name: grep
         - name: gum
         - name: highlight
         - name: htop
@@ -68,7 +92,6 @@ packages:
         - name: ipcalc
         - name: jandedobbeleer/oh-my-posh/oh-my-posh
         - name: jenv
-        - name: jq
         - name: jsonlint
         - name: krb5
         - name: kubernetes-cli
@@ -78,15 +101,12 @@ packages:
         - name: lesspipe
         - name: lnav
         - name: lsd
-        - name: luarocks
         - name: minikube
         - name: multimarkdown
         - name: mysql
-        - name: ncdu
         - name: nmap
         - name: node
         - name: numpy
-        - name: neovim
         - name: nvm
         - name: openssl@3
         - name: p7zip
@@ -96,13 +116,6 @@ packages:
         - name: pillow
         - name: pinentry-mac
         - name: pipx
-        - name: pre-commit
-        - name: prettier
-        - name: pygments
-        - name: python
-        - name: rbenv
-        - name: rbenv-gemset
-        - name: rbenv-vars
         - name: readline
         - name: rename
         - name: ripgrep
@@ -117,19 +130,15 @@ packages:
         - name: tflint
         - name: the_silver_searcher
         - name: tldr
-        - name: tmux
         - name: trash
         - name: tree
         - name: viddy
-        - name: vim
         - name: virtualenv
         - name: vivid
         - name: watch
-        - name: wget
         - name: whois
         - name: wifi-password
         - name: yamllint
-        - name: yarn
         - name: yubikey-agent
         - name: zoxide
         - name: zsh
@@ -138,6 +147,7 @@ packages:
         - name: zsh-syntax-highlighting
       personal:
         - name: mas
+          excludeEphemeral: true
         - name: rust
           excludeEphemeral: true
       work:
@@ -148,7 +158,6 @@ packages:
         - name: hashicorp/tap/packer
         - name: helm
         - name: jira-cli
-        - name: pytest
         - name: shellcheck
         - name: terraform-docs
         - name: warrensbox/tap/tfswitch
@@ -163,8 +172,8 @@ packages:
         - name: devonthink
           excludeEphemeral: true
         - name: dotnet-sdk
-        - name: font-fira-code-nerd-font
-        - name: font-jetbrains-mono
+        # - name: font-fira-code-nerd-font
+        # - name: font-jetbrains-mono
         - name: font-meslo-for-powerline
         - name: font-meslo-lg-nerd-font
         - name: hazel
@@ -182,12 +191,13 @@ packages:
         - name: sf-symbols
         - name: signal
           excludeEphemeral: true
-        - name: snagit
+        # - name: snagit
         - name: soundsource
         - name: textexpander
         - name: tower
         - name: visual-studio-code
         - name: visual-studio-code@insiders
+        - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly
       personal:
         - name: 1password
@@ -248,7 +258,6 @@ packages:
           excludeEphemeral: true
         - name: slack
         - name: transmit
-        - name: vivaldi
         - name: vlc
         - name: yubico-authenticator
           excludeEphemeral: true
