@@ -192,7 +192,6 @@ packages:
         - name: soundsource
         - name: textexpander
         - name: tower
-        - name: visual-studio-code
         - name: visual-studio-code@insiders
         - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly
@@ -255,6 +254,7 @@ packages:
           excludeEphemeral: true
         - name: slack
         - name: transmit
+        - name: visual-studio-code # Installed from self-service on work machines.
         - name: vlc
         - name: yubico-authenticator
           excludeEphemeral: true
