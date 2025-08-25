@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
-notARepository: "skip" # one of: 'prompt' | 'create' | 'skip'
+notARepository: "prompt" # one of: 'prompt' | 'create' | 'skip'
 promptToReturnFromSubprocess: false
 gui:
   nerdFontsVersion: "3"
@@ -120,7 +120,7 @@ customCommands:
           - value: "no"
     output: terminal
   - key: "C"
-    command: "commit"
+    command: 'git add -A && gum input --placeholder "Enter commit message..." | xargs git commit -m'
     description: "commit with gum"
     context: "files"
     loadingText: "opening gum commit tool"
