@@ -455,6 +455,7 @@ eval "$(zoxide init zsh)"
 # Set theme
 source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
+source ~/.config/op/plugins.sh
 source ~/.zshrc_local
 
 export PATH="/opt/homebrew/bin:$PATH"
