@@ -266,15 +266,14 @@ packages:
         - name: zotero
   linux:
     packages:
-      - curl
-      - direnv
-      - neofetch
-      - rbenv
-      - tmux
-      - util-linux-user
-      - vim
-      - wget
-      - zsh
+      debian:
+        - curl
+        - direnv
+        - neofetch
+        - rbenv
+        - tmux
+        - vim
+        - zsh
     snaps:
       - brave
   windows:

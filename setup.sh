@@ -1,8 +1,4 @@
 #!/bin/bash
-
-cd "$HOME" || return
-system_type=$(uname -s)
-
 if [[ $system_type == "Darwin" ]]; then
   if ! command -v brew &>/dev/null; then
     echo "Homebrew is not installed. Installing Homebrew..."
@@ -23,34 +19,19 @@ elif [[ $system_type == "Linux" ]]; then
   centos | rocky)
     echo "Distribution is CentOS"
     sudo yum -y install git
-
-    sudo dnf install 'dnf-command(config-manager)'
-    sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-    sudo dnf -y install gh
     ;;
   amzn)
     echo "Distribution is Amazon Linux"
     sudo yum -y install git
-
-    sudo yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-    sudo yum -y install gh
     ;;
   debian | ubuntu)
     echo "Distribution is Debian"
-    sudo apt-get update
-    sudo apt-get -y install git curl
-
-    # Install GitHub CLI
-    (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) &&
-      sudo mkdir -p -m 755 /etc/apt/keyrings &&
-      wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg >/dev/null &&
-      sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg &&
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
-      sudo apt update &&
-      sudo apt install gh -y
+    if ! command -v brew &>/dev/null; then
+      sudo apt-get -y install git
+    fi
     ;;
   *)
-    echo "Unable to identify OS distribution"
+    echo "Unable to identify OS distribution - $ID"
 
     exit
     ;;
@@ -58,6 +39,7 @@ elif [[ $system_type == "Linux" ]]; then
 
   # Install chezmoi
   curl -sfL https://git.io/chezmoi | sh
+
 fi
 
 export PATH=$HOME/bin:$PATH

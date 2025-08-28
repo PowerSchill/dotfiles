@@ -1,0 +1,25 @@
+#!/bin/bash
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+echo "Installing Packages: {{ .osid }}"
+
+{{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y {{ range .packages.linux.packages.debian }} {{ . | quote }} {{- end }}
+{{ end -}}
+
+{{ if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
+{{ $sudo }}dnf install -y {{ range .packages.linux.packages.redhat }} {{ . | quote  }} {{- end }}
+{{ end -}}
+
+
+# Install Snaps
+sudo snap install --classic \
+{{- range .packages.linux.snaps }}
+    {{ . }} \
+{{- end }}
+

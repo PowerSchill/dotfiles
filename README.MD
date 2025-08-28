@@ -13,6 +13,10 @@
 
 ## Getting Started
 
+```shell
+
+```
+
 <!-- TODO: Add installation script -->
 
 ---
