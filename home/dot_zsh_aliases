@@ -47,9 +47,15 @@ alias l='ls -CF'
 alias takeover='tmux detach -a'
 alias tmac='tmux new -A -s'
 
-# User Color with grep. TODO: Test on OSX
-alias grep='grep --color=auto'
-export GREP_COLOR='1;33'
+# Replace grep with ripgrep if installed
+if command -v rg &> /dev/null; then
+  alias grep='rg --color=auto'
+  alias fgrep='rg --fixed-strings --color=auto'
+  alias egrep='rg --ignore-case --color=auto'
+else
+  alias grep='grep --color=auto'
+  export GREP_COLOR='1;33'
+fi
 
 # Clear DNS cache
 if [[ $PLATFORM == 'osx' ]]; then
