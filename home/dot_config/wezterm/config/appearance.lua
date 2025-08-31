@@ -6,10 +6,10 @@ return function(config, wezterm)
   config.hide_tab_bar_if_only_one_tab = true
   config.window_decorations = "RESIZE" -- "TITLE | RESIZE" is the default
   config.window_padding = {
-    left = 10,
-    right = 10,
-    top = 10,
-    bottom = 10,
+    left = 3,
+    right = 3,
+    top = 3,
+    bottom = 3,
   }
   config.macos_window_background_blur = 30
   config.window_background_opacity = 0.8
