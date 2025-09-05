@@ -45,7 +45,7 @@ defaults:
 
 keybindings:
   universal:
-    - key: g
+    - key: z
       command: >
         cd {{.RepoPath}} && lazygit
   prs:
