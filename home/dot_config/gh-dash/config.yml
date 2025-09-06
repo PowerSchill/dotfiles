@@ -67,7 +67,7 @@ keybindings:
 
 repoPaths:
   ncr-digital-banking/*: ~/Code/DI
-  dfw-digital-insight/*: ~/Code/DI
+  dfw-digital-insight/*: ~/Code/dfw-digital-insight
   PowerSchill/*: ~/Code/PowerSchill
 
 theme:
