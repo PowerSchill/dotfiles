@@ -187,14 +187,16 @@ followTags = true
 [credential "https://gist.github.com"]
 	helper =
   helper = !'{{ $ghPath }}' auth git-credential
-{{- end }}
-{{- end }}
-
-
-{{- if eq .chezmoi.os "darwin" -}}
+{{ else -}}
 
 [credential]
 	helper = osxkeychain
+
+{{- end }}
+{{- end }}
+
+{{- if eq .chezmoi.os "darwin" -}}
+
 
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
