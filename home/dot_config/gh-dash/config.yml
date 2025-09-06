@@ -67,6 +67,7 @@ keybindings:
 
 repoPaths:
   ncr-digital-banking/*: ~/Code/DI
+  PowerSchill/*: ~/Code/PowerSchill
 
 theme:
   colors:
