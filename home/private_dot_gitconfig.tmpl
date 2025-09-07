@@ -167,10 +167,16 @@ followTags = true
 
 {{ if eq .chezmoi.os "darwin" }}
   {{if $ghPath }}
+
+[credential]
+  # By inserting a blank entry, the GitHub CLI ensures that any previously
+  # configured global helpers are ignored for github.com. This is critical for
+  # preventing redundancy and potential authentication conflicts.
+  helper = ""
 [credential "https://github.com"]
-  helper = !gh auth git-credential
+  helper = !{{ $ghPath}} auth git-credential
 [credential "https://gist.github.com"]
-  helper = !gh auth git-credential
+  helper = !{{ $ghPath}} auth git-credential
   {{- else }}
 [credential]
   helper = osxkeychain
