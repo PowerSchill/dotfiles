@@ -1,3 +1,9 @@
+# Get Paths for commands
+{{- $ghPath := lookPath "gh" }}
+{{- $opPath := lookPath "op" }}
+
+
+
 [core]
     autocrlf = input
     excludesFile = ~/.gitignore_global
@@ -95,15 +101,14 @@
 
     # git reword -- edit the last commit message
     reword = commit --amend --only -v
-    append = town append
+
+    # git-town aliases
+    compress = town compress
+    diff-parent = town diff-parent
     hack = town hack
-    kill = town delete
-    new-pull-request = town new-pull-request
     prepend = town prepend
-    prune-branches = town prune-branches
-    rename-branch = town rename
+    propose = town propose
     repo = town repo
-    ship = town ship
     sync = town sync
 
 [init]
@@ -170,33 +175,19 @@ followTags = true
   side-by-side = true
     features = catppuccin-mocha
 
-[git-town]
-  contribution-regex = '^renovate/'
-  new-branch-type = prototype
-{{- if eq .work true }}
-  perennial-branches = dev qal pte stg prd nonprod prod production
-{{- end }}
-
-{{- if ne .chezmoi.os "windows" -}}
-{{- $ghPath := lookPath "gh" }}
-{{- if $ghPath }}
-
+{{ if eq .chezmoi.os "darwin" }}
+  {{if $ghPath }}
 [credential "https://github.com"]
-  helper =
-	helper = !'{{ $ghPath }}' auth git-credential
+  helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper =
-  helper = !'{{ $ghPath }}' auth git-credential
-{{ else -}}
-
+  helper = !gh auth git-credential
+  {{- else }}
 [credential]
-	helper = osxkeychain
-
+  helper = osxkeychain
+  {{- end }}
 {{- end }}
-{{- end }}
 
-{{- if eq .chezmoi.os "darwin" -}}
-
+{{ if eq .chezmoi.os "darwin" -}}
 
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
@@ -207,12 +198,3 @@ followTags = true
 
 {{- end -}}
 
-
-{{- if eq .chezmoi.os "windows" -}}
-[credential "https://github.com"]
-helper =
-helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
-[credential "https://gist.github.com"]
-helper =
-helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
-{{- end -}}
