@@ -4,7 +4,12 @@
 
 # Specify desired highlighting theme (e.g. "TwoDark"). Run `bat --list-themes`
 # for a list of all available themes
+{{ if eq .appearance  "light" -}}
+--theme="Catppuccin Latte"
+{{- else -}}
 --theme="Catppuccin Mocha"
+{{- end }}
+
 
 # NOTE: If error is present then cache might need to be rebuilt with
 # `bat cache --build`

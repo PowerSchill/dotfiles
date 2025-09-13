@@ -271,7 +271,11 @@ if [[ $PLATFORM == 'osx' ]]; then
   # Requires coreutils from brew
   PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
   MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  {{ if eq .appearance  "light" -}}
+  export LS_COLORS="$(vivid generate catppuccin-latte)"
+  {{- else -}}
   export LS_COLORS="$(vivid generate catppuccin-mocha)"
+  {{- end }}
 
 fi
 
@@ -453,7 +457,12 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 eval "$(zoxide init zsh)"
 
 # Set theme
+{{ if eq .appearance  "light" -}}
+source ~/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh
+{{- else -}}
 source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+{{- end }}
+
 
 source ~/.config/op/plugins.sh
 source ~/.zshrc_local

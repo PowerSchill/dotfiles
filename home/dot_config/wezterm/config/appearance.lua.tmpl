@@ -2,7 +2,11 @@ return function(config, wezterm)
   local act = wezterm.action
 
   -- Color
+  {{ if eq .appearance  "light" -}}
+  config.color_scheme = "Catppuccin Latte"
+  {{- else -}}
   config.color_scheme = "Catppuccin Mocha"
+  {{- end }}
   config.hide_tab_bar_if_only_one_tab = true
   config.window_decorations = "RESIZE" -- "TITLE | RESIZE" is the default
   config.window_padding = {

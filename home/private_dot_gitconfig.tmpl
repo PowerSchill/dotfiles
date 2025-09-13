@@ -164,7 +164,11 @@ followTags = true
 [delta]
   navigate = true
   side-by-side = true
+{{ if eq .appearance  "light" -}}
+    features = catppuccin-latte
+{{- else -}}
     features = catppuccin-mocha
+{{- end }}
 
 {{ if eq .chezmoi.os "darwin" }}
   {{if $ghPath }}

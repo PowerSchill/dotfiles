@@ -1,5 +1,6 @@
 # Catppuccin Mocha theme for Powerlevel10k
 # Based on catppuccin/mocha colors
+# https://github.com/spencerfrost/powerlevel10k
 
 # Basic UI elements
 typeset -g POWERLEVEL9K_RULER_FOREGROUND='#7f849c'  # overlay1

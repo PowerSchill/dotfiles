@@ -43,7 +43,7 @@ fzf-git:
 
 .config/fsh/catppuccin-latte.ini:
   type: file
-  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-mocha.ini
+  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-latte.ini
   refreshPeriod: 168h
 
 .config/gitalias/gitalias.txt:

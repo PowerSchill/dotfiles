@@ -13,7 +13,11 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
+{{ if eq .appearance  "light" -}}
+      colorscheme = "catppuccin-latte",
+{{- else -}}
       colorscheme = "catppuccin-mocha",
+{{- end }}
     },
   },
 }

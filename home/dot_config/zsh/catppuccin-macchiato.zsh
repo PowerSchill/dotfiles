@@ -1,5 +1,6 @@
 # Catppuccin Macchiato theme for Powerlevel10k
 # Based on catppuccin/macchiato colors
+# https://github.com/spencerfrost/powerlevel10k
 
 # Basic UI elements
 typeset -g POWERLEVEL9K_RULER_FOREGROUND='#8087a2'  # overlay1
