@@ -74,8 +74,9 @@ packages:
         - name: ack
         - name: asciinema
         - name: aspell
-        - name: bottom
         - name: brew-gem
+        - name: btop
+        - name: bottom
         - name: ccat
         - name: cheat
         - name: cloc
@@ -97,7 +98,6 @@ packages:
         - name: grc
         - name: gum
         - name: highlight
-        - name: htop
         - name: imagemagick
         - name: ipcalc
         - name: jandedobbeleer/oh-my-posh/oh-my-posh
