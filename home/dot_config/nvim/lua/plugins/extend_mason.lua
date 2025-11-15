@@ -1,0 +1,25 @@
+return {
+  "mason-org/mason.nvim",
+  opts = {
+    ensure_installed = {
+      "actionlint",
+      "bash-language-server",
+      "gopls",
+      "hclfmt",
+      "jq",
+      "json-lsp",
+      "markdownlint-cli2",
+      "prettier",
+      "shellcheck",
+      "shfmt",
+      "sqlfmt",
+      "stylua",
+      "terraform",
+      "terraform-ls",
+      "tflint",
+      "yamlfmt",
+      "yamllint",
+      "yq",
+    },
+  },
+}

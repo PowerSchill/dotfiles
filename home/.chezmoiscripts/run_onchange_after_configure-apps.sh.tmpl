@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-{{- if (not .ephemeral) -}}
+{{ if (not .ephemeral) -}}
 
-# GitHub CLI updates
 if command -v gh &>/dev/null; then
   extensions=(
     github/gh-copilot
@@ -11,9 +10,11 @@ if command -v gh &>/dev/null; then
     meiji163/gh-notify
   )
 
+if gh auth status &>/dev/null; then
   for ext in "${extensions[@]}"; do
     gh extension install "$ext"
   done
+fi
 fi
 
 {{ end -}}

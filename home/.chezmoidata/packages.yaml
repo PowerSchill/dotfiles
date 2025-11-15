@@ -274,8 +274,16 @@ packages:
         - tmux
         - vim
         - zsh
-    snaps:
-      - brave
+      redhat:
+        - direnv
+        - fastfetch
+        - tmux
+        - neovim
+        - zsh
+        - copr-cli
+        - fzf
+        - rbenv
+        - zoxide
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh

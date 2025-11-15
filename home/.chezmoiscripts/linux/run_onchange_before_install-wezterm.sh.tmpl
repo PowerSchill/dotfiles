@@ -7,3 +7,10 @@ echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/w
 sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 
 {{ end -}}
+
+{{ if and (eq .osid "linux-fedora" ) (not .ephemeral) -}}
+
+sudo dnf -y copr enable wezfurlong/wezterm-nightly
+sudo dnf -y install wezterm
+
+{{ end -}}

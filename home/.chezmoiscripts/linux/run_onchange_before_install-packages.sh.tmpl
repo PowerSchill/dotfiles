@@ -16,10 +16,3 @@ echo "Installing Packages: {{ .osid }}"
 {{ $sudo }}dnf install -y {{ range .packages.linux.packages.redhat }} {{ . | quote  }} {{- end }}
 {{ end -}}
 
-
-# Install Snaps
-sudo snap install --classic \
-{{- range .packages.linux.snaps }}
-    {{ . }} \
-{{- end }}
-
