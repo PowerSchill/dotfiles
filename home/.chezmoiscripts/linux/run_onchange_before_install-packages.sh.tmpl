@@ -7,6 +7,7 @@
 
 echo "Installing Packages: {{ .osid }}"
 
+
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
 {{ $sudo }}apt-get update
 {{ $sudo }}apt-get install -y {{ range .packages.linux.debian.packages }} {{ . | quote }} {{- end }}
@@ -15,6 +16,8 @@ echo "Installing Packages: {{ .osid }}"
 {{ if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
 
 {{ $sudo }}dnf -y copr enable {{ range .packages.linux.redhat.copr }} {{ . | quote  }} {{- end }}
+{{ $sudo }}dnf -y install cargo
+cargo install {{ range .packages.linux.redhat.cargo }} {{ . | quote  }} {{- end }}
 
 {{ $sudo }}dnf -y install {{ range .packages.linux.redhat.packages }} {{ . | quote  }} {{- end }}
 {{ end -}}

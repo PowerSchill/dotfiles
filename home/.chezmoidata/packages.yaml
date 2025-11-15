@@ -275,6 +275,8 @@ packages:
         - vim
         - zsh
     redhat:
+      cargo:
+        - eza
       copr:
         - dejan/lazygit
         - wezfurlong/wezterm-nightly
@@ -289,6 +291,8 @@ packages:
         - tmux
         - zoxide
         - zsh
+        - git-delta
+        - 1password-cli
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh
