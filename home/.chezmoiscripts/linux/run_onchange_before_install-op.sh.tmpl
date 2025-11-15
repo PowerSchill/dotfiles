@@ -18,3 +18,17 @@ curl -sS https://downloads.1password.com/linux/keys/1password.asc |
 sudo apt update && sudo apt install 1password
 
 {{ end -}}
+
+{{ if and (eq .osid "linux-fedora") (eq .uname_arch "arm64") (not .ephemeral) -}}
+cd /tmp
+
+curl -sSO https://downloads.1password.com/linux/tar/stable/aarch64/1password-latest.tar.gz
+tar -xf 1password-latest.tar.gz
+sudo mkdir -p /opt/1Password && sudo mv 1password-*/* /opt/1Password
+sudo /opt/1Password/after-install.sh
+
+sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
+sudo dnf check-update -y 1password-cli && sudo dnf -y install 1password-cli
+
+{{ end -}}

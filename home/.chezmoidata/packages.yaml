@@ -265,8 +265,8 @@ packages:
         - name: postman
         - name: zotero
   linux:
-    packages:
-      debian:
+    debian:
+      packages:
         - curl
         - direnv
         - neofetch
@@ -274,8 +274,28 @@ packages:
         - tmux
         - vim
         - zsh
-    snaps:
-      - brave
+    fedora:
+      cargo:
+        - eza
+      copr:
+        - dejan/lazygit
+        - wezfurlong/wezterm-nightly
+      packages:
+        - copr-cli
+        - direnv
+        - fastfetch
+        - fzf
+        - lazygit
+        - neovim
+        - rbenv
+        - tmux
+        - zoxide
+        - zsh
+        - git-delta
+        - gh
+        # - 1password-cli
+        - wezterm
+        - conky
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh

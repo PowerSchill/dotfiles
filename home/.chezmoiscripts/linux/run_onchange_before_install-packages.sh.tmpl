@@ -7,19 +7,22 @@
 
 echo "Installing Packages: {{ .osid }}"
 
+
 {{ if (eq .osid "linux-debian" "linux-ubuntu" "linux-raspbian") -}}
 {{ $sudo }}apt-get update
-{{ $sudo }}apt-get install -y {{ range .packages.linux.packages.debian }} {{ . | quote }} {{- end }}
+{{ $sudo }}apt-get install -y {{ range .packages.linux.debian.packages }} {{ . | quote }} {{- end }}
 {{ end -}}
 
-{{ if (eq .osid "linux-rocky" "linux-fedora" "linux-centos" "linux-redhat") -}}
-{{ $sudo }}dnf install -y {{ range .packages.linux.packages.redhat }} {{ . | quote  }} {{- end }}
-{{ end -}}
+{{ if (eq .osid  "linux-fedora"  ) -}}
 
-
-# Install Snaps
-sudo snap install --classic \
-{{- range .packages.linux.snaps }}
-    {{ . }} \
+{{ range.packages.linux.fedora.copr }}
+{{ $sudo }}dnf -y copr enable  {{ . | quote  }}
 {{- end }}
 
+{{ $sudo }}dnf -y install cargo
+{{ range .packages.linux.fedora.cargo }}
+cargo install  {{ . | quote  }}
+{{- end }}
+
+{{ $sudo }}dnf -y install {{ range .packages.linux.fedora.packages }} {{ . | quote  }} {{- end }}
+{{ end -}}

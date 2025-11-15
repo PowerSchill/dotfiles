@@ -170,7 +170,6 @@ followTags = true
     features = catppuccin-mocha
 {{- end }}
 
-{{ if eq .chezmoi.os "darwin" }}
   {{if $ghPath }}
 
 [credential]
@@ -186,7 +185,6 @@ followTags = true
 [credential]
   helper = osxkeychain
   {{- end }}
-{{- end }}
 
 ################################################################################
 # Git Town
