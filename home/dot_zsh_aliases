@@ -2,7 +2,7 @@
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 #
-# Removed grep aliases in favor of ripgrep 
+# Removed grep aliases in favor of ripgrep
 #
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
@@ -14,6 +14,13 @@ if [[ $(get_os) == 'linux' || $(get_os) == 'cygwin' ]]; then
   alias chgrp='chgrp --preserve-root'
   alias chmod='chmod --preserve-root'
   alias chown='chown --preserve-root'
+  alias cd="z"
+  alias ls="eza --color=always --icons=always --group-directories-first"
+  alias ll="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions"
+  alias lla="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --all"
+  alias llt="eza --color=always --icons=always --group-directories-first --long --git --no-user --time-style=long-iso --no-permissions --all"
+  alias llf="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --all --only-files"
+  alias lld="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --only-dirs"
 elif [[ $(get_os) == 'osx' ]]; then
   alias cd="z"
   alias ls="eza --color=always --icons=always --group-directories-first"
@@ -200,7 +207,7 @@ function show_cert() {
 }
 
 ################################################################################
-# Typos 
+# Typos
 ################################################################################
 
 alias brwe='brew'

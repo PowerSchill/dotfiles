@@ -281,21 +281,30 @@ packages:
         - dejan/lazygit
         - wezfurlong/wezterm-nightly
       packages:
+        - bat
+        - chromium
+        - conky
         - copr-cli
         - direnv
         - fastfetch
         - fzf
+        - gh
+        - git-delta
+        - jq
         - lazygit
+        - ncdu
         - neovim
+        - polybar
         - rbenv
+        - rofi
+        - tldr
         - tmux
+        - trash
+        - wezterm
         - zoxide
         - zsh
-        - git-delta
-        - gh
-        # - 1password-cli
-        - wezterm
-        - conky
+        - gnome-keyring
+        - gnome-keyring-pam
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh
