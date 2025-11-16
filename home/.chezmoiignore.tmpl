@@ -17,8 +17,12 @@ Brewfile
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
 .hushlogin
-.i3
 .local/share/fonts
+.config/conky
+.config/i3
+.config/polybar
+.config/rofi
+.config/sway
 {{ end }}
 
 
