@@ -393,7 +393,10 @@ _fzf_comprun() {
 # GO setup
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
-export GOROOT="$(brew --prefix golang)/libexec"
+
+if [[ $PLATFORM == 'osx' ]]; then
+  export GOROOT="$(brew --prefix golang)/libexec"
+fi
 
 # direnv
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
@@ -416,7 +419,9 @@ cdj() {
 # ################################################################################
 # # Ruby
 # ################################################################################
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
+if [[ $PLATFORM == 'osx' ]]; then
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@3)"
+fi
 eval "$(rbenv init -)"
 
 # ################################################################################
