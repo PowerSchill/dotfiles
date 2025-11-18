@@ -289,6 +289,7 @@ packages:
         - eza
       copr:
         - dejan/lazygit
+        - lihaohong/yazi
         - wezfurlong/wezterm-nightly
       packages:
         - bat
@@ -301,6 +302,8 @@ packages:
         - fzf
         - gh
         - git-delta
+        - gnome-keyring
+        - gnome-keyring-pam
         - jq
         - lazygit
         - ncdu
@@ -312,10 +315,9 @@ packages:
         - tmux
         - trash
         - wezterm
+        - yazi
         - zoxide
         - zsh
-        - gnome-keyring
-        - gnome-keyring-pam
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh
