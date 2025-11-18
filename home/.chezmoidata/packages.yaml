@@ -38,10 +38,22 @@ packages:
         - name: grep
         - name: trash
         - name: tree
-        - name: jq
         - name: ncdu
         - name: wget
         - name: rename
+        #######################################
+        # Extended system utilitites
+        #######################################
+        - name: yazi
+        - name: ffmpeg
+        - name: sevenzip
+        - name: jq
+        - name: poppler
+        - name: fd
+        - name: ripgrep
+        - name: fzf
+        - name: resvg
+        - name: imagemagick
         #######################################
         # Development related utilities
         #######################################
@@ -87,7 +99,6 @@ packages:
         - name: dockutil
         - name: dos2unix
         - name: exiftool
-        - name: fd
         - name: findutils
         - name: freetds
         - name: gdu
@@ -98,7 +109,6 @@ packages:
         - name: grc
         - name: gum
         - name: highlight
-        - name: imagemagick
         - name: ipcalc
         - name: jandedobbeleer/oh-my-posh/oh-my-posh
         - name: jenv
@@ -126,7 +136,6 @@ packages:
         - name: pinentry-mac
         - name: pipx
         - name: readline
-        - name: ripgrep
         - name: sipcalc
         - name: source-highlight
         - name: speedtest-cli
@@ -159,6 +168,7 @@ packages:
         - name: warrensbox/tap/tfswitch
     casks:
       global:
+        - name: font-symbols-only-nerd-font
         - name: 1password-cli
         - name: alfred
         - name: beyond-compare
