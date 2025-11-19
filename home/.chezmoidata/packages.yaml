@@ -151,6 +151,7 @@ packages:
         - name: whois
         - name: wifi-password
         - name: yamllint
+        - name: yq
         - name: yubikey-agent
       personal:
         - name: mas
@@ -171,8 +172,10 @@ packages:
         - name: font-symbols-only-nerd-font
         - name: 1password-cli
         - name: alfred
+        - name: arc
         - name: beyond-compare
         - name: camo-studio
+        - name: cursor
         - name: cyberduck
         - name: daisydisk
         - name: devonthink
@@ -192,12 +195,13 @@ packages:
         - name: omnifocus
         - name: powershell
         - name: raindropio
+        - name: raycast
         - name: reader
         - name: setapp # Installed once manually
         - name: sf-symbols
         - name: signal
           excludeEphemeral: true
-        # - name: snagit
+        - name: snagit
         - name: soundsource
         - name: textexpander
         - name: tower
@@ -256,8 +260,8 @@ packages:
           excludeEphemeral: true
         - name: parallels
           excludeEphemeral: true
-        - name: private-internet-access
-          excludeEphemeral: true
+        # - name: private-internet-access
+        #   excludeEphemeral: true
         - name: silentknight
           excludeEphemeral: true
         - name: slack
@@ -269,6 +273,7 @@ packages:
         - name: zoom
           excludeEphemeral: true
         - name: zotero@beta
+        - name: windows-app
       work:
         - name: cursor
         - name: google-cloud-sdk
@@ -302,8 +307,6 @@ packages:
         - fzf
         - gh
         - git-delta
-        - gnome-keyring
-        - gnome-keyring-pam
         - jq
         - lazygit
         - ncdu
@@ -315,9 +318,11 @@ packages:
         - tmux
         - trash
         - wezterm
-        - yazi
         - zoxide
         - zsh
+        - gnome-keyring
+        - gnome-keyring-pam
+        - yazi
   windows:
     winget:
       - JanDeDobbeleer.OhMyPosh
