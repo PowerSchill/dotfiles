@@ -253,7 +253,6 @@ packages:
           excludeEphemeral: true
         - name: microsoft-auto-update
         - name: microsoft-edge
-        - name: microsoft-teams
         - name: minecraft
           excludeEphemeral: true
         - name: openaudible
@@ -264,7 +263,6 @@ packages:
         #   excludeEphemeral: true
         - name: silentknight
           excludeEphemeral: true
-        - name: slack
         - name: transmit
         - name: visual-studio-code # Installed from self-service on work machines.
         - name: vlc
