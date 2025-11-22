@@ -11,11 +11,9 @@ fzf-git:
 
 .oh-my-zsh:
   type: archive
-  {{ $omzRevision := includeTemplate "get-github-head-revision" (list "ohmyzsh/ohmyzsh" $cache) }}
-  url: "https://github.com/ohmyzsh/ohmyzsh/archive/{{ $omzRevision }}.tar.gz"
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   stripComponents: 1
-  # waiting for https://github.com/twpayne/chezmoi/issues/1614#issuecomment-966524408
-  exact: true
+  exact: false
 
 .oh-my-zsh/custom/themes/powerlevel10k:
   type: archive
