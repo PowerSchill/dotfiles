@@ -486,4 +486,8 @@ function y() {
 source ~/.config/op/plugins.sh
 source ~/.zshrc_local
 
-export PATH="/opt/homebrew/bin:$PATH"
+if [[ $PLATFORM == 'osx' ]]; then
+  export PATH="/opt/homebrew/bin:$HOME/.local/bin:$PATH"
+else
+  export PATH="$HOME/.local/bin:$PATH"
+fi

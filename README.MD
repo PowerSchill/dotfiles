@@ -15,6 +15,17 @@ A curated collection of configuration files to set up a productive development e
 - [Git](https://git-scm.com/)
 - [chezmoi](https://www.chezmoi.io/)
 
+## Supported Operating Systems
+
+The following operating systems have been tested. Other flavors and versions are probably functional but have not been tested.
+
+- macOS
+  - Tahoe (26.x)
+- Fedora
+  - v43
+- Ubuntu
+  - 25.10
+
 ## Getting Started
 
 Clone and initialize your dotfiles with chezmoi:
@@ -56,7 +67,7 @@ elif [[ $system_type == "Linux" ]]; then
   debian | ubuntu)
       echo "Distribution is Debian/Ubuntu"
       sudo apt-get -y install git
-    curl -sfL https://git.io/chezmoi | sh
+      snap install chezmoi --classic
     ;;
   *)
     echo "Unable to identify OS distribution - $ID"

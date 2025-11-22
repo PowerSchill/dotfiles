@@ -284,34 +284,30 @@ packages:
     debian:
       packages:
         - bat
-        - chromium
-        - conky
-        - copr-cli
+        - chromium-browser
+        - conky-std
+        - cargo
         - curl
         - direnv
         - fastfetch
-        - fd
+        - fd-find
         - fzf
         - gh
         - git-delta
-        - gnome-keyring
-        - gnome-keyring-pam
         - golang
         - jq
         - lazygit
         - ncdu
-        - neofetch
         - neovim
         - polybar
         - rbenv
         - rofi
-        - tldr
         - tmux
-        - topgrade
-        - trash
+        # - topgrade
+        # - trash
         - vim
-        - wezterm
-        - yazi
+        # - wezterm
+        # - yazi
         - zoxide
         - zsh
     fedora:
