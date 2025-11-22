@@ -260,6 +260,8 @@ packages:
           excludeEphemeral: true
         - name: parallels
           excludeEphemeral: true
+          args:
+            appdir: "/Applications"
         # - name: private-internet-access
         #   excludeEphemeral: true
         - name: silentknight
