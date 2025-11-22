@@ -283,12 +283,36 @@ packages:
   linux:
     debian:
       packages:
+        - bat
+        - chromium
+        - conky
+        - copr-cli
         - curl
         - direnv
+        - fastfetch
+        - fd
+        - fzf
+        - gh
+        - git-delta
+        - gnome-keyring
+        - gnome-keyring-pam
+        - golang
+        - jq
+        - lazygit
+        - ncdu
         - neofetch
+        - neovim
+        - polybar
         - rbenv
+        - rofi
+        - tldr
         - tmux
+        - topgrade
+        - trash
         - vim
+        - wezterm
+        - yazi
+        - zoxide
         - zsh
     fedora:
       cargo:
