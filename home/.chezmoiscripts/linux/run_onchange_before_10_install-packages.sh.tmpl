@@ -1,0 +1,68 @@
+#!/bin/bash
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+echo "Installing Packages: {{ .osid }}"
+
+
+{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-raspbian") -}}
+
+########################################
+# Custom pre-install functions
+########################################
+
+# Wezterm apt repo configuration
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+
+########################################
+# Installing native os packages
+########################################
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y {{ range .packages.linux.debian.packages }} {{ . | quote }}
+{{- end }}
+
+########################################
+# Installing cargo packages
+########################################
+{{ $sudo }}apt -y install cargo
+{{ range .packages.linux.debian.cargo }}
+cargo install  {{ . | quote  }}
+{{- end }}
+
+########################################
+# Installing snap packages
+########################################
+{{ range .packages.linux.debian.snap }}
+{{ $sudo }} snap install {{ . | quote  }} --classic
+{{- end }}
+
+{{ end -}}
+
+{{ if (eq .osid  "linux-fedora"  ) -}}
+########################################
+# Installing native os packages
+########################################
+{{ $sudo }}dnf -y install {{ range .packages.linux.fedora.packages }} {{ . | quote  }}
+{{- end }}
+
+########################################
+# Installing cargo packages
+########################################
+{{ $sudo }}dnf -y install cargo
+{{ range .packages.linux.fedora.cargo }}
+cargo install  {{ . | quote  }}
+{{- end }}
+
+########################################
+# Installing copr packages
+########################################
+{{ range .packages.linux.fedora.copr }}
+{{ $sudo }}dnf -y copr enable  {{ . | quote  }}
+{{- end }}
+
+{{ end -}}

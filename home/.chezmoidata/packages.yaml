@@ -282,11 +282,14 @@ packages:
         - name: zotero
   linux:
     debian:
+      cargo:
+        - cargo-update
+        - eza
+        - topgrade
       packages:
         - bat
         - chromium-browser
         - conky-std
-        - cargo
         - curl
         - direnv
         - fastfetch
@@ -295,21 +298,25 @@ packages:
         - gh
         - git-delta
         - golang
+        - i3
         - jq
         - lazygit
+        - libssl-dev
         - ncdu
-        - neovim
+        - npm
         - polybar
         - rbenv
         - rofi
         - tmux
-        # - topgrade
-        # - trash
+        - trash-cli
         - vim
-        # - wezterm
-        # - yazi
+        - wezterm-nightly
+        - xorg
         - zoxide
         - zsh
+      snap:
+        - nvim # builtin package is too old.
+        - yazi
     fedora:
       cargo:
         - cargo-upgrades
