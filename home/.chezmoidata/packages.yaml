@@ -292,6 +292,7 @@ packages:
         - eza
       copr:
         - dejan/lazygit
+        - lilay/topgrade
         - lihaohong/yazi
         - wezfurlong/wezterm-nightly
       packages:
@@ -314,6 +315,7 @@ packages:
         - rofi
         - tldr
         - tmux
+        - topgrade
         - trash
         - wezterm
         - zoxide
