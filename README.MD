@@ -65,6 +65,5 @@ elif [[ $system_type == "Linux" ]]; then
   esac
 fi
 
-export PATH="$HOME/bin:$PATH"
 chezmoi init --verbose https://github.com/PowerSchill/dotfiles.git
 ```
