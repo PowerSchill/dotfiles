@@ -292,6 +292,8 @@ packages:
         - zsh
     fedora:
       cargo:
+        - cargo-upgrades
+        - cargo-update
         - eza
       copr:
         - dejan/lazygit
