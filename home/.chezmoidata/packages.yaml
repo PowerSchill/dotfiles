@@ -44,16 +44,17 @@ packages:
         #######################################
         # Extended system utilitites
         #######################################
-        - name: yazi
+        - name: fd
         - name: ffmpeg
-        - name: sevenzip
+        - name: fzf
+        - name: imagemagick
         - name: jq
         - name: poppler
-        - name: fd
-        - name: ripgrep
-        - name: fzf
         - name: resvg
-        - name: imagemagick
+        - name: ripgrep
+        - name: sevenzip
+        - name: topgrade
+        - name: yazi
         #######################################
         # Development related utilities
         #######################################
