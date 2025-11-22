@@ -1,10 +1,19 @@
+################################################################################
+# SSH Cconfig
+################################################################################
+
+# Allow for customized independent configurations.
+Include ~/.ssh/config.d/*.conf
+
 Host *
 {{- if eq .chezmoi.os "linux" }}
 	IdentityAgent ~/.1password/agent.sock
 {{- else if eq .chezmoi.os "darwin" }}
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{- end }}
-	ServerAliveInterval 240
+	ServerAliveInterval 60
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
 	ConnectTimeout 30
 	ControlMaster auto
 	ControlPath ~/.ssh/control-%h-%p-%r
@@ -13,25 +22,3 @@ Host *
 	GSSAPIAuthentication no
 	GSSAPIDelegateCredentials no
 
-
-Host *.int.dbk.ncr.com
-	User ms185570_candescent_com
-
-Host 10.49.*
-	User ms185570_candescent_com
-
-Host 10.99.*
-	User ms185570_candescent_com
-
-Host emu-migration-workstation
-	HostName compute.5196069742918749646
-	IdentityFile /Users/mark.schill/.ssh/google_compute_engine
-	CheckHostIP no
-	HashKnownHosts no
-	HostKeyAlias compute.5196069742918749646
-	IdentitiesOnly yes
-	StrictHostKeyChecking yes
-	UserKnownHostsFile ~/.ssh/google_compute_known_hosts
-	ProxyCommand ~/.config/gcloud/virtenv/bin/python3 /opt/homebrew/Caskroom/gcloud-cli/latest/google-cloud-sdk/lib/gcloud.py compute start-iap-tunnel 'emu-migration-workstation' '%p' --listen-on-stdin --project dbk-iaas-tools --zone=us-west2-c --verbosity=warning
-	ProxyUseFdpass no
-	User ms185570_candescent_com
