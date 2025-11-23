@@ -1,37 +1,45 @@
 # PowerSchill's Dotfiles
 
-A curated collection of configuration files to set up a productive development environment on macOS and Linux.
+Welcome to my personal dotfiles repository! This collection is designed to quickly bootstrap a productive development environment on macOS and Linux, with a focus on modern tools, aesthetics, and efficiency.
 
-## Features
+---
 
-- **Terminal**: wezterm
-- **Shell**: zsh
-- **Editor**: neovim ([LazyVim](https://www.lazyvim.org/))
-- **Theme**: catppuccin mocha
+## ✨ Features
 
-## Prerequisites
+- **Terminal:** [WezTerm](https://wezfurlong.org/wezterm/)
+- **Shell:** [Zsh](https://www.zsh.org/) with curated plugins and themes
+- **Editor:** [Neovim](https://neovim.io/) ([LazyVim](https://www.lazyvim.org/))
+- **Theme:** [Catppuccin Mocha](https://catppuccin.com/)
+- **Package Management:** [Homebrew](https://brew.sh/) (macOS), native package managers (Linux)
+- **Automated Setup:** [chezmoi](https://www.chezmoi.io/) for dotfile management
 
-- [Homebrew](https://brew.sh/) (macOS)
+---
+
+## 🛠️ Prerequisites
+
+- [Homebrew](https://brew.sh/) (macOS only)
 - [Git](https://git-scm.com/)
 - [chezmoi](https://www.chezmoi.io/)
 
-## Supported Operating Systems
+---
 
-The following operating systems have been tested. Other flavors and versions are probably functional but have not been tested.
+## 🖥️ Supported Operating Systems
 
-- macOS
-  - Tahoe (26.x)
-- Fedora
-  - v43
-- Ubuntu
-  - 25.10
+Tested on:
+- **macOS:** Sonoma (14.x), Tahoe (26.x)
+- **Fedora:** 43
+- **Ubuntu:** 25.10
 
-## Getting Started
+Other distributions may work but are not officially tested.
+
+---
+
+## 🚀 Quick Start
 
 Clone and initialize your dotfiles with chezmoi:
 
-```shell
-#!/bin/bash
+```bash
+# Install prerequisites and initialize chezmoi
 system_type=$(uname)
 
 if [[ $system_type == "Darwin" ]]; then
@@ -50,31 +58,26 @@ elif [[ $system_type == "Linux" ]]; then
   . /etc/os-release
 
   case $ID in
-  fedora)
-      echo "Distribution is Fedora"
-    sudo dnf -y install git chezmoi
-    ;;
-  centos | rocky)
-      echo "Distribution is CentOS/Rocky"
-    sudo yum -y install git
-    curl -sfL https://git.io/chezmoi | sh
-    ;;
-  amzn)
-    echo "Distribution is Amazon Linux"
-    sudo yum -y install git
-    curl -sfL https://git.io/chezmoi | sh
-    ;;
-  debian | ubuntu)
-      echo "Distribution is Debian/Ubuntu"
+    fedora)
+      sudo dnf -y install git chezmoi
+      ;;
+    centos | rocky)
+      sudo yum -y install git
+      curl -sfL https://git.io/chezmoi | sh
+      ;;
+    amzn)
+      sudo yum -y install git
+      curl -sfL https://git.io/chezmoi | sh
+      ;;
+    debian | ubuntu)
       sudo apt-get -y install git
       snap install chezmoi --classic
-    ;;
-  *)
-    echo "Unable to identify OS distribution - $ID"
+      ;;
+    *)
+      echo "Unable to identify OS distribution - $ID"
       exit 1
-    ;;
+      ;;
   esac
 fi
 
 chezmoi init --verbose https://github.com/PowerSchill/dotfiles.git
-```

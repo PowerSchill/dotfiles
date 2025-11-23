@@ -1,114 +1,29 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
-cat >~/.Brewfile <<EOF
+{{ $isEphemeral := or .ephemeral (eq (env "EPHEMERAL") "true") }}
+{{ $isHeadless := or .headless (eq (env "HEADLESS") "true") }}
 
+cat >~/.Brewfile <<EOF
 
 ####################################################################################################
 # HomeBrew Taps
 ####################################################################################################
 
-#######################################
-# Global
-#######################################
-{{ range .packages.darwin.taps.global -}}
-tap {{ . | quote }}
-{{ end -}}
-
+{{ template "brewList.tmpl" (list .packages.darwin.taps.global "tap" $isEphemeral $isHeadless) }}
+{{ template "brewList.tmpl" (list .packages.darwin.brews.global "brew" $isEphemeral $isHeadless) }}
+{{ template "brewList.tmpl" (list .packages.darwin.casks.global "cask" $isEphemeral $isHeadless) }}
 
 {{- if eq .personal true }}
-#######################################
-# Personal
-#######################################
-{{ range .packages.darwin.taps.personal }}
-tap {{ . | quote }}
+  {{ template "brewList.tmpl" (list .packages.darwin.taps.personal "tap" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.brews.personal "brew" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.casks.personal "cask" $isEphemeral $isHeadless) }}
 {{- end }}
-{{- end }}
-
 
 {{- if eq .work true }}
-#######################################
-# Work
-#######################################
-{{ range .packages.darwin.taps.work }}
-tap {{ . | quote }}
-{{- end }}
-{{- end }}
-
-
-####################################################################################################
-# HomeBrew Brews
-####################################################################################################
-
-#######################################
-# Global
-#######################################
-{{ $isEphemeral := or (and (hasKey . "ephemeral") .ephemeral) (eq (env "EPHEMERAL") "true") }}
-{{ range .packages.darwin.brews.global -}}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-brew {{ .name | quote }}
-  {{- end }}
-{{ end -}}
-
-
-{{- if eq .personal true }}
-#######################################
-# Personal
-#######################################
-{{ range .packages.darwin.brews.personal }}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-brew {{ .name | quote }}
-  {{- end }}
-{{- end }}
-{{- end }}
-
-
-{{- if eq .work true }}
-#######################################
-# Work
-#######################################
-{{ range .packages.darwin.brews.work }}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-brew {{ .name | quote }}
-  {{- end }}
-{{- end }}
-{{- end }}
-
-####################################################################################################
-# HomeBrew Casks
-####################################################################################################
-
-#######################################
-# Global
-#######################################
-{{ range .packages.darwin.casks.global -}}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-  {{- end }}
-{{ end -}}
-
-
-{{- if eq .personal true }}
-#######################################
-# Personal
-#######################################
-{{ range .packages.darwin.casks.personal }}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-  {{- end }}
-{{- end }}
-{{- end }}
-
-
-{{- if eq .work true }}
-#######################################
-# Work
-#######################################
-{{ range .packages.darwin.casks.work }}
-  {{- if or (not $isEphemeral) (not (hasKey . "excludeEphemeral")) (not .excludeEphemeral) }}
-cask {{ .name | quote }}{{ if (hasKey . "args") }}, args: {{ .args | toJson }}{{ end }}
-  {{- end }}
-{{- end }}
+  {{ template "brewList.tmpl" (list .packages.darwin.taps.work "brew" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.brews.work "tap" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.casks.work "cask" $isEphemeral $isHeadless) }}
 {{- end }}
 
 EOF

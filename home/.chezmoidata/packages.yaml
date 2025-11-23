@@ -2,14 +2,14 @@ packages:
   darwin:
     taps:
       global:
-        - 1password/tap
-        - buo/cask-upgrade
-        - jandedobbeleer/oh-my-posh
-        - ttscoff/thelab
-        - warrensbox/tap
+        - name: 1password/tap
+        - name: buo/cask-upgrade
+        - name: jandedobbeleer/oh-my-posh
+        - name: ttscoff/thelab
+        - name: warrensbox/tap
       personal:
       work:
-        - hashicorp/tap
+        - name: hashicorp/tap
     brews:
       global:
         ########################################

@@ -1,0 +1,9 @@
+{{- $items := index . 0 -}}
+{{- $type := index . 1 -}}
+{{- $isEphemeral := index . 2 -}}
+{{- $isHeadless := index . 3 -}}
+{{- range $items -}}
+  {{- if not (or (and $isEphemeral .excludeEphemeral) (and $isHeadless .excludeHeadless)) }}
+{{ $type }} {{ .name | quote }}
+  {{- end }}
+{{- end -}}

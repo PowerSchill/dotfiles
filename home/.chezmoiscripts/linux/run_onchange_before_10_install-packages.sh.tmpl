@@ -5,8 +5,10 @@
 {{   $sudo = "" -}}
 {{ end -}}
 
-echo "Installing Packages: {{ .osid }}"
+{{ $isEphemeral := or (and (hasKey . "ephemeral") .ephemeral) (eq (env "EPHEMERAL") "true") }}
+{{ $isHeadless := or (and (hasKey . "headless") .headless) (eq (env "HEADLESS") "true") }}
 
+echo "Installing Packages: {{ .osid }}"
 
 {{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-raspbian") -}}
 
