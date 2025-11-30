@@ -229,8 +229,10 @@ packages:
         - name: chatgpt
         - name: curseforge
         - name: discord
-        - name: docker
+        - name: docker-desktop
           excludeEphemeral: true
+          args:
+            appdir: "/Applications"
         - name: dropbox
           excludeEphemeral: true
         - name: elgato-stream-deck
