@@ -188,6 +188,7 @@ packages:
         - name: font-meslo-lg-nerd-font
         - name: hazel
         - name: kaleidoscope
+        - name: keyboard-maestro
         - name: logi-options+
           excludeEphemeral: true
         - name: moom
@@ -243,7 +244,6 @@ packages:
         - name: grammarly-desktop
         - name: imazing
           excludeEphemeral: true
-        - name: keyboard-maestro
         - name: keyboardcleantool
           excludeEphemeral: true
         - name: little-snitch
