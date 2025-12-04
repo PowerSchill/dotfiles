@@ -12,3 +12,10 @@ vim.filetype.add({
     omnifocusjs = "javascript",
   },
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "txt" },
+  callback = function()
+    vim.opt_local.fixeol = false
+  end,
+})
