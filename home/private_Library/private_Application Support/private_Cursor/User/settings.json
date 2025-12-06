@@ -97,5 +97,8 @@
   "window.newWindowProfile": "Default",
   "[go]": {
     "editor.defaultFormatter": "golang.go"
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua"
   }
 }

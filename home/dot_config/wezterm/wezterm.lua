@@ -4,6 +4,7 @@ local config = require("config")({
   require("config.fonts"),
   require("config.general"),
   require("config.hyperlinks"),
+  require("config.multiplexer"),
   require("commands"),
 }).config
 
