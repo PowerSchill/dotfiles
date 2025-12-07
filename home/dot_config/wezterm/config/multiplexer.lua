@@ -1,5 +1,5 @@
 return function(config, wezterm)
-  config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
+  config.leader = { key = "q", mods = "CTRL", timeout_milliseconds = 2000 }
   config.keys = {
     {
       mods = "LEADER",

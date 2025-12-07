@@ -1,0 +1,77 @@
+return function(config, wezterm)
+  local act = wezterm.action
+
+  -- Color
+  -- config.color_scheme = "Catppuccin Latte"
+  config.color_scheme = "Catppuccin Mocha"
+
+  local bg_background = os.getenv("HOME") .. "/.config/wezterm/assets/Wezterm Background Blurred.png"
+  config.window_background_image = bg_background
+
+  config.hide_tab_bar_if_only_one_tab = true
+  config.use_fancy_tab_bar = true
+  config.window_decorations = "RESIZE" -- "TITLE | RESIZE" is the default
+  config.window_frame = {
+    font = wezterm.font({ family = 'Berkeley Mono', weight = 'Bold' }),
+    font_size = 11,
+  }
+  config.macos_window_background_blur = 30
+  config.window_background_opacity = 0.9
+
+  config.window_padding = {
+    left = 3,
+    right = 3,
+    top = 3,
+    bottom = 3,
+  }
+
+  -- Miscellaneous settings
+  config.max_fps = 120
+  config.prefer_egl = true
+
+  -- Configure command palette appearance
+  config.command_palette_bg_color = "#1e1e2e"
+  config.command_palette_fg_color = "#cdd6f4"
+
+  wezterm.on('update-status', function(window)
+    -- Grab the utf8 character for the "powerline" left facing
+    -- solid arrow.
+    local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+
+    -- Grab the current window's configuration, and from it the
+    -- palette (this is the combination of your chosen colour scheme
+    -- including any overrides).
+    local color_scheme = window:effective_config().resolved_palette
+    local bg = color_scheme.background
+    local fg = color_scheme.foreground
+
+    window:set_right_status(wezterm.format({
+      -- First, we draw the arrow...
+      { Background = { Color = 'none' } },
+      { Foreground = { Color = bg } },
+      { Text = SOLID_LEFT_ARROW },
+      -- Then we draw our text
+      { Background = { Color = bg } },
+      { Foreground = { Color = fg } },
+      { Text = ' ' .. wezterm.hostname() .. ' ' },
+    }))
+  end)
+
+  wezterm.on("augment-command-palette", function(window)
+    return {
+      {
+        brief = "Toogle terminal transparency",
+        icon = "md_circle_opacity",
+        action = wezterm.action_callback(function()
+          local overrides = window:get_config_overrides() or {}
+          if overrides.window_background_opacity == 1.0 then
+            overrides.window_background_opacity = 0.8
+          else
+            overrides.window_background_opacity = 1.0
+          end
+          window:set_config_overrides(overrides)
+        end),
+      },
+    }
+  end)
+end
