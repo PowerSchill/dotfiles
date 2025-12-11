@@ -61,14 +61,6 @@ Operating System Identification
 Sets the appearance of the desktop environment.
 ########################################################################### */}}
 {{- $appearance := "Dark" }}
-{{- if eq .chezmoi.os "darwin" -}}
-{{/*  In light mode this command errors out in macOS */}}
-{{-   if exec "defaults" "read" "-g" "AppleInterfaceStyle" "2>/dev/null" -}}
-{{-     $appearance = "dark" -}}
-{{-   else -}}
-{{-     $appearance = "light" -}}
-{{-   end -}}
-{{- end -}}
 
 
 {{- $name := "Mark E. Schill" -}}

@@ -360,6 +360,7 @@ packages:
         - yazi
   windows:
     winget:
+      - fastfetch
       - JanDeDobbeleer.OhMyPosh
       - Microsoft.PowerShell
       - Microsoft.PowerToys
