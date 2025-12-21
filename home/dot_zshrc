@@ -1,0 +1,169 @@
+#!/usr/bin/env zsh
+# Modular .zshrc configuration
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+
+# Define XDG directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# ==============================================================================
+# ZSH OPTIONS
+# ==============================================================================
+
+# History options
+setopt HIST_IGNORE_ALL_DUPS  # Remove older duplicate entries from history
+setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from history items
+setopt INC_APPEND_HISTORY    # Save history entries as soon as they are entered
+setopt SHARE_HISTORY         # Share history between all sessions
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming history
+setopt HIST_IGNORE_SPACE     # Don't record an entry starting with a space
+
+# Directory options
+setopt AUTO_CD               # Type directory name to cd
+setopt AUTO_PUSHD            # Make cd push the old directory onto the directory stack
+setopt PUSHD_IGNORE_DUPS     # Don't push multiple copies of the same directory
+setopt PUSHD_SILENT          # Do not print the directory stack after pushd or popd
+
+# Completion options
+setopt ALWAYS_TO_END         # Move cursor to end of word after completion
+setopt AUTO_MENU             # Show completion menu on successive tab press
+setopt COMPLETE_IN_WORD      # Complete from both ends of a word
+setopt MENU_COMPLETE         # Auto-select first completion entry
+
+# Globbing options
+setopt EXTENDED_GLOB         # Use extended globbing syntax
+setopt NO_CASE_GLOB          # Case insensitive globbing
+setopt GLOB_DOTS             # Include dotfiles in globbing
+
+# Other options
+setopt INTERACTIVE_COMMENTS  # Allow comments in interactive mode
+setopt NO_BEEP               # Don't beep on errors
+setopt PROMPT_SUBST          # Enable parameter expansion in prompts
+
+# ============================================================================
+# HISTORY CONFIGURATION
+# ============================================================================
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+
+# ============================================================================
+# ENVIRONMENT VARIABLES
+# ============================================================================
+
+typeset -U path  # Keep unique entries in path
+path=($HOME/scripts $HOME/.local/bin /usr/local/go/bin $HOME/.cargo/bin /opt/homebrew/bin $path)
+
+# Default editors
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR=nvim
+elif command -v vim >/dev/null 2>&1; then
+    export EDITOR=vim
+elif command -v micro >/dev/null 2>&1; then
+    export EDITOR=micro
+else
+    export EDITOR=nano
+fi
+export VISUAL="$EDITOR"
+
+# Better less defaults
+export LESS='-R -F -X -i -P %f (%i/%m) '
+export LESSHISTFILE=/dev/null
+
+# Colored man pages
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+# Locale
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# ==============================================================================
+# COMPLETION SYSTEM
+# ==============================================================================
+
+# Initialize completion system
+autoload -Uz compinit
+
+# Speed up compinit by only checking cache once a day
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
+
+# Completion styling
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # Colored completion
+zstyle ':completion:*' group-name ''                       # Group results by category
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*:warnings' format '%F{red}No matches found%f'
+
+# Cache completions for better performance
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$HOME/.zsh/cache"
+
+# ==============================================================================
+# ZSH PLUGINS
+# ==============================================================================
+
+if [[ $PLATFORM == 'osx' ]]; then
+  source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [[ $PLATFORM == 'osx' ]]; then
+  # Requires coreutils from brew
+  export LS_COLORS="$(vivid generate catppuccin-mocha)"
+fi
+
+# ============================================================================
+# LOAD MODULAR CONFIGURATIONS
+# ============================================================================
+
+ZSH_CONFIG_DIR="$HOME/.config/zsh"
+
+# Load all zsh configuration files
+if [ -d "$ZSH_CONFIG_DIR" ]; then
+    # Load main configuration files
+    for config in "$ZSH_CONFIG_DIR"/*.zsh(N); do
+        [ -f "$config" ] && source "$config"
+    done
+
+    # Load function files
+    if [ -d "$ZSH_CONFIG_DIR/functions" ]; then
+        for func in "$ZSH_CONFIG_DIR/functions"/*.zsh(N); do
+            [ -f "$func" ] && source "$func"
+        done
+    fi
+fi
+
+
+
+# ============================================================================
+# WELCOME MESSAGE
+# ============================================================================
+
+# Display a welcome message with system information
+if [ -n "$PS1" ] && command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+fi
+
+# ==============================================================================
+# LOCAL OVERRIDES
+# ==============================================================================
+
+# Source local zshrc if it exists (for machine-specific settings)
+if [ -f "$HOME/.zshrc.local" ]; then
+    . "$HOME/.zshrc.local"
+fi

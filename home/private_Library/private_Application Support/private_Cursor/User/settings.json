@@ -79,7 +79,7 @@
   "explorer.confirmDragAndDrop": false,
   "workbench.editor.empty.hint": "hidden",
   "git.ignoreRebaseWarning": true,
-  "terminal.integrated.fontSize": 10,
+  "terminal.integrated.fontSize": 12,
   "workbench.activityBar.orientation": "vertical",
   "cursor.cpp.disabledLanguages": ["markdown", "plaintext", "yaml"],
   "vim.cursorStylePerMode.insert": "line-thin",
