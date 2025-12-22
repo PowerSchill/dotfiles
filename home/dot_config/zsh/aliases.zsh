@@ -4,6 +4,10 @@
 # NAVIGATION & DIRECTORY
 #═══════════════════════════════════════════════════════════════════════════════
 
+if command -v zoxide >/dev/null 2>&1; then
+  alias cd='z'
+fi
+
 # Directory navigation shortcuts
 alias ..='cd ..'
 alias ...='cd ../../..'

@@ -258,4 +258,5 @@ function findreplace() {
         echo "Cancelled"
         return 1
     fi
+  }
 
