@@ -71,6 +71,7 @@ packages:
         - name: goimports
         - name: golangci-lint
         - name: gopls
+        - name: jless
         - name: luarocks
         - name: pre-commit
         - name: prettier
@@ -279,7 +280,7 @@ packages:
         - name: windows-app
       work:
         - name: cursor
-        - name: google-cloud-sdk
+        - name: gcloud-cli
         - name: postman
         - name: zotero
   linux:

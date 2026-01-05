@@ -15,3 +15,21 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 if [ -f ~/.config/op/plugins.sh ]; then
   source ~/.config/op/plugins.sh
 fi
+
+
+# [10 Zsh hacks I wish I knew about sooner](https://www.youtube.com/watch?v=3fVAtaGhUyU)
+
+# edit current command line in EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# Used to expand commands like '!!' to show what is actually being run
+bindkey ' ' magic-space
+
+# Clear screen but keep the buffer
+clear-keep-buffer() {
+  zle clear-screen
+}
+zle -N clear-keep-buffer
+bindkey '^Xl' clear-keep-buffer

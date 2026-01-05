@@ -21,8 +21,8 @@ cat >~/.Brewfile <<EOF
 {{- end }}
 
 {{- if eq .work true }}
-  {{ template "brewList.tmpl" (list .packages.darwin.taps.work "brew" $isEphemeral $isHeadless) }}
-  {{ template "brewList.tmpl" (list .packages.darwin.brews.work "tap" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.taps.work "tap" $isEphemeral $isHeadless) }}
+  {{ template "brewList.tmpl" (list .packages.darwin.brews.work "brew" $isEphemeral $isHeadless) }}
   {{ template "brewList.tmpl" (list .packages.darwin.casks.work "cask" $isEphemeral $isHeadless) }}
 {{- end }}
 
