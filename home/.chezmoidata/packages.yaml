@@ -174,7 +174,7 @@ packages:
         - name: font-symbols-only-nerd-font
         - name: 1password-cli
         - name: alfred
-        - name: arc
+        # - name: arc
         - name: beyond-compare
         - name: camo-studio
         - name: cursor
@@ -215,7 +215,7 @@ packages:
         - name: 1password
           args:
             appdir: "/Applications"
-        - name: airbuddy
+        # - name: airbuddy
         - name: anylist
           excludeEphemeral: true
         - name: backblaze
@@ -243,16 +243,16 @@ packages:
         - name: firefox
         - name: google-chrome
         - name: grammarly-desktop
-        - name: imazing
-          excludeEphemeral: true
-        - name: keyboardcleantool
-          excludeEphemeral: true
+        # - name: imazing
+        # excludeEphemeral: true
+        # - name: keyboardcleantool
+        #   excludeEphemeral: true
         - name: little-snitch
           args:
             appdir: "/Applications"
           excludeEphemeral: true
-        - name: macupdater
-          excludeEphemeral: true
+        # - name: macupdater
+        #   excludeEphemeral: true
         - name: mailmate
           excludeEphemeral: true
         - name: microsoft-auto-update

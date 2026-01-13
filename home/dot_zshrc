@@ -163,6 +163,8 @@ fi
 # LOCAL OVERRIDES
 # ==============================================================================
 
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
 # Source local zshrc if it exists (for machine-specific settings)
 if [ -f "$HOME/.zshrc.local" ]; then
     . "$HOME/.zshrc.local"
