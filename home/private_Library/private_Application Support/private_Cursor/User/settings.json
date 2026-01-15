@@ -100,5 +100,9 @@
   },
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua"
+  },
+  "atlascode.bitbucket.enabled": false,
+  "yaml.schemas": {
+    "file:///Users/mark.schill/.cursor/extensions/atlassian.atlascode-4.0.14-universal/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
   }
 }

@@ -78,9 +78,6 @@ packages:
         - name: pygments
         - name: python
         - name: pytest
-        - name: rbenv
-        - name: rbenv-gemset
-        - name: rbenv-vars
         - name: tflint
         - name: terragrunt
         - name: parallel
@@ -88,7 +85,6 @@ packages:
         - name: ack
         - name: asciinema
         - name: aspell
-        - name: brew-gem
         - name: btop
         - name: bottom
         - name: ccat
@@ -145,7 +141,6 @@ packages:
         - name: streamlink
         - name: switchaudio-osx
         - name: the_silver_searcher
-        - name: tldr
         - name: viddy
         - name: virtualenv
         - name: vivid
@@ -164,7 +159,6 @@ packages:
         - name: checkov
         - name: git-filter-repo
         - name: hashicorp/tap/packer
-        - name: helm
         - name: jira-cli
         - name: shellcheck
         - name: terraform-docs
@@ -308,7 +302,6 @@ packages:
         - ncdu
         - npm
         - polybar
-        - rbenv
         - rofi
         - tmux
         - trash-cli
@@ -347,7 +340,6 @@ packages:
         - ncdu
         - neovim
         - polybar
-        - rbenv
         - rofi
         - tldr
         - tmux
