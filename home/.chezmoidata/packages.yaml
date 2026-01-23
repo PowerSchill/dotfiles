@@ -151,7 +151,11 @@ packages:
         - name: yq
         - name: yubikey-agent
       personal:
+        - name: claude-code
+          excludeEphemeral: true
         - name: mas
+          excludeEphemeral: true
+        - name: opal-app
           excludeEphemeral: true
       work:
         - name: ansible
@@ -182,6 +186,7 @@ packages:
         - name: font-meslo-for-powerline
         - name: font-meslo-lg-nerd-font
         - name: hazel
+        - name: helium-browser
         - name: kaleidoscope
         - name: keyboard-maestro
         - name: logi-options+
