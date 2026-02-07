@@ -1,0 +1,6 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/powerschill/.claude/statusline-command.sh"
+  }
+}
