@@ -80,7 +80,6 @@ packages:
         - name: pytest
         - name: tflint
         - name: terragrunt
-        - name: parallel
         #######################################
         - name: ack
         - name: asciinema
@@ -151,11 +150,7 @@ packages:
         - name: yq
         - name: yubikey-agent
       personal:
-        - name: claude-code
-          excludeEphemeral: true
         - name: mas
-          excludeEphemeral: true
-        - name: opal-app
           excludeEphemeral: true
       work:
         - name: ansible
@@ -197,7 +192,6 @@ packages:
         - name: omnifocus
         - name: powershell
         - name: raindropio
-        - name: raycast
         - name: reader
         - name: setapp # Installed once manually
         - name: sf-symbols
@@ -228,6 +222,8 @@ packages:
         - name: calibre
           excludeEphemeral: true
         - name: chatgpt
+        - name: claude-code
+          excludeEphemeral: true
         - name: curseforge
         - name: discord
         - name: docker-desktop
@@ -258,12 +254,10 @@ packages:
         - name: microsoft-edge
         - name: minecraft
           excludeEphemeral: true
+        - name: opal-app
+          excludeEphemeral: true
         - name: openaudible
           excludeEphemeral: true
-        - name: parallels
-          excludeEphemeral: true
-          args:
-            appdir: "/Applications"
         # - name: private-internet-access
         #   excludeEphemeral: true
         - name: silentknight
