@@ -202,7 +202,7 @@ packages:
         - name: textexpander
         - name: tower
         - name: visual-studio-code@insiders
-        - name: vivaldi # Used for primary personal browser
+        # - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly
       personal:
         - name: 1password

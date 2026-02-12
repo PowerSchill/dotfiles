@@ -111,5 +111,15 @@
   },
   "git.allowNoVerifyCommit": true,
   "githubPullRequests.pullBranch": "never",
-  "githubPullRequests.pushBranch": "always"
+  "githubPullRequests.pushBranch": "always",
+  "atlascode.jira.jqlList": [
+    {
+      "id": "498ca5ff-b3b1-4eb1-8512-dd9cb1015117",
+      "siteId": "585d17c0-ba2c-45b0-a52e-ded5f15edc33",
+      "name": "My Current Work",
+      "query": "assignee = currentUser()  AND issuetype != Epic  AND status NOT IN (Withdrawn, Done, Closed)  ORDER BY Rank DESC",
+      "enabled": true,
+      "monitor": true
+    }
+  ]
 }
