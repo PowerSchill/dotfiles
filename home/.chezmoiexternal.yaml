@@ -3,36 +3,36 @@
 
 {{- template "read-versions-and-revisions-cache" $cache -}}
 
-
 fzf-git:
   type: git-repo
   url: https://github.com/junegunn/fzf-git.sh.git
   refreshPeriod: 168h
 
 .oh-my-zsh:
-  type: archive
-  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
-  stripComponents: 1
-  exact: false
+  type: git-repo
+  url: https://github.com/ohmyzsh/ohmyzsh.git
+  refreshPeriod: 168h
+  clone:
+    args:
+      - "-c"
+      - "fetch.fsck.zeroPaddedFilemode=ignore"
+      - "-c"
+      - "receive.fsck.zeroPaddedFilemode=ignore"
 
 .oh-my-zsh/custom/themes/powerlevel10k:
-  type: archive
-  {{ $p10kRevision := includeTemplate "get-github-head-revision" (list "romkatv/powerlevel10k" $cache) }}
-  url: "https://github.com/romkatv/powerlevel10k/archive/{{ $p10kRevision }}.tar.gz"
-  stripComponents: 1
-  exact: true
+  type: git-repo
+  url: https://github.com/romkatv/powerlevel10k.git
+  refreshPeriod: 168h
 
 .oh-my-zsh/custom/plugins/zsh-autosuggestions:
-  type: archive
-  {{ $zshAutoSuggestionsRevision := includeTemplate "get-github-head-revision" (list "zsh-users/zsh-autosuggestions" $cache) }}
-  url: "https://github.com/zsh-users/zsh-autosuggestions/archive/{{ $zshAutoSuggestionsRevision }}.tar.gz"
-  stripComponents: 1
-  exact: true
+  type: git-repo
+  url: https://github.com/zsh-users/zsh-autosuggestions.git
+  refreshPeriod: 168h
 
-# .oh-my-zsh/custom/plugins/fast-syntax-highlighting:
-#   type: git-repo
-#   url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
-#   refreshPeriod: 168h
+.oh-my-zsh/custom/plugins/fast-syntax-highlighting:
+  type: git-repo
+  url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+  refreshPeriod: 168h
 
 .config/fsh/catppuccin-mocha.ini:
   type: file
