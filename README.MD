@@ -7,19 +7,63 @@ Welcome to my personal dotfiles repository! This collection is designed to quick
 ## ✨ Features
 
 - **Terminal:** [WezTerm](https://wezfurlong.org/wezterm/)
-- **Shell:** [Zsh](https://www.zsh.org/) with curated plugins and themes
+- **Shell:** [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/) and curated plugins
+- **Prompt:** [Powerlevel10k](https://github.com/romkatv/powerlevel10k) / [Oh My Posh](https://ohmyposh.dev/)
 - **Editor:** [Neovim](https://neovim.io/) ([LazyVim](https://www.lazyvim.org/))
-- **Theme:** [Catppuccin Mocha](https://catppuccin.com/)
+- **Theme:** [Catppuccin Mocha](https://catppuccin.com/) (dark) / Catppuccin Latte (light)
+- **Font:** [MesloLGS NF](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k) Nerd Font (installed automatically)
 - **Package Management:** [Homebrew](https://brew.sh/) (macOS), native package managers (Linux)
-- **Automated Setup:** [chezmoi](https://www.chezmoi.io/) for dotfile management
+- **Dotfile Management:** [chezmoi](https://www.chezmoi.io/)
+
+---
+
+## 📦 Configuration Overview
+
+### Shell (Zsh)
+
+Managed via `~/.zshrc` with modular configuration loaded from `~/.config/zsh/`. Key settings include:
+
+- Extended history (10 million entries, deduplication, session sharing)
+- Smart directory navigation (`AUTO_CD`, `AUTO_PUSHD`)
+- Enhanced tab completion with colored output
+- Automatic startup info via [fastfetch](https://github.com/fastfetch-cli/fastfetch)
+
+**Oh My Zsh plugins (managed via `.chezmoiexternal.yaml`):**
+
+| Plugin | Description |
+|---|---|
+| [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) | Fish-style command suggestions |
+| [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting) | Syntax highlighting with Catppuccin Mocha theme |
+| [fzf-git](https://github.com/junegunn/fzf-git.sh) | Fuzzy-search Git objects with fzf |
+
+### Git
+
+Git is configured in `~/.gitconfig` with:
+
+- **Diff/merge pager:** [delta](https://github.com/dandavison/delta) with Catppuccin theme and side-by-side view
+- **Aliases:** Extensive aliases via [gitalias](https://github.com/GitAlias/gitalias) plus custom shortcuts (`glog`, `fpush`, `amend`, `reword`, etc.)
+- **Branch management:** [git-town](https://www.git-town.com/) integration
+- **Commit template:** Standard commit message template at `~/.gitmessage`
+- **Credential helper:** GitHub CLI (`gh`) when available, otherwise macOS Keychain
+
+### Editor
+
+- **Primary:** [Neovim](https://neovim.io/) (falls back to `vim`, `micro`, or `nano`)
+- **LazyVim** configuration managed separately
+
+### Appearance
+
+- **Catppuccin Mocha** (dark) applied across Zsh syntax highlighting, delta diffs, and WezTerm
+- **Catppuccin Latte** (light) variant supported via chezmoi `appearance` variable
+- `LS_COLORS` generated with [vivid](https://github.com/sharkdp/vivid) using Catppuccin Mocha palette (macOS)
 
 ---
 
 ## 🛠️ Prerequisites
 
-- [Homebrew](https://brew.sh/) (macOS only)
 - [Git](https://git-scm.com/)
-- [chezmoi](https://www.chezmoi.io/)
+- [Homebrew](https://brew.sh/) (macOS — installed automatically by the bootstrap script if missing)
+- [chezmoi](https://www.chezmoi.io/) (installed automatically by the bootstrap script)
 
 ---
 
@@ -36,10 +80,9 @@ Other distributions may work but are not officially tested.
 
 ## 🚀 Quick Start
 
-Clone and initialize your dotfiles with chezmoi:
+Run the following bootstrap script to install prerequisites and apply the dotfiles in one step:
 
 ```bash
-# Install prerequisites and initialize chezmoi
 system_type=$(uname)
 
 if [[ $system_type == "Darwin" ]]; then
@@ -80,4 +123,5 @@ elif [[ $system_type == "Linux" ]]; then
   esac
 fi
 
-chezmoi init --verbose https://github.com/PowerSchill/dotfiles.git
+chezmoi init --apply https://github.com/PowerSchill/dotfiles.git
+```
