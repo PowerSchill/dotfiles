@@ -1,3 +1,7 @@
 {
-  "model": "sonnet"
+  "model": "sonnet",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/scripts/context-bar.sh"
+  }
 }
