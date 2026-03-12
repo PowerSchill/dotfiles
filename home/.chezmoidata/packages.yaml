@@ -170,7 +170,6 @@ packages:
         # - name: arc
         - name: beyond-compare
         - name: camo-studio
-        - name: cursor
         - name: cyberduck
         - name: daisydisk
         - name: devonthink
@@ -272,7 +271,6 @@ packages:
         - name: zotero@beta
         - name: windows-app
       work:
-        - name: cursor
         - name: gcloud-cli
         - name: postman
         - name: zotero
