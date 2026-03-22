@@ -37,7 +37,7 @@ Operating System Identification
 
 {{/* On macOS the hostname can change depending on the network, this gives a more stable result */}}
 {{- if eq .chezmoi.os "darwin" -}}
-{{-   $hostname := output "scutil" "--get" "ComputerName" | trim -}}
+{{-   $hostname = output "scutil" "--get" "ComputerName" | trim -}}
 {{- end -}}
 
 {{- if not $ephemeral -}}

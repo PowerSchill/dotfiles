@@ -46,7 +46,6 @@ packages:
         #######################################
         - name: fd
         - name: ffmpeg
-        - name: fzf
         - name: imagemagick
         - name: jq
         - name: poppler
@@ -78,18 +77,13 @@ packages:
         - name: pygments
         - name: python
         - name: pytest
-        - name: tflint
-        - name: terragrunt
         #######################################
-        - name: ack
         - name: asciinema
         - name: aspell
         - name: btop
-        - name: bottom
         - name: ccat
         - name: cheat
         - name: cloc
-        - name: colordiff
         - name: coreutils
         - name: ctags
         - name: delve
@@ -117,7 +111,6 @@ packages:
         - name: less
         - name: lesspipe
         - name: lnav
-        - name: lsd
         - name: minikube
         - name: multimarkdown
         - name: mysql
@@ -126,7 +119,6 @@ packages:
         - name: numpy
         - name: nvm
         - name: openssl@3
-        - name: p7zip
         - name: pandoc
         - name: php
         - name: pillow
@@ -139,7 +131,6 @@ packages:
         - name: ssh-copy-id
         - name: streamlink
         - name: switchaudio-osx
-        - name: the_silver_searcher
         - name: viddy
         - name: virtualenv
         - name: vivid
@@ -161,6 +152,8 @@ packages:
         - name: jira-cli
         - name: shellcheck
         - name: terraform-docs
+        - name: terragrunt
+        - name: tflint
         - name: warrensbox/tap/tfswitch
     casks:
       global:

@@ -117,7 +117,7 @@
     # "refuse to push if the upstream branch’s name is different from the local one"
     # https://git-scm.com/docs/git-config#git-config-pushdefault
 
-followTags = true
+    followTags = true
     # Because I get sick of telling git to do it manually
     # https://git-scm.com/docs/git-config#git-config-pushfollowTags
 
@@ -158,7 +158,11 @@ followTags = true
   format = ssh
 
 [gpg "ssh"]
+{{- if eq .chezmoi.os "darwin" }}
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{- else if eq .chezmoi.os "linux" }}
+  program = "/opt/1Password/op-ssh-sign"
+{{- end }}
   allowedSignersFile = "~/.config/git/allowed_signers"
 
 [delta]
@@ -179,10 +183,10 @@ followTags = true
   helper = ""
 [credential "https://github.com"]
   helper =
-  helper = !/opt/homebrew/bin/gh auth git-credential
+  helper = !{{ $ghPath }} auth git-credential
 [credential "https://gist.github.com"]
   helper =
-  helper = !/opt/homebrew/bin/gh auth git-credential
+  helper = !{{ $ghPath }} auth git-credential
   {{- else }}
 [credential]
   helper = osxkeychain

@@ -96,7 +96,7 @@ export LC_ALL=en_US.UTF-8
 autoload -Uz compinit
 
 # Speed up compinit by only checking cache once a day
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
     compinit
 else
     compinit -C
@@ -118,13 +118,15 @@ zstyle ':completion:*' cache-path "$HOME/.zsh/cache"
 # ZSH PLUGINS
 # ==============================================================================
 
-if [[ $PLATFORM == 'osx' ]]; then
-  source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+if [[ "$(uname)" == 'Darwin' ]]; then
+  if [[ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+    source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  fi
 
-if [[ $PLATFORM == 'osx' ]]; then
-  # Requires coreutils from brew
-  export LS_COLORS="$(vivid generate catppuccin-mocha)"
+  # Requires coreutils and vivid from brew
+  if command -v vivid >/dev/null 2>&1; then
+    export LS_COLORS="$(vivid generate catppuccin-mocha)"
+  fi
 fi
 
 # ============================================================================
@@ -163,7 +165,7 @@ fi
 # LOCAL OVERRIDES
 # ==============================================================================
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null 2>&1 && . "$(code --locate-shell-integration-path zsh)"
 
 # Source local zshrc if it exists (for machine-specific settings)
 if [ -f "$HOME/.zshrc.local" ]; then
