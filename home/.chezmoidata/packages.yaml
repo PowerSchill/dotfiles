@@ -203,6 +203,7 @@ packages:
         - name: visual-studio-code@insiders
         # - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly
+        - name: zed
       personal:
         - name: 1password
           args:
