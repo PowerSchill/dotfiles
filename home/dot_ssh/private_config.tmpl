@@ -12,8 +12,8 @@ Host *
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 {{- end }}
 	ServerAliveInterval 60
-  ServerAliveCountMax 3
-  TCPKeepAlive yes
+	ServerAliveCountMax 3
+	TCPKeepAlive yes
 	ConnectTimeout 30
 	ControlMaster auto
 	ControlPath ~/.ssh/control-%h-%p-%r

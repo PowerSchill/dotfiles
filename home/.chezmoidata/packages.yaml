@@ -77,6 +77,7 @@ packages:
         - name: pygments
         - name: python
         - name: pytest
+        - name: uv
         #######################################
         - name: asciinema
         - name: aspell

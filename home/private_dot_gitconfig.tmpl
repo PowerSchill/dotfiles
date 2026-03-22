@@ -1,6 +1,5 @@
 # Get Paths for commands
 {{- $ghPath := lookPath "gh" }}
-{{- $opPath := lookPath "op" }}
 
 [include]
   path = ~/.config/delta/catppuccin.gitconfig
@@ -147,7 +146,7 @@
 
 [mergetool "bc"]
     prompt = false
-	  trustExitCode = true
+    trustExitCode = true
 
 [commit]
   template = ~/.gitmessage
@@ -162,13 +161,15 @@
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 {{- else if eq .chezmoi.os "linux" }}
   program = "/opt/1Password/op-ssh-sign"
+{{- else if eq .chezmoi.os "windows" }}
+  program = "C:/Users/{{ .chezmoi.username }}/AppData/Local/1Password/app/8/op-ssh-sign.exe"
 {{- end }}
   allowedSignersFile = "~/.config/git/allowed_signers"
 
 [delta]
   navigate = true
   side-by-side = true
-{{ if eq .appearance  "light" -}}
+{{- if eq .appearance "light" -}}
     features = catppuccin-latte
 {{- else -}}
     features = catppuccin-mocha
@@ -208,11 +209,11 @@
 
 {{- if lookPath "ksdiff" }}
 [difftool "Kaleidoscope"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
 {{- end }}
 
 ################################################################################

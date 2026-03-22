@@ -13,7 +13,7 @@ Get-AppxPackage -AllUsers Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.BingWeather | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.GamingApp | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.GetHelp | Remove-AppxPackage
-Get-AppxPackage -AllUsers Microsoft.Getstarted | Remove-AppPackage
+Get-AppxPackage -AllUsers Microsoft.Getstarted | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.Microsoft3DViewer | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.MicrosoftSolitaireCollection | Remove-AppxPackage
@@ -31,7 +31,7 @@ Get-AppxPackage -AllUsers Microsoft.WindowsAlarms | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsCalculator | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsCamera | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsCommunicationsApps | Remove-AppxPackage
-Get-AppxPackage -AllUsers Microsoft.WindowsFeedbackHub | Remove-AppPackage
+Get-AppxPackage -AllUsers Microsoft.WindowsFeedbackHub | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsMaps | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsSoundRecorder | Remove-AppxPackage
 Get-AppxPackage -AllUsers Microsoft.WindowsStore | Remove-AppxPackage

@@ -3,12 +3,18 @@
 # 1Password CLI installer script
 echo "Starting 1Password CLI installation..."
 
-{{ if and (eq .uname_arch "arm64") (not .ephemeral) -}}
+{{ if and (ne .uname_arch "") (not .ephemeral) -}}
 if ! command -v op >/dev/null 2>&1; then
-  echo "Installing 1Password CLI for ARM64..."
+  ARCH="{{ .uname_arch }}"
+  if [ "$ARCH" = "arm64" ]; then
+    DL_ARCH="aarch64"
+  else
+    DL_ARCH="x86_64"
+  fi
+  echo "Installing 1Password CLI for $ARCH..."
   tmpdir=$(mktemp -d)
   cd "$tmpdir"
-  curl -sSO https://downloads.1password.com/linux/tar/stable/aarch64/1password-latest.tar.gz
+  curl -sSO "https://downloads.1password.com/linux/tar/stable/${DL_ARCH}/1password-latest.tar.gz"
   tar -xf 1password-latest.tar.gz
   sudo mkdir -p /opt/1Password
   sudo mv 1password-*/* /opt/1Password

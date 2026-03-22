@@ -5,8 +5,10 @@ if command -v fzf >/dev/null 2>&1; then
 
   eval "$(fzf --zsh)"
 
-  if [ -f ~/fzf-git/fzf-git.sh ]; then
-    source ~/fzf-git/fzf-git.sh
+  if [ -f "$HOME/fzf-git/fzf-git.sh" ]; then
+    source "$HOME/fzf-git/fzf-git.sh"
+  elif [ -f "$HOME/.fzf-git/fzf-git.sh" ]; then
+    source "$HOME/.fzf-git/fzf-git.sh"
   fi
 
   # -- Use fd instead of fzf --

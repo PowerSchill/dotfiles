@@ -1,5 +1,4 @@
 return function(config, wezterm)
-  config.font = wezterm.font("MesloLGS Nerd Font")
   config.font = wezterm.font("MesloLGS NF")
 
   config.font_size = 12

@@ -48,6 +48,7 @@ fzf-git:
   type: file
   {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
   url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
+  refreshPeriod: 168h
 
 {{-   $fontDir := "" }}
 {{-   if eq .chezmoi.os "darwin" }}
