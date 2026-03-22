@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(find /Users/powerschill/.local/share/chezmoi/home/dot_config -type f \\\\\\(-name tmux* -o -name wezterm* -o -name bat* -o -name delta* -o -name lazygit* -o -name yazi* -o -name alacritty* -o -name fastfetch* -o -name gh* \\\\\\))",
+      "Bash(zsh -n /Users/powerschill/.local/share/chezmoi/home/dot_config/zsh/aliases_global.zsh 2>&1)",
+      "Bash(while read:*)",
+      "Bash(do sed:*)",
+      "Bash(done)",
+      "Bash(zsh -n /Users/powerschill/.local/share/chezmoi/home/dot_config/zsh/functions/utils.zsh 2>&1)",
+      "Bash(for file:*)",
+      "Bash(do echo:*)",
+      "Bash(zsh -n \"$file\")",
+      "Bash(echo \"ERROR in $file\")",
+      "Bash(grep:*)"
+    ]
+  }
+}

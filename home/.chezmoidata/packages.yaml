@@ -216,8 +216,8 @@ packages:
         - name: calibre
           excludeEphemeral: true
         - name: chatgpt
+        - name: claude
         - name: claude-code
-          excludeEphemeral: true
         - name: curseforge
         - name: discord
         - name: docker-desktop
@@ -268,7 +268,6 @@ packages:
       work:
         - name: gcloud-cli
         - name: postman
-        - name: zotero
   linux:
     debian:
       cargo:
