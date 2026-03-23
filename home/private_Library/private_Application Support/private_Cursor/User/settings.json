@@ -124,4 +124,5 @@
   ],
   "snyk.advanced.cliPath": "/Users/mark.schill/Users/mark.schill/.local/share/snyk/vscode-cli/snyk-macos-arm64",
   "snyk.yesWelcomeNotification": false,
+  "atlascode.jira.enabled": true,
 }
