@@ -101,6 +101,7 @@ packages:
         - name: grc # Generic colourizer for program output
         - name: gum # Style stdin/stdout with glamour
         - name: highlight # Source code syntax highlighter
+        - name: ical-buddy # Get events and tasks from the macOS calendar database
         - name: ipcalc # IP address calculator for networking
         - name: jandedobbeleer/oh-my-posh/oh-my-posh # Customizable shell prompt engine
         - name: jenv # Manage Java versions with ease
@@ -178,7 +179,6 @@ packages:
         - name: font-symbols-only-nerd-font # Nerd font with symbol glyphs
         - name: 1password-cli # Command-line access to 1Password vault
         - name: alfred # Application launcher and productivity tool
-        # - name: arc
         - name: beyond-compare # Advanced file and folder comparison tool
         - name: bloom # Bloom language server utility
         - name: camo-studio # Virtual camera app for video calls
@@ -192,7 +192,7 @@ packages:
         - name: font-meslo-for-powerline # Meslo font variant for powerline
         - name: font-meslo-lg-nerd-font # Meslo Nerd font with larger size
         - name: hazel # Automated file management tool
-        - name: helium-browser # Lightweight side window browser
+          excludeEphemeral: true
         - name: kaleidoscope # Visual difference and merge tool
         - name: keyboard-maestro # Keyboard automation utility
         - name: logi-options+ # Logitech device configuration and customization
@@ -216,6 +216,7 @@ packages:
         # - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly # Nightly build of WezTerm terminal emulator
         - name: zed # High-performance code editor
+        - name: zen # Gecko based web browser
       personal:
         - name: 1password # Password manager and digital vault
           args:
@@ -250,6 +251,7 @@ packages:
         - name: firefox # Firefox web browser
         - name: google-chrome # Google Chrome web browser
         - name: grammarly-desktop # Grammar check and writing assistant
+        - name: helium-browser # Lightweight side window browser
         # - name: imazing
         #   excludeEphemeral: true
         # - name: keyboardcleantool
@@ -291,6 +293,8 @@ packages:
         - name: airbuddy # AirPods and Bluetooth device manager
         - name: gcloud-cli # Google Cloud command-line tool
         - name: postman # API development and testing platform
+        - name: redis-insight # GUI for streamlined Redis application development
+
   linux:
     debian:
       cargo:
