@@ -12,12 +12,21 @@ if command -v fzf >/dev/null 2>&1; then
   fi
 
   # -- Use fd instead of fzf --
+{{- if eq .appearance "light" }}
+  export FZF_DEFAULT_OPTS=" \
+  --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+  --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+  --color=marker:#7287fd,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+  --color=selected-bg:#bcc0cc \
+  --color=border:#9ca0b0,label:#4c4f69"
+{{- else }}
   export FZF_DEFAULT_OPTS=" \
   --color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
   --color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
   --color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
   --color=selected-bg:#45475A \
   --color=border:#6C7086,label:#CDD6F4"
+{{- end }}
 
   if command -v eza >/dev/null 2>&1; then
     show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"

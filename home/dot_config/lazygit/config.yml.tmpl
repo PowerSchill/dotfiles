@@ -15,6 +15,29 @@ gui:
   enlargedSideViewLocation: top
   mainPanelSplitMode: flexible
   theme:
+{{- if eq .appearance "light" }}
+    activeBorderColor:
+      - "#1e66f5"
+      - bold
+    inactiveBorderColor:
+      - "#9ca0b0"
+    optionsTextColor:
+      - "#1e66f5"
+    selectedLineBgColor:
+      - "#ccd0da"
+    cherryPickedCommitBgColor:
+      - "#bcc0cc"
+    cherryPickedCommitFgColor:
+      - "#1e66f5"
+    unstagedChangesColor:
+      - "#d20f39"
+    defaultFgColor:
+      - "#4c4f69"
+    searchingActiveBorderColor:
+      - "#df8e1d"
+  authorColors:
+    "*": "#7287fd"
+{{- else }}
     activeBorderColor:
       - "#89b4fa"
       - bold
@@ -36,6 +59,7 @@ gui:
       - "#f9e2af"
   authorColors:
     "*": "#b4befe"
+{{- end }}
   commitLength:
     show: true
   skipNoStagedFilesWarning: false
@@ -59,7 +83,7 @@ gui:
 os:
   editPreset: "nvim"
   # editCommand: "$XDG_CONFIG_HOME/lazygit/edit-nvim"
-  # editCommandTemplate: "{{editor}} {{filename}}"
+  # editCommandTemplate: "{{ "{{editor}} {{filename}}" }}"
 git:
   log:
     showGraph: always
@@ -67,7 +91,7 @@ git:
   # branchLogCmd:
   #   'git log --graph --color=always --abbrev-commit --decorate --date=relative
   #   --pretty=format:"%C(auto)%h: %s (%C(blue)%an %C(white)|
-  #   %C(cyan)%ad%C(white))" {{branchName}} --'
+  #   %C(cyan)%ad%C(white))" {{ "{{branchName}}" }} --'
   branchLogCmd: "git log --color=always --graph --date=relative --pretty=format:'%C(dim yellow)%h %C(reset)%<|(70,trunc)%s %C(dim white)@%an%C(reset) %C(dim white)(%cd)%C(reset)%C(auto)'"
   overrideGpg: true
   pagers:
@@ -79,7 +103,7 @@ git:
     - git log --color=always --graph --all --date=relative --pretty=format:'%C(auto)%h %C(reset)%<|(50,trunc)%s %C(bold blue)<%an>%C(reset) %C(green)(%cd)%C(reset)%C(auto)%d'
 customCommands:
   # - key: "J"
-  #   command: $XDG_CONFIG_HOME/lazygit/create-jira-branch {{index .PromptResponses 0 | quote}}
+  #   command: $XDG_CONFIG_HOME/lazygit/create-jira-branch {{ "{{index .PromptResponses 0 | quote}}" }}
   #   description: "create task in JIRA"
   #   context: "localBranches"
   #   loadingText: "creating task in JIRA"
@@ -117,9 +141,9 @@ customCommands:
     description: "Git Town Append"
     prompts:
       - type: "input"
-        title: "Enter name of new child branch. Branches off of '{{.CheckedOutBranch.Name}}'"
+        title: "Enter name of new child branch. Branches off of '{{ "{{.CheckedOutBranch.Name}}" }}'"
         key: "BranchName"
-    command: "git-town append {{.Form.BranchName}}"
+    command: "git-town append {{ "{{.Form.BranchName}}" }}"
     loadingText: "Appending"
     output: log
   - key: "h"
@@ -129,7 +153,7 @@ customCommands:
       - type: "input"
         title: "Enter name of new branch. Branches off of 'Main'"
         key: "BranchName"
-    command: "git-town hack {{.Form.BranchName}}"
+    command: "git-town hack {{ "{{.Form.BranchName}}" }}"
     loadingText: "Hacking"
     output: log
   - key: "K"
@@ -153,9 +177,9 @@ customCommands:
     description: "Git Town Prepend (creates a branch between the curent branch and its parent)"
     prompts:
       - type: "input"
-        title: "Enter name of the for child branch between '{{.CheckedOutBranch.Name}}' and its parent"
+        title: "Enter name of the for child branch between '{{ "{{.CheckedOutBranch.Name}}" }}' and its parent"
         key: "BranchName"
-    command: "git-town prepend {{.Form.BranchName}}"
+    command: "git-town prepend {{ "{{.Form.BranchName}}" }}"
     loadingText: "Prepending"
     output: log
   - key: "S"
@@ -181,13 +205,13 @@ customCommands:
     context: "global"
     loadingText: "opening github..."
   - key: "O"
-    command: gh pr create -t "{{index .PromptResponses 0}}" {{ if eq (index .PromptResponses 1) "yes"}}{{ "--draft" }}{{ end }}
+    command: gh pr create -t "{{ "{{index .PromptResponses 0}}" }}" {{ "{{" }} if eq (index .PromptResponses 1) "yes"{{ "}}" }}{{ "{{" }} "--draft" {{ "}}" }}{{ "{{" }} end {{ "}}" }}
     description: "Create a pull request using the GitHub CLI"
     context: "localBranches"
     prompts:
       - type: "input"
         title: "Title"
-        initialValue: "{{index .CheckedOutBranch.Name}}"
+        initialValue: "{{ "{{index .CheckedOutBranch.Name}}" }}"
       - type: "menu"
         title: "Mark pull request as draft?"
         options:
@@ -196,13 +220,13 @@ customCommands:
     output: terminal
   - key: "C"
     command: |
-      git commit -m "{{ .Form.Type }}{{if .Form.Scopes}}({{ .Form.Scopes }}){{end}}: {{ .Form.Description }}" \
-      {{- if .Form.LongDescription }}
-      -m "{{ .Form.LongDescription }}" \
-      {{- end }}
-      {{- if .Form.BreakingChange }}
-      -m "BREAKING CHANGE: {{ .Form.BreakingChange }}"
-      {{- end }}
+      git commit -m "{{ "{{" }} .Form.Type {{ "}}" }}{{ "{{" }}if .Form.Scopes{{ "}}" }}({{ "{{" }} .Form.Scopes {{ "}}" }}){{ "{{" }}end{{ "}}" }}: {{ "{{" }} .Form.Description {{ "}}" }}" \
+      {{ "{{" }}- if .Form.LongDescription {{ "}}" }}
+      -m "{{ "{{" }} .Form.LongDescription {{ "}}" }}" \
+      {{ "{{" }}- end {{ "}}" }}
+      {{ "{{" }}- if .Form.BreakingChange {{ "}}" }}
+      -m "BREAKING CHANGE: {{ "{{" }} .Form.BreakingChange {{ "}}" }}"
+      {{ "{{" }}- end {{ "}}" }}
     description: "commit with commitizen"
     context: "files"
     prompts:
@@ -258,15 +282,15 @@ customCommands:
       - type: "confirm"
         title: "Is the commit message correct?"
         body: |
-          {{ .Form.Type }}{{if .Form.Scopes}}({{ .Form.Scopes }}){{end}}: {{ .Form.Description }}
-          {{- if .Form.LongDescription }}
+          {{ "{{" }} .Form.Type {{ "}}" }}{{ "{{" }}if .Form.Scopes{{ "}}" }}({{ "{{" }} .Form.Scopes {{ "}}" }}){{ "{{" }}end{{ "}}" }}: {{ "{{" }} .Form.Description {{ "}}" }}
+          {{ "{{" }}- if .Form.LongDescription {{ "}}" }}
 
-          {{ .Form.LongDescription }}
-          {{- end }}
-          {{- if .Form.BreakingChange }}
+          {{ "{{" }} .Form.LongDescription {{ "}}" }}
+          {{ "{{" }}- end {{ "}}" }}
+          {{ "{{" }}- if .Form.BreakingChange {{ "}}" }}
 
-          BREAKING CHANGE: {{ .Form.BreakingChange }}
-          {{- end }}
+          BREAKING CHANGE: {{ "{{" }} .Form.BreakingChange {{ "}}" }}
+          {{ "{{" }}- end {{ "}}" }}
   # - key: "P"
   #   command: 'git push && gh pr checks --watch --json name,state -q ".[] | select(.name == "Mark as draft") | .state == "SUCCESS" or .state == "SKIPPED""'
   # context: "localBranches"

@@ -5,7 +5,7 @@ return {
   opts = function(_, opts)
     local auto = require 'lualine.themes.auto'
 
-    local colors = require('catppuccin.palettes').get_palette 'mocha'
+    local colors = require('catppuccin.palettes').get_palette()
 
     local function separator()
       return {

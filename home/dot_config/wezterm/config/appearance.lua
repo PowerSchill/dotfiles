@@ -30,11 +30,48 @@ return function(config, wezterm)
     rosewater = '#f5e0dc',
   }
 
-  -- Color scheme
-  config.color_scheme = "Catppuccin Mocha"
+  -- Catppuccin Latte palette
+  local latte = {
+    crust    = '#dce0e8',
+    mantle   = '#e6e9ef',
+    base     = '#eff1f5',
+    surface0 = '#ccd0da',
+    surface1 = '#bcc0cc',
+    surface2 = '#acb0be',
+    overlay0 = '#9ca0b0',
+    overlay1 = '#8c8fa1',
+    subtext0 = '#6c6f85',
+    subtext1 = '#5c5f77',
+    text     = '#4c4f69',
+    lavender = '#7287fd',
+    blue     = '#1e66f5',
+    sapphire = '#209fb5',
+    sky      = '#04a5e5',
+    teal     = '#179299',
+    green    = '#40a02b',
+    yellow   = '#df8e1d',
+    peach    = '#fe640b',
+    maroon   = '#e64553',
+    red      = '#d20f39',
+    mauve    = '#8839ef',
+    pink     = '#ea76cb',
+    flamingo = '#dd7878',
+    rosewater = '#dc8a78',
+  }
 
-  local bg_background = os.getenv("HOME") .. "/.config/wezterm/assets/Wezterm Background Blurred.png"
-  config.window_background_image = bg_background
+  -- Select palette based on macOS system appearance
+  local function is_dark()
+    local appearance = wezterm.gui and wezterm.gui.get_appearance() or "Dark"
+    return appearance:find("Dark") ~= nil
+  end
+
+  local palette = is_dark() and mocha or latte
+  config.color_scheme = is_dark() and "Catppuccin Mocha" or "Catppuccin Latte"
+
+  if is_dark() then
+    local bg_background = os.getenv("HOME") .. "/.config/wezterm/assets/Wezterm Background Blurred.png"
+    config.window_background_image = bg_background
+  end
 
   -- Tab bar
   config.hide_tab_bar_if_only_one_tab = false
@@ -60,34 +97,34 @@ return function(config, wezterm)
   -- Tab bar colors
   config.colors = {
     tab_bar = {
-      background = mocha.crust,
+      background = palette.crust,
       active_tab = {
-        bg_color = mocha.base,
-        fg_color = mocha.lavender,
+        bg_color = palette.base,
+        fg_color = palette.lavender,
         intensity = 'Bold',
       },
       inactive_tab = {
-        bg_color = mocha.crust,
-        fg_color = mocha.overlay1,
+        bg_color = palette.crust,
+        fg_color = palette.overlay1,
       },
       inactive_tab_hover = {
-        bg_color = mocha.surface0,
-        fg_color = mocha.text,
+        bg_color = palette.surface0,
+        fg_color = palette.text,
       },
       new_tab = {
-        bg_color = mocha.crust,
-        fg_color = mocha.overlay0,
+        bg_color = palette.crust,
+        fg_color = palette.overlay0,
       },
       new_tab_hover = {
-        bg_color = mocha.surface0,
-        fg_color = mocha.text,
+        bg_color = palette.surface0,
+        fg_color = palette.text,
       },
     },
   }
 
   -- Command palette appearance
-  config.command_palette_bg_color = mocha.base
-  config.command_palette_fg_color = mocha.text
+  config.command_palette_bg_color = palette.base
+  config.command_palette_fg_color = palette.text
 
   -- Tab title helper
   local function tab_title(tab_info)
@@ -103,16 +140,16 @@ return function(config, wezterm)
   local RIGHT_CIRCLE = wezterm.nerdfonts.ple_right_half_circle_thick
 
   wezterm.on('format-tab-title', function(tab, tabs, panes, _config, hover, max_width)
-    local tab_bg = mocha.crust
-    local tab_fg = mocha.overlay1
-    local edge_bg = mocha.crust
+    local tab_bg = palette.crust
+    local tab_fg = palette.overlay1
+    local edge_bg = palette.crust
 
     if tab.is_active then
-      tab_bg = mocha.base
-      tab_fg = mocha.lavender
+      tab_bg = palette.base
+      tab_fg = palette.lavender
     elseif hover then
-      tab_bg = mocha.surface0
-      tab_fg = mocha.text
+      tab_bg = palette.surface0
+      tab_fg = palette.text
     end
 
     local title = tab_title(tab)
@@ -140,11 +177,11 @@ return function(config, wezterm)
     local LEFT_ARROW = wezterm.nerdfonts.ple_left_half_circle_thick
 
     window:set_right_status(wezterm.format({
-      { Background = { Color = mocha.crust } },
-      { Foreground = { Color = mocha.surface0 } },
+      { Background = { Color = palette.crust } },
+      { Foreground = { Color = palette.surface0 } },
       { Text = LEFT_ARROW },
-      { Background = { Color = mocha.surface0 } },
-      { Foreground = { Color = mocha.subtext0 } },
+      { Background = { Color = palette.surface0 } },
+      { Foreground = { Color = palette.subtext0 } },
       { Text = ' ' .. wezterm.hostname() .. ' ' },
     }))
   end)

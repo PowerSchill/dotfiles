@@ -125,7 +125,11 @@ if [[ "$(uname)" == 'Darwin' ]]; then
 
   # Requires coreutils and vivid from brew
   if command -v vivid >/dev/null 2>&1; then
+{{- if eq .appearance "light" }}
+    export LS_COLORS="$(vivid generate catppuccin-latte)"
+{{- else }}
     export LS_COLORS="$(vivid generate catppuccin-mocha)"
+{{- end }}
   fi
 fi
 
