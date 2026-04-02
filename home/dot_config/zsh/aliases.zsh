@@ -195,7 +195,12 @@ alias kb="\${EDITOR:-code} ~/Library/KeyBindings/DefaultKeyBinding.dict"
 
 # Chezmoi
 alias cm='chezmoi'
-alias theme-sync='chezmoi apply && exec zsh'
+alias theme-sync='() {
+  local appearance
+  defaults read -g AppleInterfaceStyle 2>/dev/null | grep -qi dark && appearance="dark" || appearance="light"
+  sed -i "" "s/^\(  appearance: \).*/\1\"$appearance\"/" ~/.config/chezmoi/chezmoi.yaml
+  chezmoi apply && exec zsh
+}'
 
 #═══════════════════════════════════════════════════════════════════════════════
 # UTILITIES

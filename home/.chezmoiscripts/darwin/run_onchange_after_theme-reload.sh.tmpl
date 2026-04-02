@@ -5,6 +5,11 @@
 # Reload tmux config if tmux is running
 if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
   tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null
+  # Re-run catppuccin plugin explicitly so the flavor change takes effect
+  if [ -f ~/.tmux/plugins/catppuccin/tmux/catppuccin.tmux ]; then
+    tmux source-file ~/.tmux/plugins/catppuccin/tmux/catppuccin.tmux 2>/dev/null
+  fi
+  tmux refresh-client -S 2>/dev/null
 fi
 
 # Set FSH theme
