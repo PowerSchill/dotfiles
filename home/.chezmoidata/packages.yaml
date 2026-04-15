@@ -287,6 +287,7 @@ packages:
         - name: zotero@beta # Research source manager and bibliography software
         - name: windows-app # Windows App for running Windows apps on macOS
       work:
+        - name: burp-suite-professional # Web security testing toolkits
         - name: cursor # AI-powered code editor with advanced features
         - name: cursor-cli # Command-line interface for Cursor editor
         - name: displaylink # DisplayLink graphics adapter drivers
