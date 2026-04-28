@@ -6,10 +6,8 @@ packages:
         - name: buo/cask-upgrade
         - name: jandedobbeleer/oh-my-posh
         - name: ttscoff/thelab
-        - name: warrensbox/tap
       personal:
       work:
-        - name: hashicorp/tap
     brews:
       global:
         ########################################
@@ -129,7 +127,6 @@ packages:
         - name: readline # Library for command-line editing
         - name: sipcalc # Advanced IP subnet calculator
         - name: source-highlight # Syntax highlighter for many languages
-        - name: speedtest-cli # Command-line speed test utility
         - name: ssh-copy-id # Copy SSH public key to remote machines
         - name: streamlink # Extract and play video streams
         - name: switchaudio-osx # Switch audio input/output on macOS
@@ -155,8 +152,7 @@ packages:
         - name: powershell # Microsoft PowerShell for cross-platform automation
         - name: pycparser # Complete C99 parser written in Python
         - name: pydantic # Data validation using Python type hints
-        - name: python@3.12 # Python 3.12 programming language
-        - name: redis # In-memory data structure store and cache
+        - name: python # Interpreted, interactive, object-oriented programming language
         - name: shellcheck # Shell script static analysis tool
         - name: shfmt # Shell script formatter
         - name: terraform-docs # Generate Terraform documentation from code
@@ -165,17 +161,15 @@ packages:
         - name: tfsec # Security scanner for Terraform code
         - name: the_silver_searcher # Fast code searching tool (ag)
         - name: trivy # Vulnerability and misconfiguration scanner
-        - name: warrensbox/tap/tfswitch # Switch between Terraform versions
-        - name: warrensbox/tap/tgswitch # Switch between Terragrunt versions
       personal:
         - name: mas
           excludeEphemeral: true
       work:
-        - name: ansible # Configuration management and IT automation platform
-        - name: git-filter-repo # Migrate git repositories and filter history
-        - name: hashicorp/tap/packer # Tool for creating identical machine images
     casks:
       global:
+        - name: 1password # Password manager and digital vault
+          args:
+            appdir: "/Applications"
         - name: font-symbols-only-nerd-font # Nerd font with symbol glyphs
         - name: 1password-cli # Command-line access to 1Password vault
         - name: alfred # Application launcher and productivity tool
@@ -186,6 +180,10 @@ packages:
         - name: daisydisk # Visual disk usage analyzer
         - name: devonthink # Document and information management system
           excludeEphemeral: true
+        - name: docker-desktop # Docker container platform for macOS
+          excludeEphemeral: true
+          args:
+            appdir: "/Applications"
         - name: dotnet-sdk # Microsoft .NET SDK for development
         # - name: font-fira-code-nerd-font
         # - name: font-jetbrains-mono
@@ -213,15 +211,10 @@ packages:
         - name: textexpander # Text expansion and automation tool
         - name: tower # Git desktop client
         - name: visual-studio-code@insiders # VS Code insider development build
-        # - name: vivaldi # Used for primary personal browser
         - name: wezterm@nightly # Nightly build of WezTerm terminal emulator
         - name: zed # High-performance code editor
         - name: zen # Gecko based web browser
       personal:
-        - name: 1password # Password manager and digital vault
-          args:
-            appdir: "/Applications"
-        # - name: airbuddy
         - name: anylist # Shared grocery and household list app
           excludeEphemeral: true
         - name: backblaze # Cloud backup service
@@ -239,10 +232,6 @@ packages:
         - name: claude-code # Claude Code editor integration
         - name: curseforge # Modding platform for games
         - name: discord # Voice, video, and text communication platform
-        - name: docker-desktop # Docker container platform for macOS
-          excludeEphemeral: true
-          args:
-            appdir: "/Applications"
         - name: dropbox # Cloud storage and file synchronization
           excludeEphemeral: true
         - name: elgato-stream-deck # Stream Deck control software
@@ -291,10 +280,8 @@ packages:
         - name: cursor # AI-powered code editor with advanced features
         - name: cursor-cli # Command-line interface for Cursor editor
         - name: displaylink # DisplayLink graphics adapter drivers
-        - name: airbuddy # AirPods and Bluetooth device manager
         - name: gcloud-cli # Google Cloud command-line tool
         - name: postman # API development and testing platform
-        - name: redis-insight # GUI for streamlined Redis application development
 
   linux:
     debian:
