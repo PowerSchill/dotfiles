@@ -8,74 +8,74 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "debugger": {
-    "button": false,
+    "button": false
   },
   "tabs": {
     "file_icons": true,
-    "git_status": false,
+    "git_status": false
   },
   "tab_bar": {
     "show_pinned_tabs_in_separate_row": true,
-    "show": true,
+    "show": true
   },
   "title_bar": {
     "show_menus": false,
-    "show_branch_status_icon": false,
+    "show_branch_status_icon": false
   },
   "colorize_brackets": true,
   "indent_guides": {
-    "coloring": "indent_aware",
+    "coloring": "indent_aware"
   },
   "vim": {
-    "toggle_relative_line_numbers": true,
+    "toggle_relative_line_numbers": true
   },
   "relative_line_numbers": "enabled",
   "agent_ui_font_size": 13.0,
   "redact_private_values": true,
   "agent_servers": {
     "claude-acp": {
-      "type": "registry",
-    },
+      "type": "registry"
+    }
   },
   "outline_panel": {
-    "dock": "left",
+    "dock": "left"
   },
   "collaboration_panel": {
-    "dock": "left",
+    "dock": "left"
   },
   "agent": {
     "dock": "right",
     "favorite_models": [],
-    "model_parameters": [],
+    "model_parameters": []
   },
   "git_panel": {
     "dock": "left",
-    "tree_view": true,
+    "tree_view": true
   },
   "icon_theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
-    "dark": "Catppuccin Mocha",
+    "dark": "Catppuccin Mocha"
   },
   "disable_ai": false,
   "vim_mode": true,
   "project_panel": {
     "git_status_indicator": true,
     "dock": "left",
-    "auto_fold_dirs": false,
+    "auto_fold_dirs": false
   },
   "base_keymap": "VSCode",
   "gutter": {
-    "folds": true,
+    "folds": true
   },
   "minimap": {
     "show": "auto",
-    "thumb": "always",
+    "thumb": "always"
   },
   "buffer_font_family": "MesloLGS NF",
   "file_types": {
     "terraform": ["*.tfvars"],
-    "javascript": ["*.omnifocusjs"],
+    "javascript": ["*.omnifocusjs"]
   },
   "show_whitespaces": "none",
   "ensure_final_newline_on_save": true,
@@ -87,6 +87,6 @@
   "theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
-    "dark": "Catppuccin Mocha",
-  },
+    "dark": "Catppuccin Mocha"
+  }
 }
