@@ -21,8 +21,9 @@
         "url": "https://github.com/anthropics/claude-plugins-official.git"
       }
     }
-  }
-  "theme": "dark-ansi",
+
+  },
+ "theme": "dark-ansi",
   "editorMode": "vim",
   "remoteControlAtStartup": false,
   "skipAutoPermissionPrompt": true
