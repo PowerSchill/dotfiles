@@ -1,4 +1,12 @@
 [
+  {
+    "bindings": {
+      "cmd-alt-c": [
+        "agent::NewExternalAgentThread",
+        { "agent": { "custom": { "name": "claude-acp" } } },
+      ],
+    },
+  },
   // ═══════════════════════════════════════════════════════════════════════════════
   // GLOBAL: UI Font Scaling (without persist)
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -384,6 +392,11 @@
     "context": "vim_mode == visual",
     "bindings": {
       "shift-x": "vim::Exchange",
+    },
+  },
+  {
+    "unbind": {
+      "cmd-shift-c": "collab_panel::ToggleFocus",
     },
   },
 ]

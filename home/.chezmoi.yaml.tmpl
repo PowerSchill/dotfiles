@@ -97,6 +97,15 @@ git:
   autoPush: true
 diff:
   pager: delta
+{{- if lookPath "bcomp" }}
+merge:
+  command: "bcomp"
+  args:
+    - "{{ `{{ .Destination }}` }}"
+    - "{{ `{{ .Source }}` }}"
+    - "{{ `{{ .Target }}` }}"
+    - "{{ `{{ .Source }}` }}"
+{{- end }}
 textconv:
 - pattern: "**/*.plist"
   command: "plutil"
