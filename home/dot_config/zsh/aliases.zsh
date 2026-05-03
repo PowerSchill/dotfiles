@@ -195,7 +195,7 @@ alias kb="\${EDITOR:-code} ~/Library/KeyBindings/DefaultKeyBinding.dict"
 
 # Chezmoi
 alias cm='chezmoi'
-alias theme-sync='chezmoi init --apply && exec zsh'
+# theme-sync is defined as a function in functions/theme.zsh
 
 #═══════════════════════════════════════════════════════════════════════════════
 # UTILITIES
