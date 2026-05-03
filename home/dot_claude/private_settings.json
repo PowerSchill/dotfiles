@@ -22,4 +22,8 @@
       }
     }
   }
+  "theme": "dark-ansi",
+  "editorMode": "vim",
+  "remoteControlAtStartup": false,
+  "skipAutoPermissionPrompt": true
 }
