@@ -14,7 +14,8 @@
       "Bash(do echo:*)",
       "Bash(zsh -n \"$file\")",
       "Bash(echo \"ERROR in $file\")",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(chezmoi diff *)"
     ]
   }
 }

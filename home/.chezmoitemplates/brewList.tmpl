@@ -3,7 +3,7 @@
 {{- $isEphemeral := index . 2 -}}
 {{- $isHeadless := index . 3 -}}
 {{- range $items -}}
-  {{- if not (or (and $isEphemeral .excludeEphemeral) (and $isHeadless .excludeHeadless)) }}
+  {{- if not (or (and $isEphemeral (index . "excludeEphemeral")) (and $isHeadless (index . "excludeHeadless"))) }}
 {{ $type }} {{ .name | quote }}
   {{- end }}
 {{- end -}}
