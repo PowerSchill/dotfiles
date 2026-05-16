@@ -70,6 +70,7 @@ packages:
         - name: gopls # Go language server for IDE integration
         - name: jless # JSON viewer with pagination support
         - name: luarocks # Package manager for Lua modules
+        - name: md-fixup # Markdown linter that normalizes formatting and wraps text
         - name: pre-commit # Framework for managing git hooks
         - name: prettier # Code formatter for JavaScript and more
         - name: pygments # Syntax highlighter written in Python
@@ -141,11 +142,9 @@ packages:
         - name: yubikey-agent # YubiKey SSH agent
         - name: ack # Search tool optimized for source code
         - name: act # Run GitHub Actions locally
-        - name: awscli # Command-line interface for Amazon Web Services
         - name: checkov # Infrastructure as code security scanner
         - name: dotnet # Microsoft .NET runtime and development platform
         - name: gotestsum # Go test runner with better output formatting
-        - name: jira-cli # Command-line interface for Jira
         - name: p7zip # High compression ratio archiver (7z format)
         - name: parallel # Execute jobs in parallel
         - name: pcre # Perl-compatible regular expressions library
@@ -176,6 +175,7 @@ packages:
         - name: beyond-compare # Advanced file and folder comparison tool
         - name: bloom # Bloom language server utility
         - name: camo-studio # Virtual camera app for video calls
+          excludeEphemeral: true
         - name: cyberduck # FTP/SFTP and cloud storage client
         - name: daisydisk # Visual disk usage analyzer
         - name: devonthink # Document and information management system
@@ -240,7 +240,7 @@ packages:
         - name: firefox # Firefox web browser
         - name: google-chrome # Google Chrome web browser
         - name: grammarly-desktop # Grammar check and writing assistant
-        - name: helium-browser # Lightweight side window browser
+        # - name: helium-browser # Lightweight side window browser
         # - name: imazing
         #   excludeEphemeral: true
         # - name: keyboardcleantool
@@ -265,16 +265,20 @@ packages:
         #   excludeEphemeral: true
         - name: silentknight # Security monitoring application
           excludeEphemeral: true
-        - name: transmit # FTP/SFTP client for file transfers
+        # - name: transmit # FTP/SFTP client for file transfers
         - name: visual-studio-code # Installed from self-service on work machines.
+          excludeEphemeral: true
         - name: vlc # Multimedia player and framework
+          excludeEphemeral: true
         - name: yubico-authenticator # YubiKey authentication application
           excludeEphemeral: true
         - name: zen # Privacy-focused web browser
         - name: zoom # Video conferencing platform
           excludeEphemeral: true
         - name: zotero@beta # Research source manager and bibliography software
+          excludeEphemeral: true
         - name: windows-app # Windows App for running Windows apps on macOS
+          excludeEphemeral: true
       work:
         - name: burp-suite-professional # Web security testing toolkits
         - name: cursor # AI-powered code editor with advanced features

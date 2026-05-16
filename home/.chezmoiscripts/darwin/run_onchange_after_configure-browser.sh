@@ -6,6 +6,6 @@
 # defaults write company.thebrowser.Browser ExternalProtocolDialogShowAlwaysOpenCheckbox -bool true
 
 # Google Chrome
-defaults write com.google.Chrome URLAllowlist -array-add 'omnifocus://*'
-defaults write com.google.Chrome URLAllowlist -array-add 'x-devonthink-item://*'
-defaults write com.google.Chrome ExternalProtocolDialogShowAlwaysOpenCheckbox -bool true
+# defaults write com.google.Chrome URLAllowlist -array-add 'omnifocus://*'
+# defaults write com.google.Chrome URLAllowlist -array-add 'x-devonthink-item://*'
+# defaults write com.google.Chrome ExternalProtocolDialogShowAlwaysOpenCheckbox -bool true
