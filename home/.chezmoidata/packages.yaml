@@ -196,6 +196,7 @@ packages:
         - name: logi-options+ # Logitech device configuration and customization
           excludeEphemeral: true
         - name: moom # Window management tool
+          excludeEphemeral: true
         - name: mountain-duck # Mount cloud storage as local drive
         - name: obsidian # Note-taking app with local-first storage
         - name: omnifocus # Task management and productivity system
