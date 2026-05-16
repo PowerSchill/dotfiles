@@ -156,7 +156,6 @@ packages:
         - name: shfmt # Shell script formatter
         - name: terraform-docs # Generate Terraform documentation from code
         - name: terragrunt # Terraform wrapper for orchestrating infrastructure
-        - name: tflint # Terraform linter for identifying issues
         - name: tfsec # Security scanner for Terraform code
         - name: the_silver_searcher # Fast code searching tool (ag)
         - name: trivy # Vulnerability and misconfiguration scanner
