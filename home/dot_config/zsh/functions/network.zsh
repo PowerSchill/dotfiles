@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+# Setup 1Password SSH Agent
+if [[ -S ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ]]; then
+  export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+fi
+
 # API keys - set these in your shell environment or .zshrc.local
 : ${IPGEOLOCATION_API_KEY:=""}
 : ${SECURITYTRAILS_API_KEY:=""}
