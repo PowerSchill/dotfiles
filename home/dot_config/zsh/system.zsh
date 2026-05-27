@@ -10,7 +10,7 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 
 # Install Homebrew Casks in user's Applications directory
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+# export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 if [[ -t 1 ]] && command -v op &>/dev/null; then
   if [ -f ~/.config/op/plugins.sh ]; then
