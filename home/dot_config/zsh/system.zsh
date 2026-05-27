@@ -35,3 +35,5 @@ clear-keep-buffer() {
 }
 zle -N clear-keep-buffer
 bindkey '^Xl' clear-keep-buffer
+
+bindkey -v

@@ -3,9 +3,7 @@ packages:
     taps:
       global:
         - name: 1password/tap
-        - name: buo/cask-upgrade
         - name: jandedobbeleer/oh-my-posh
-        - name: ttscoff/thelab
       personal:
       work:
     brews:
@@ -46,23 +44,18 @@ packages:
         - name: ffmpeg # Video and audio processing framework
         - name: imagemagick # Image manipulation and conversion tool
         - name: jq # JSON query processor for command-line
-        - name: poppler # PDF rendering library and utilities
-        - name: resvg # SVG rendering library and tool
         - name: ripgrep # Fast recursive grep replacement
-        - name: sevenzip # 7z file compression utility
         - name: topgrade # Keep all tools updated automatically
         - name: yazi # Blazing fast terminal file manager
         #######################################
         # Development related utilities
         #######################################
-        - name: clang-format # Format C/C++/Java/JavaScript/Objective-C code
         - name: commitizen # Conventional commit message helper
         - name: gcc # GNU Compiler Collection for C/C++
         - name: gh # GitHub CLI for managing repositories and issues
         - name: git-delta # Syntax-highlighting pager for git
         - name: git-lfs # Git Large File Storage for versioning large files
         - name: git-town # Git workflow helper for branching and merging
-        - name: github-keygen # Generate SSH keys for GitHub
         - name: go # Go programming language compiler
         - name: gofumpt # Stricter go fmt formatting
         - name: goimports # Update Go import lines automatically
@@ -70,7 +63,6 @@ packages:
         - name: gopls # Go language server for IDE integration
         - name: jless # JSON viewer with pagination support
         - name: luarocks # Package manager for Lua modules
-        - name: md-fixup # Markdown linter that normalizes formatting and wraps text
         - name: pre-commit # Framework for managing git hooks
         - name: prettier # Code formatter for JavaScript and more
         - name: pygments # Syntax highlighter written in Python
@@ -100,7 +92,6 @@ packages:
         - name: grc # Generic colourizer for program output
         - name: gum # Style stdin/stdout with glamour
         - name: highlight # Source code syntax highlighter
-        - name: ical-buddy # Get events and tasks from the macOS calendar database
         - name: ipcalc # IP address calculator for networking
         - name: jandedobbeleer/oh-my-posh/oh-my-posh # Customizable shell prompt engine
         - name: jenv # Manage Java versions with ease
@@ -136,7 +127,6 @@ packages:
         - name: vivid # Themeable terminal color scheme generator
         - name: watch # Execute a program periodically and display results
         - name: whois # Query domain registration information
-        - name: wifi-password # Retrieve Wi-Fi password from macOS keychain
         - name: yamllint # Linter for YAML files
         - name: yq # Lightweight YAML query processor
         - name: yubikey-agent # YubiKey SSH agent
@@ -203,8 +193,6 @@ packages:
         - name: reader # Reading mode for web content
         - name: setapp # Installed once manually
         - name: sf-symbols # Apple San Francisco Symbols app
-        - name: signal # Encrypted messaging app
-          excludeEphemeral: true
         - name: snagit # Screen capture and editing tool
         - name: soundsource # Advanced audio control utility
         - name: textexpander # Text expansion and automation tool
@@ -212,7 +200,6 @@ packages:
         - name: visual-studio-code@insiders # VS Code insider development build
         - name: wezterm@nightly # Nightly build of WezTerm terminal emulator
         - name: zed # High-performance code editor
-        - name: zen # Gecko based web browser
       personal:
         - name: anylist # Shared grocery and household list app
           excludeEphemeral: true
@@ -280,12 +267,9 @@ packages:
           excludeEphemeral: true
       work:
         - name: burp-suite-professional # Web security testing toolkits
-        - name: cursor # AI-powered code editor with advanced features
-        - name: cursor-cli # Command-line interface for Cursor editor
         - name: displaylink # DisplayLink graphics adapter drivers
         - name: gcloud-cli # Google Cloud command-line tool
         - name: postman # API development and testing platform
-
   linux:
     debian:
       cargo:
