@@ -182,8 +182,6 @@ packages:
           excludeEphemeral: true
         - name: kaleidoscope # Visual difference and merge tool
         - name: keyboard-maestro # Keyboard automation utility
-        - name: logi-options+ # Logitech device configuration and customization
-          excludeEphemeral: true
         - name: moom # Window management tool
           excludeEphemeral: true
         - name: mountain-duck # Mount cloud storage as local drive
