@@ -3,7 +3,8 @@ packages:
     taps:
       global:
         - name: 1password/tap
-        - name: jandedobbeleer/oh-my-posh
+        - name: buo/cask-upgrade
+        - name: teamookla/speedtest
       personal:
       work:
     brews:
@@ -93,7 +94,6 @@ packages:
         - name: gum # Style stdin/stdout with glamour
         - name: highlight # Source code syntax highlighter
         - name: ipcalc # IP address calculator for networking
-        - name: jandedobbeleer/oh-my-posh/oh-my-posh # Customizable shell prompt engine
         - name: jenv # Manage Java versions with ease
         - name: jsonlint # Validate JSON files
         - name: krb5 # Kerberos network authentication protocol
@@ -148,6 +148,7 @@ packages:
         - name: terragrunt # Terraform wrapper for orchestrating infrastructure
         - name: tfsec # Security scanner for Terraform code
         - name: the_silver_searcher # Fast code searching tool (ag)
+        - name: teamookla/speedtest/speedtest # Ookla Speedtest
         - name: trivy # Vulnerability and misconfiguration scanner
       personal:
         - name: mas
@@ -165,6 +166,7 @@ packages:
         - name: bloom # Bloom language server utility
         - name: camo-studio # Virtual camera app for video calls
           excludeEphemeral: true
+        - name: claude-code@latest # Claude Code editor integration
         - name: cyberduck # FTP/SFTP and cloud storage client
         - name: daisydisk # Visual disk usage analyzer
         - name: devonthink # Document and information management system
@@ -182,11 +184,13 @@ packages:
           excludeEphemeral: true
         - name: kaleidoscope # Visual difference and merge tool
         - name: keyboard-maestro # Keyboard automation utility
+        - name: logi-options+ # Software for Logitech devices
         - name: moom # Window management tool
           excludeEphemeral: true
         - name: mountain-duck # Mount cloud storage as local drive
         - name: obsidian # Note-taking app with local-first storage
         - name: omnifocus # Task management and productivity system
+        - name: orion # WebKit based web browser
         - name: raindropio # Bookmark and link management service
         - name: reader # Reading mode for web content
         - name: setapp # Installed once manually
@@ -211,9 +215,9 @@ packages:
           excludeEphemeral: true
         - name: calibre # E-book management library
           excludeEphemeral: true
+        - name: cardhop # Contacts manager
         - name: chatgpt # ChatGPT app by OpenAI
         - name: claude # Claude AI assistant by Anthropic
-        - name: claude-code # Claude Code editor integration
         - name: curseforge # Modding platform for games
         - name: discord # Voice, video, and text communication platform
         - name: dropbox # Cloud storage and file synchronization
@@ -221,6 +225,7 @@ packages:
         - name: elgato-stream-deck # Stream Deck control software
           excludeEphemeral: true
         - name: fastscripts # Keyboard shortcuts for AppleScripts
+        - name: fastmail # Email client
         - name: firefox # Firefox web browser
         - name: google-chrome # Google Chrome web browser
         - name: grammarly-desktop # Grammar check and writing assistant
@@ -235,6 +240,7 @@ packages:
           excludeEphemeral: true
         # - name: macupdater
         #   excludeEphemeral: true
+        - name: mactracker # Detailed information on every Apple product ever made
         - name: mailmate # Powerful email client for macOS
           excludeEphemeral: true
         - name: microsoft-auto-update # Microsoft Office update tool
@@ -245,11 +251,14 @@ packages:
           excludeEphemeral: true
         - name: openaudible # Audiobook manager and converter
           excludeEphemeral: true
-        # - name: private-internet-access
-        #   excludeEphemeral: true
-        - name: silentknight # Security monitoring application
+        - name: powershell # Command-line shell and scripting language
+        - name: signal # Instant messaging application focusing on security
           excludeEphemeral: true
-        # - name: transmit # FTP/SFTP client for file transfers
+        - name: slack # Instant messaging application focusing on security
+        - name: steam # Video game digital distribution service
+          excludeEphemeral: true
+        - name: tailscale-app # Mesh VPN based on WireGuard
+          excludeEphemeral: true
         - name: visual-studio-code # Installed from self-service on work machines.
           excludeEphemeral: true
         - name: vlc # Multimedia player and framework
