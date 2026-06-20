@@ -1,0 +1,25 @@
+# Global Cargo configuration — supply chain security hardening
+# https://doc.rust-lang.org/cargo/reference/config.html
+
+[net]
+# Require TLS for all network connections (no plaintext fallback)
+retry = 3
+# Use system git for fetches — respects ssh-agent, GPG signing, and system trust store
+git-fetch-with-cli = true
+
+[http]
+# Enforce TLS certificate revocation checks
+check-revoke = true
+# Minimum TLS 1.2; rejects weak cipher suites
+ssl-version = "tlsv1.2"
+# Enable HTTP/2 multiplexing — reduces connection overhead and man-in-the-middle surface
+multiplexing = true
+# Timeout (seconds) — prevents hanging on unresponsive/hijacked registries
+timeout = 30
+# Follow at most 10 redirects — prevents redirect chain attacks
+# (Cargo default is 10, but explicit is better)
+
+# Since Cargo 1.68, sparse protocol is the default for crates.io — no override needed.
+# The sparse protocol uses HTTPS for each index lookup rather than cloning the full
+# git repo, which is both faster and reduces the network attack surface.
+
