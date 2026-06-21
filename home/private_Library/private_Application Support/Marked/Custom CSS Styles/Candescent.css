@@ -1,0 +1,505 @@
+/* ============================================================
+   Candescent — Marked Theme
+   Brand guide: docs/CND_BrandGuide_10132025.pdf
+   Marked CSS reference: https://markedapp.com/help/Writing_Custom_CSS.html
+   ============================================================ */
+
+/* ── 1. Custom Properties ── */
+:root {
+  /* Primary palette */
+  --navy:         #081728;  /* Experienced Navy */
+  --intel-blue:   #1b3c64;  /* Intelligence Blue */
+  --mid-blue:     #324062;  /* Mid Blue (75% Navy tint) */
+  --ff-blue:      #5a94e8;  /* Fast-forward Blue */
+
+  /* Accent palette */
+  --gold:         #fae557;  /* Illuminate Gold */
+  --mint:         #ade3f6;  /* Inspire Mint */
+  --stone:        #eeeced;  /* Bespoke Stone */
+
+  /* Utility */
+  --white:        #ffffff;
+  --meta-text:    #64739e;
+  --body-muted:   #b7cbe1;  /* dark mode body text */
+  --code-bg:      #f0f5ff;  /* light code background */
+  --code-bg-dark: #0a1e34;  /* dark code background */
+  --row-tint:      rgba(90, 148, 232, 0.05);  /* --ff-blue at 5% — light mode table rows */
+  --row-tint-dark: rgba(90, 148, 232, 0.07);  /* --ff-blue at 7% — dark mode table rows */
+  --blockquote-bg: #fffef5;  /* warm near-white — gold warmth reflected */
+
+  /* Gradient — gold left, blue right (the "illuminating" signature) */
+  --hr-gradient: linear-gradient(90deg, var(--gold) 0%, var(--ff-blue) 100%);
+
+  /* Type stacks — PP Fragment primary, brand-specified fallbacks */
+  --heading-font: 'PP Fragment Glare', 'Georgia Pro', Georgia, serif;
+  --body-font:    'PP Fragment Sans', Arial, system-ui, sans-serif;
+  --code-font:    'SF Mono', 'Fira Code', Menlo, monospace;
+}
+
+/* ── 2. Base / Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--white);
+  color: var(--intel-blue);
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 3. Layout ── */
+#wrapper {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 56px 48px 80px;
+}
+/* Note: #wrapper img max-width is set in Task 11 alongside border-radius */
+
+/* ── 4. Headings ── */
+#wrapper h1,
+#wrapper h2,
+#wrapper h3,
+#wrapper h4,
+#wrapper h5,
+#wrapper h6 {
+  margin-top: 0;
+}
+
+#wrapper h1 {
+  font-family: var(--heading-font);
+  font-weight: 400;
+  font-size: 2.4rem;
+  color: var(--navy);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+/* Signature gold→blue gradient rule beneath every H1 */
+#wrapper h1::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--hr-gradient);
+  border-radius: 2px;
+  margin-top: 14px;
+  margin-bottom: 28px;
+}
+
+#wrapper h2 {
+  font-family: var(--heading-font);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--intel-blue);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+#wrapper h3 {
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ff-blue);
+  letter-spacing: 0.01em;
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+#wrapper h4 {
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
+#wrapper h5 {
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--mid-blue);
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
+#wrapper h6 {
+  font-family: var(--body-font);
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--meta-text);
+  font-style: italic;
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
+/* ── 5. Body Text & Links ── */
+#wrapper p {
+  margin-top: 0;
+  margin-bottom: 1.1em;
+}
+
+#wrapper a {
+  color: var(--ff-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+#wrapper a:hover {
+  color: var(--navy);
+}
+
+#wrapper strong {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+#wrapper em {
+  font-style: italic;
+}
+
+/* ── 6. Blockquotes ── */
+#wrapper blockquote {
+  border-left: 3px solid var(--gold);
+  margin: 1.5em 0;
+  padding: 0.6em 1.2em;
+  background: var(--blockquote-bg);
+  color: var(--mid-blue);
+  font-style: italic;
+}
+
+#wrapper blockquote p {
+  margin-bottom: 0;
+}
+
+#wrapper blockquote p + p {
+  margin-top: 0.6em;
+}
+
+/* ── 7. Code ── */
+#wrapper code {
+  font-family: var(--code-font);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  color: var(--navy);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+#wrapper pre {
+  background: var(--code-bg);
+  border-left: 3px solid var(--ff-blue);
+  border-radius: 0 4px 4px 0;
+  padding: 1em 1.2em;
+  overflow-x: auto;
+  margin: 1.4em 0;
+}
+
+/* Reset inline-code styles when inside a pre block */
+#wrapper pre code {
+  background: none;
+  color: var(--navy);
+  font-size: 0.88em;
+  line-height: 1.6;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* ── 8. Lists ── */
+#wrapper ul,
+#wrapper ol {
+  padding-left: 1.4em;
+  margin-top: 0;
+  margin-bottom: 1.1em;
+}
+
+#wrapper li {
+  margin-bottom: 0.3em;
+}
+
+#wrapper li > ul,
+#wrapper li > ol {
+  margin-top: 0.3em;
+  margin-bottom: 0;
+}
+
+/* ── 9. Tables ── */
+#wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
+  font-size: 0.9em;
+  font-family: var(--body-font);
+}
+
+#wrapper th {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#wrapper td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--stone);
+  vertical-align: top;
+}
+
+/* Transparent tint — blends correctly in both light and dark modes */
+#wrapper tr:nth-child(even) td {
+  background: var(--row-tint);
+}
+
+/* ── 10. Images & Figures ── */
+#wrapper img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+#wrapper figure {
+  margin: 1.6em 0;
+}
+
+#wrapper figcaption {
+  font-size: 0.82em;
+  color: var(--meta-text);
+  text-align: center;
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* ── 11. Footnotes ── */
+
+/* Superscript inline reference — exact values from Marked spec */
+#wrapper a.footnote {
+  font-size: 1.4ex;
+  height: 0;
+  line-height: 1;
+  vertical-align: super;
+}
+
+#wrapper div.footnotes {
+  border-top: 1px solid var(--stone);
+  margin-top: 3em;
+  padding-top: 1em;
+  font-size: 0.85em;
+  color: var(--meta-text);
+}
+
+/* ── 12. Horizontal Rules ── */
+#wrapper hr {
+  border: none;
+  height: 2px;
+  background: var(--hr-gradient);
+  margin: 2.5em 0;
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* ── 13. Dark Mode ── */
+/* All rules inside @media screen — never affects @media print */
+@media screen {
+
+  .inverted,
+  .inverted #wrapper {
+    background: var(--navy);
+    color: var(--body-muted);
+  }
+
+  /* Headings */
+  .inverted #wrapper h1 { color: var(--white); }
+  .inverted #wrapper h2 { color: var(--mint); }      /* Inspire Mint — readable on navy */
+  .inverted #wrapper h3 { color: var(--ff-blue); }   /* unchanged — brand constant */
+  .inverted #wrapper h4 { color: #8eb7f2; }          /* soft steel blue */
+  .inverted #wrapper h5 { color: #8eb7f2; }
+  .inverted #wrapper h6 { color: var(--meta-text); } /* unchanged */
+
+  /* Inline text */
+  .inverted #wrapper strong { color: var(--white); }
+  .inverted #wrapper em     { color: #c8d8eb; }
+
+  /* Links */
+  .inverted #wrapper a       { color: var(--ff-blue); }  /* unchanged — brand constant */
+  .inverted #wrapper a:hover { color: var(--mint); }
+
+  /* Blockquote — gold left-border is a brand constant, not overridden */
+  .inverted #wrapper blockquote {
+    background: rgba(250, 229, 87, 0.06);
+    color: #c8d8eb;
+  }
+
+  /* Inline code */
+  .inverted #wrapper code {
+    background: rgba(90, 148, 232, 0.15);
+    color: var(--mint);
+  }
+
+  /* Fenced code */
+  .inverted #wrapper pre {
+    background: var(--code-bg-dark);
+  }
+
+  .inverted #wrapper pre code {
+    background: none;
+    color: var(--mint);
+  }
+
+  /* Tables */
+  .inverted #wrapper th {
+    background: var(--intel-blue);
+  }
+
+  .inverted #wrapper td {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    color: var(--body-muted);
+  }
+
+  .inverted #wrapper tr:nth-child(even) td {
+    background: var(--row-tint-dark);
+  }
+
+  /* Dividers */
+  .inverted #wrapper hr { opacity: 0.4; }
+
+  /* Footnotes */
+  .inverted #wrapper div.footnotes {
+    border-top-color: rgba(255, 255, 255, 0.1);
+    color: var(--body-muted);
+  }
+
+  .inverted #wrapper figcaption { color: var(--body-muted); }
+}
+
+/* ── 14. Poetry Mode ── */
+/* Activated by Marked adding .poetry to <body> for tab-indented verse */
+
+body.poetry #wrapper pre {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--navy);
+  background: none;
+  border-left: 3px solid var(--gold);
+  border-radius: 0;
+  padding-left: 20px;
+}
+
+body.poetry #wrapper pre code {
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  color: inherit;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Dark mode poetry — verse text becomes white on navy */
+@media screen {
+  body.poetry.inverted #wrapper pre {
+    color: var(--white);
+    background: none;
+  }
+}
+
+/* ── 15. Print ── */
+@media print {
+
+  body {
+    background: #ffffff;
+    color: var(--navy);
+    font-size: 11pt;
+  }
+
+  #wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* All headings revert to navy for print legibility */
+  #wrapper h1,
+  #wrapper h2,
+  #wrapper h3,
+  #wrapper h4,
+  #wrapper h5,
+  #wrapper h6 {
+    color: var(--navy);
+    page-break-after: avoid;
+  }
+
+  /* Links — plain navy, no underline */
+  #wrapper a {
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  /* Blockquote — remove tinted background, keep gold border */
+  #wrapper blockquote {
+    background: none;
+    color: var(--navy);
+  }
+
+  /* Inline code — remove chip, add subtle outline */
+  #wrapper code {
+    background: none;
+    color: var(--navy);
+    border: 0.5pt solid #ccc;
+    padding: 1px 3px;
+  }
+
+  /* Fenced code — remove tint, plain navy left rule */
+  #wrapper pre {
+    background: none;
+    border-left-color: var(--navy);
+    page-break-inside: avoid;
+  }
+
+  #wrapper pre code {
+    color: var(--navy);
+    border: none;
+    padding: 0;
+  }
+
+  /* Tables — remove navy header fill */
+  #wrapper th {
+    background: none;
+    color: var(--navy);
+    border-bottom: 1.5pt solid var(--navy);
+  }
+
+  /* Strip all tints */
+  #wrapper td,
+  #wrapper tr:nth-child(even) td {
+    background: none !important;
+  }
+
+  /* Footnotes — stone border too faint for print; use navy */
+  #wrapper div.footnotes {
+    border-top-color: var(--navy);
+  }
+
+  /* Keep block elements together */
+  #wrapper figure,
+  #wrapper table,
+  #wrapper blockquote {
+    page-break-inside: avoid;
+  }
+}
