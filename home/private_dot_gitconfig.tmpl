@@ -182,9 +182,9 @@
   # configured global helpers are ignored for github.com. This is critical for
   # preventing redundancy and potential authentication conflicts.
 [credential "https://github.com"]
-  helper = gh auth git-credential
+  helper = op plugin run -- gh auth git-credential
 [credential "https://gist.github.com"]
-  helper = gh auth git-credential
+  helper = op plugin run -- gh auth git-credential
   {{- else }}
 [credential]
   helper = osxkeychain
