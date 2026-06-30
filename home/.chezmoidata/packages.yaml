@@ -138,7 +138,7 @@ packages:
         - name: p7zip # High compression ratio archiver (7z format)
         - name: parallel # Execute jobs in parallel
         - name: pcre # Perl-compatible regular expressions library
-        - name: powershell # Microsoft PowerShell for cross-platform automation
+        # - name: powershell # Microsoft PowerShell for cross-platform automation
         - name: pycparser # Complete C99 parser written in Python
         - name: pydantic # Data validation using Python type hints
         - name: python # Interpreted, interactive, object-oriented programming language
@@ -209,10 +209,10 @@ packages:
           excludeEphemeral: true
         - name: backblaze-downloader # Download tool for Backblaze backups
           excludeEphemeral: true
-        - name: caldigit-docking-utility # CalDigit dock configuration app
-          excludeEphemeral: true
-        - name: caldigit-thunderbolt-charging # CalDigit Thunderbolt charging utility
-          excludeEphemeral: true
+        # - name: caldigit-docking-utility # CalDigit dock configuration app
+        #   excludeEphemeral: true
+        # - name: caldigit-thunderbolt-charging # CalDigit Thunderbolt charging utility
+        #   excludeEphemeral: true
         - name: calibre # E-book management library
           excludeEphemeral: true
         - name: cardhop # Contacts manager
@@ -251,7 +251,7 @@ packages:
           excludeEphemeral: true
         - name: openaudible # Audiobook manager and converter
           excludeEphemeral: true
-        - name: powershell # Command-line shell and scripting language
+        # - name: powershell # Command-line shell and scripting language
         - name: signal # Instant messaging application focusing on security
           excludeEphemeral: true
         - name: slack # Instant messaging application focusing on security
