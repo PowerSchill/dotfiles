@@ -352,6 +352,7 @@ packages:
         - gnome-keyring
         - gnome-keyring-pam
         - yazi
+        - yq
   windows:
     winget:
       - fastfetch
