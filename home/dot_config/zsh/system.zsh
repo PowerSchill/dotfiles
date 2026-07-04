@@ -18,6 +18,7 @@ if [[ -t 1 ]] && command -v op &>/dev/null; then
   fi
 fi
 
+setopt completealiases
 
 # [10 Zsh hacks I wish I knew about sooner](https://www.youtube.com/watch?v=3fVAtaGhUyU)
 

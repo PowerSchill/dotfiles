@@ -73,6 +73,7 @@ packages:
         #######################################
         - name: asciinema # Record and share terminal sessions
         - name: aspell # Spell checker and interactive spelling corrector
+        - name: bun # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
         - name: btop # Resource monitor with a nice TUI interface
         - name: ccat # Colorize output of cat utility
         - name: cheat # Create and view cheatsheets on the command line
@@ -325,7 +326,6 @@ packages:
         - wezfurlong/wezterm-nightly
       packages:
         - bat
-        - chromium
         - conky
         - copr-cli
         - direnv
