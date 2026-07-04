@@ -341,6 +341,7 @@ packages:
         - neovim
         - polybar
         - rofi
+        - tar
         - tldr
         - tmux
         - topgrade
