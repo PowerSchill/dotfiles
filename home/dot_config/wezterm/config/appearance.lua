@@ -59,8 +59,11 @@ return function(config, wezterm)
     rosewater = '#dc8a78',
   }
 
-  -- Select palette based on macOS system appearance
+  -- Select palette based on macOS system appearance; always dark on Linux
   local function is_dark()
+    if wezterm.target_triple:find("linux") then
+      return true
+    end
     local appearance = wezterm.gui and wezterm.gui.get_appearance() or "Dark"
     return appearance:find("Dark") ~= nil
   end
