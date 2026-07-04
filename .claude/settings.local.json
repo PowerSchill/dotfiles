@@ -15,7 +15,9 @@
       "Bash(zsh -n \"$file\")",
       "Bash(echo \"ERROR in $file\")",
       "Bash(grep:*)",
-      "Bash(chezmoi diff *)"
+      "Bash(chezmoi diff *)",
+      "Bash(chezmoi execute-template *)",
+      "Bash(chezmoi managed *)"
     ]
   }
 }
