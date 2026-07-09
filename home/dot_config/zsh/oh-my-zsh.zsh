@@ -54,3 +54,6 @@ plugins=(
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source $ZSH/oh-my-zsh.sh
+
+# Avoid autosuggestions forking a completion subshell (fixes "_bat: command not found")
+ZSH_AUTOSUGGEST_STRATEGY=(history match_prev_cmd)
