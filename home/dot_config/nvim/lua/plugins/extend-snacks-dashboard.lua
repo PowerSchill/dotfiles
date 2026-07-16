@@ -4,7 +4,7 @@ return {
     table.insert(
       opts.dashboard.preset.keys,
       7,
-      { icon = "󰼢", key = "S", desc = "Select Session", action = require("persistence").select }
+      { icon = "󰼢", key = "S", desc = "Select Session", action = function() require("persistence").select() end }
     )
     opts.dashboard.sections = {
       { section = "header" },

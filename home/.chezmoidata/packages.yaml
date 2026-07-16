@@ -275,7 +275,7 @@ packages:
           excludeEphemeral: true
       work:
         - name: burp-suite-professional # Web security testing toolkits
-        - name: displaylink # DisplayLink graphics adapter drivers
+        # - name: displaylink # DisplayLink graphics adapter drivers
         - name: gcloud-cli # Google Cloud command-line tool
         - name: postman # API development and testing platform
   linux:
