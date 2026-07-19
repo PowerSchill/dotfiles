@@ -1,6 +1,13 @@
 # Get Paths for commands
 {{- $ghPath := lookPath "gh" }}
 
+# Directories (git-config gitdir globs) containing public, read-only repos
+# managed by tools that shell out to `git pull`/`clone` over HTTPS -- plugin
+# managers and the like. Each gets the github.com credential helper cleared
+# (see no-credential-helper.gitconfig) so 1Password isn't prompted for repos
+# that need no auth. Add new directories to this list, no other edits needed.
+{{- $noAuthGitDirs := list "~/.tmux/plugins/" }}
+
 [include]
   path = ~/.config/delta/catppuccin.gitconfig
 
@@ -189,6 +196,13 @@
 [credential]
   helper = osxkeychain
   {{- end }}
+
+# See $noAuthGitDirs above. These includeIf blocks must stay below the
+# [credential] blocks so their reset wins for matching gitdirs.
+{{- range $noAuthGitDirs }}
+[includeIf "gitdir:{{ . }}"]
+  path = ~/.config/git/no-credential-helper.gitconfig
+{{- end }}
 
 ################################################################################
 # Git Town
