@@ -1,124 +1,146 @@
 {
   "version": 3,
   "colorLevel": 3,
-  "flexMode": "full-minus-40",
+  "flexMode": "full",
   "compactThreshold": 60,
-  "defaultPadding": " ",
   "inheritSeparatorColors": false,
   "globalBold": false,
   "gitCacheTtlSeconds": 5,
   "minimalistMode": false,
   "powerline": {
-    "enabled": true,
-    "theme": "custom",
-    "separators": [
-      ""
-    ],
-    "separatorInvertBackground": [
-      false
-    ],
-    "startCaps": [
-      ""
-    ],
-    "endCaps": [
-      ""
-    ],
+    "enabled": false,
+    "separators": [""],
+    "separatorInvertBackground": [false],
+    "startCaps": [],
+    "endCaps": [],
     "autoAlign": false,
     "continueThemeAcrossLines": false
   },
   "lines": [
     [
       {
-        "id": "model",
-        "type": "model",
-        "backgroundColor": "hex:313244",
-        "color": "hex:CBA6F7",
-        "bold": true,
-        "rawValue": true
-      },
-      {
         "id": "cwd",
         "type": "current-working-dir",
-        "backgroundColor": "hex:1E1E2E",
-        "color": "hex:89B4FA",
+        "color": "hex:B4BEFE",
         "rawValue": true,
         "metadata": {
-          "abbreviateHome": "true",
-          "segments": "2"
+          "abbreviateHome": "true"
         }
       },
+      { "id": "s1", "type": "separator", "color": "hex:6C7086" },
       {
         "id": "git-branch",
         "type": "git-branch",
-        "backgroundColor": "hex:313244",
-        "color": "hex:A6E3A1",
-        "rawValue": true,
-        "maxWidth": 24,
+        "color": "hex:CBA6F7",
+        "maxWidth": 32,
         "metadata": {
           "hideNoGit": "true"
         }
       },
+      { "id": "s2", "type": "separator", "color": "hex:6C7086" },
       {
         "id": "git-changes",
         "type": "git-changes",
-        "backgroundColor": "hex:1E1E2E",
-        "color": "hex:FAB387",
+        "color": "hex:F38BA8",
         "metadata": {
           "hideNoGit": "true"
         }
-      },
-      {
-        "id": "worktree-name",
-        "type": "worktree-name",
-        "backgroundColor": "hex:313244",
-        "color": "hex:94E2D5"
       }
     ],
     [
       {
+        "id": "model",
+        "type": "model",
+        "color": "hex:94E2D5",
+        "bold": true,
+        "rawValue": true
+      },
+      { "id": "s3", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "thinking-effort",
+        "type": "thinking-effort",
+        "color": "hex:F5C2E7",
+        "bold": true,
+        "rawValue": true
+      },
+      { "id": "s4", "type": "separator", "color": "hex:6C7086" },
+      {
         "id": "context-bar",
         "type": "context-bar",
-        "backgroundColor": "hex:313244",
-        "color": "hex:89DCEB",
+        "color": "hex:89B4FA",
         "rawValue": true,
         "metadata": {
-          "display": "slider"
+          "display": "progress-short"
         }
       },
+      { "id": "s5", "type": "separator", "color": "hex:6C7086" },
       {
-        "id": "session-cost",
-        "type": "session-cost",
-        "backgroundColor": "hex:1E1E2E",
-        "color": "hex:F9E2AF",
-        "rawValue": true
+        "id": "tokens-input",
+        "type": "tokens-input",
+        "color": "hex:74C7EC"
       },
+      { "id": "s6", "type": "separator", "color": "hex:6C7086" },
       {
-        "id": "session-clock",
-        "type": "session-clock",
-        "backgroundColor": "hex:313244",
-        "color": "hex:B4BEFE",
-        "rawValue": true
+        "id": "tokens-cached",
+        "type": "tokens-cached",
+        "color": "hex:89DCEB"
       },
+      { "id": "s7", "type": "separator", "color": "hex:6C7086" },
       {
-        "id": "block-timer",
-        "type": "block-timer",
-        "backgroundColor": "hex:1E1E2E",
-        "color": "hex:F5C2E7",
-        "metadata": {
-          "compact": "true"
-        }
-      },
+        "id": "tokens-output",
+        "type": "tokens-output",
+        "color": "hex:A6E3A1"
+      }
+    ],
+    [
       {
         "id": "session-usage",
         "type": "session-usage",
-        "backgroundColor": "hex:313244",
-        "color": "hex:EBA0AC"
+        "color": "hex:A6E3A1",
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
       },
+      { "id": "s8", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "reset-timer",
+        "type": "reset-timer",
+        "color": "hex:A6ADC8",
+        "rawValue": true,
+        "metadata": {
+          "display": "time",
+          "compact": "true"
+        }
+      },
+      { "id": "s9", "type": "separator", "color": "hex:6C7086" },
       {
         "id": "weekly-usage",
         "type": "weekly-usage",
-        "backgroundColor": "hex:1E1E2E",
-        "color": "hex:F38BA8"
+        "color": "hex:FAB387",
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
+      },
+      { "id": "s10", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "weekly-reset-timer",
+        "type": "weekly-reset-timer",
+        "color": "hex:A6ADC8",
+        "rawValue": true,
+        "metadata": {
+          "absolute": "false",
+          "weekday": "false",
+          "compact": "true"
+        }
+      },
+      { "id": "s11", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "session-cost",
+        "type": "session-cost",
+        "color": "hex:F9E2AF",
+        "rawValue": true
       }
     ]
   ]
