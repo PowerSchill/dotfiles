@@ -1,0 +1,636 @@
+/* This document has been created with Marked.app <http://marked2app.com>
+   Content is property of the document author
+   Please leave this notice in place, along with any additional credits below.
+
+   ---------------------------------------------------------------
+   Title: Catppuccin
+   Author: Built for Mark
+   URL: https://catppuccin.com
+   Description: A soothing pastel theme. Latte in light mode, Mocha in
+                dark mode (Marked's "Preview > Dark Mode" / Auto). Fully
+                responsive with a comfortable reading measure.
+   Fonts: System UI stack (no downloads required)
+   Note: Dark mode is driven by Marked's `body.inverted` class, so it
+         follows the Preview appearance / Auto setting automatically.
+   ---
+*/
+
+/* =========================================================================
+   PALETTE  —  Catppuccin Latte (light / default)
+   Semantic tokens reference the flavor tokens, so swapping the 26 flavor
+   colors under `.inverted` re-themes the entire document automatically.
+   ========================================================================= */
+:root {
+  /* Flavor: Latte */
+  --ctp-rosewater: #dc8a78;
+  --ctp-flamingo:  #dd7878;
+  --ctp-pink:      #ea76cb;
+  --ctp-mauve:     #8839ef;
+  --ctp-red:       #d20f39;
+  --ctp-maroon:    #e64553;
+  --ctp-peach:     #fe640b;
+  --ctp-yellow:    #df8e1d;
+  --ctp-green:     #40a02b;
+  --ctp-teal:      #179299;
+  --ctp-sky:       #04a5e5;
+  --ctp-sapphire:  #209fb5;
+  --ctp-blue:      #1e66f5;
+  --ctp-lavender:  #7287fd;
+  --ctp-text:      #4c4f69;
+  --ctp-subtext1:  #5c5f77;
+  --ctp-subtext0:  #6c6f85;
+  --ctp-overlay2:  #7c7f93;
+  --ctp-overlay1:  #8c8fa1;
+  --ctp-overlay0:  #9ca0b0;
+  --ctp-surface2:  #acb0be;
+  --ctp-surface1:  #bcc0cc;
+  --ctp-surface0:  #ccd0da;
+  --ctp-base:      #eff1f5;
+  --ctp-mantle:    #e6e9ef;
+  --ctp-crust:     #dce0e8;
+
+  /* Per-flavor computed tokens (alpha tints, shadows) */
+  --table-stripe: rgba(124, 127, 147, 0.10); /* overlay2 @ low alpha */
+  --sel-bg:       rgba(136, 57, 239, 0.20);  /* mauve   @ low alpha */
+  --shadow:       0 1px 2px rgba(76, 79, 105, 0.06), 0 4px 16px rgba(76, 79, 105, 0.08);
+  --code-shadow:  inset 0 0 0 1px rgba(124, 127, 147, 0.12);
+
+  /* ---- Semantic tokens (shared across both flavors) ---- */
+  --bg:            var(--ctp-base);
+  --bg-subtle:     var(--ctp-mantle);
+  --text:          var(--ctp-text);
+  --text-muted:    var(--ctp-subtext0);
+  --text-faint:    var(--ctp-overlay1);
+
+  --heading:       var(--ctp-text);
+  --heading-accent: var(--ctp-mauve);
+
+  --link:          var(--ctp-blue);
+  --link-hover:    var(--ctp-lavender);
+  --accent:        var(--ctp-mauve);
+
+  --border:        var(--ctp-surface1);
+  --border-soft:   var(--ctp-surface0);
+  --rule:          var(--ctp-surface1);
+
+  --code-bg:       var(--ctp-crust);
+  --code-text:     var(--ctp-text);
+  --code-inline-bg:   var(--ctp-surface0);
+  --code-inline-text: var(--ctp-peach);
+
+  --quote-bar:     var(--ctp-mauve);
+  --quote-text:    var(--ctp-subtext1);
+  --quote-bg:      var(--ctp-mantle);
+
+  --table-head-bg: var(--ctp-mantle);
+  --table-border:  var(--ctp-surface1);
+
+  --mark-bg:       var(--ctp-yellow);
+  --mark-text:     var(--ctp-crust);
+
+  --kbd-bg:        var(--ctp-surface0);
+  --kbd-border:    var(--ctp-surface2);
+
+  --ins:           var(--ctp-green);
+  --del:           var(--ctp-red);
+}
+
+/* =========================================================================
+   PALETTE  —  Catppuccin Mocha (dark / inverted)
+   Marked adds `.inverted` to <body> in Dark Mode. Scope to @media screen so
+   print output stays light (print colors are defined separately below).
+   ========================================================================= */
+@media screen {
+  .inverted {
+    /* Flavor: Mocha */
+    --ctp-rosewater: #f5e0dc;
+    --ctp-flamingo:  #f2cdcd;
+    --ctp-pink:      #f5c2e7;
+    --ctp-mauve:     #cba6f7;
+    --ctp-red:       #f38ba8;
+    --ctp-maroon:    #eba0ac;
+    --ctp-peach:     #fab387;
+    --ctp-yellow:    #f9e2af;
+    --ctp-green:     #a6e3a1;
+    --ctp-teal:      #94e2d5;
+    --ctp-sky:       #89dceb;
+    --ctp-sapphire:  #74c7ec;
+    --ctp-blue:      #89b4fa;
+    --ctp-lavender:  #b4befe;
+    --ctp-text:      #cdd6f4;
+    --ctp-subtext1:  #bac2de;
+    --ctp-subtext0:  #a6adc8;
+    --ctp-overlay2:  #9399b2;
+    --ctp-overlay1:  #7f849c;
+    --ctp-overlay0:  #6c7086;
+    --ctp-surface2:  #585b70;
+    --ctp-surface1:  #45475a;
+    --ctp-surface0:  #313244;
+    --ctp-base:      #1e1e2e;
+    --ctp-mantle:    #181825;
+    --ctp-crust:     #11111b;
+
+    /* Per-flavor computed tokens for Mocha */
+    --table-stripe: rgba(147, 153, 178, 0.08);
+    --sel-bg:       rgba(203, 166, 247, 0.28);
+    --shadow:       0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.35);
+    --code-shadow:  inset 0 0 0 1px rgba(147, 153, 178, 0.12);
+
+    /* ---- Semantic tokens MUST be redeclared here ----
+       A semantic token declared only on :root (e.g. `--bg: var(--ctp-base)`)
+       is resolved on :root and inherited down as a fixed color. Overriding
+       the primitive `--ctp-base` above does NOT re-resolve it. Redeclaring
+       the semantic tokens on `.inverted` forces them to re-resolve against
+       the Mocha primitives on this element, so the whole document flips. */
+    --bg:            var(--ctp-base);
+    --bg-subtle:     var(--ctp-mantle);
+    --text:          var(--ctp-subtext1); /* softer body tone reads better on Mocha */
+    --text-muted:    var(--ctp-subtext0);
+    --text-faint:    var(--ctp-overlay1);
+
+    --heading:       var(--ctp-text);
+    --heading-accent: var(--ctp-mauve);
+
+    --link:          var(--ctp-blue);
+    --link-hover:    var(--ctp-lavender);
+    --accent:        var(--ctp-mauve);
+
+    --border:        var(--ctp-surface1);
+    --border-soft:   var(--ctp-surface0);
+    --rule:          var(--ctp-surface1);
+
+    --code-bg:       var(--ctp-crust);
+    --code-text:     var(--ctp-text);
+    --code-inline-bg:   var(--ctp-surface0);
+    --code-inline-text: var(--ctp-peach);
+
+    --quote-bar:     var(--ctp-mauve);
+    --quote-text:    var(--ctp-subtext1);
+    --quote-bg:      var(--ctp-mantle);
+
+    --table-head-bg: var(--ctp-mantle);
+    --table-border:  var(--ctp-surface1);
+
+    --mark-bg:       var(--ctp-yellow);
+    --mark-text:     var(--ctp-crust);
+
+    --kbd-bg:        var(--ctp-surface0);
+    --kbd-border:    var(--ctp-surface2);
+
+    --ins:           var(--ctp-green);
+    --del:           var(--ctp-red);
+  }
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+html {
+  /* Fluid base size: comfortable on phones, generous on desktop */
+  font-size: clamp(15px, 14px + 0.35vw, 18px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+               Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+}
+
+#wrapper {
+  background: transparent;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 1rem + 3.5vw, 3.5rem);
+  box-sizing: border-box;
+}
+
+#wrapper > :first-child { margin-top: 0; }
+#wrapper > :last-child  { margin-bottom: 0; }
+
+::selection      { background: var(--sel-bg); }
+::-moz-selection { background: var(--sel-bg); }
+
+/* =========================================================================
+   TYPOGRAPHY — headings
+   ========================================================================= */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 1.9em 0 0.7em;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: 2.1rem;
+  margin-top: 0.2em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--heading-accent);
+}
+
+h2 {
+  font-size: 1.65rem;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+h3 { font-size: 1.35rem; color: var(--heading-accent); }
+h4 { font-size: 1.15rem; }
+
+h5 {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+h6 {
+  font-size: 0.85rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* =========================================================================
+   TYPOGRAPHY — body text
+   ========================================================================= */
+p { margin: 0 0 1.15em; }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+a:hover {
+  color: var(--link-hover);
+  border-bottom-color: currentColor;
+}
+
+strong, b { font-weight: 700; color: var(--text); }
+em, i    { font-style: italic; }
+
+small { font-size: 0.85em; color: var(--text-muted); }
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+mark {
+  background: var(--mark-bg);
+  color: var(--mark-text);
+  padding: 0.05em 0.25em;
+  border-radius: 0.25em;
+}
+
+/* =========================================================================
+   LISTS
+   ========================================================================= */
+ul, ol { margin: 0 0 1.15em; padding-left: 1.6em; }
+li { margin: 0.3em 0; }
+li > ul, li > ol { margin: 0.3em 0; }
+
+ul li::marker { color: var(--accent); }
+ol li::marker { color: var(--text-muted); }
+
+/* Task lists (GitHub-style checkboxes) */
+li.task-list-item,
+li.task-list-item { list-style: none; }
+ul:has(> li.task-list-item) { padding-left: 0.3em; }
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0 0.5em 0 0;
+  vertical-align: -0.15em;
+  border: 1.5px solid var(--border);
+  border-radius: 0.3em;
+  background: var(--bg-subtle);
+  position: relative;
+  cursor: default;
+}
+input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 0.32em;
+  top: 0.10em;
+  width: 0.25em;
+  height: 0.55em;
+  border: solid var(--bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Definition lists */
+dl { margin: 0 0 1.15em; }
+dt { font-weight: 700; color: var(--heading-accent); margin-top: 0.8em; }
+dd { margin: 0.2em 0 0 1.4em; color: var(--text-muted); }
+
+/* =========================================================================
+   BLOCKQUOTES
+   ========================================================================= */
+blockquote {
+  margin: 1.4em 0;
+  padding: 0.6em 1.2em;
+  color: var(--quote-text);
+  background: var(--quote-bg);
+  border-left: 3px solid var(--quote-bar);
+  border-radius: 0 0.4em 0.4em 0;
+}
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child  { margin-bottom: 0; }
+blockquote blockquote { background: transparent; }
+
+/* =========================================================================
+   CODE
+   ========================================================================= */
+code, pre, kbd, samp {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code",
+               ui-monospace, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background: var(--code-inline-bg);
+  color: var(--code-inline-text);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  white-space: break-spaces;
+}
+
+/* Code blocks */
+pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1em 1.15em;
+  border-radius: 0.6em;
+  overflow-x: auto;
+  line-height: 1.55;
+  margin: 1.4em 0;
+  box-shadow: var(--code-shadow);
+  -webkit-overflow-scrolling: touch;
+}
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  white-space: pre;
+}
+
+kbd {
+  background: var(--kbd-bg);
+  color: var(--text);
+  border: 1px solid var(--kbd-border);
+  border-bottom-width: 2px;
+  border-radius: 0.35em;
+  padding: 0.1em 0.45em;
+  font-size: 0.82em;
+}
+
+/* -------- Syntax highlighting (highlight.js token classes) --------
+   Colors auto-swap with the flavor. If Marked's highlighter emits
+   different class names, code still renders cleanly in --code-text. */
+.hljs-comment, .hljs-quote            { color: var(--ctp-overlay2); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag,
+.hljs-tag, .hljs-name,
+.hljs-doctag, .hljs-formula           { color: var(--ctp-mauve); }
+.hljs-string, .hljs-regexp,
+.hljs-addition, .hljs-attribute,
+.hljs-meta .hljs-string               { color: var(--ctp-green); }
+.hljs-number, .hljs-literal,
+.hljs-symbol, .hljs-bullet,
+.hljs-meta                            { color: var(--ctp-peach); }
+.hljs-title, .hljs-title.function_,
+.hljs-section, .hljs-selector-id      { color: var(--ctp-blue); }
+.hljs-built_in, .hljs-class .hljs-title,
+.hljs-title.class_, .hljs-type,
+.hljs-selector-class                  { color: var(--ctp-yellow); }
+.hljs-attr, .hljs-variable,
+.hljs-template-variable,
+.hljs-selector-attr,
+.hljs-selector-pseudo                 { color: var(--ctp-red); }
+.hljs-operator, .hljs-punctuation,
+.hljs-params                          { color: var(--ctp-sky); }
+.hljs-deletion                        { color: var(--ctp-red); }
+.hljs-emphasis                        { font-style: italic; }
+.hljs-strong                          { font-weight: 700; }
+.hljs-link                            { text-decoration: underline; }
+
+/* =========================================================================
+   TABLES  (transparent alternating rows blend with any background)
+   ========================================================================= */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.4em 0;
+  font-size: 0.95em;
+}
+th, td {
+  padding: 0.55em 0.85em;
+  border: 1px solid var(--table-border);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--table-head-bg);
+  color: var(--heading);
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
+}
+tbody tr:nth-child(even) { background: var(--table-stripe); }
+
+/* =========================================================================
+   IMAGES, FIGURES, RULES
+   ========================================================================= */
+#wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5em;
+}
+
+figure {
+  margin: 1.6em 0;
+  text-align: center;
+}
+figure img { box-shadow: var(--shadow); }
+figcaption {
+  margin-top: 0.6em;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: var(--rule);
+  margin: 2.4em 0;
+}
+
+/* =========================================================================
+   FOOTNOTES
+   ========================================================================= */
+sup, sub, a.footnote {
+  font-size: 1.4ex;
+  height: 0;
+  line-height: 1;
+  vertical-align: super;
+  position: relative;
+}
+sub { vertical-align: sub; }
+
+a.footnote {
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0 0.15em;
+  border-bottom: none;
+}
+a.footnote:hover { color: var(--link-hover); }
+
+div.footnotes {
+  margin-top: 2.4em;
+  padding-top: 1em;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.9em;
+  color: var(--text-muted);
+}
+.footnotes p { display: inline; }
+div.footnotes > a,
+.footnotes a[rev="footnote"] {
+  color: var(--accent);
+  border-bottom: none;
+}
+
+/* =========================================================================
+   CriticMarkup (Marked renders {++ ++}, {-- --}, {== ==}, etc.)
+   ========================================================================= */
+ins {
+  color: var(--ins);
+  text-decoration: none;
+  background: rgba(64, 160, 43, 0.12);
+  border-radius: 0.2em;
+  padding: 0 0.1em;
+}
+.inverted ins { background: rgba(166, 227, 161, 0.14); }
+
+del {
+  color: var(--del);
+  background: rgba(210, 15, 57, 0.10);
+  border-radius: 0.2em;
+  padding: 0 0.1em;
+}
+.inverted del { background: rgba(243, 139, 168, 0.14); }
+
+/* =========================================================================
+   TABLE OF CONTENTS  (<!--toc--> token → #mkreplaced-toc)
+   ========================================================================= */
+#wrapper #mkreplaced-toc {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 0.6em;
+  padding: 1em 1.4em;
+  margin: 1.6em 0;
+}
+#wrapper #mkreplaced-toc ul { list-style: none; padding-left: 1.1em; }
+#wrapper #mkreplaced-toc > ul { padding-left: 0; }
+#wrapper #mkreplaced-toc li { margin: 0.25em 0; }
+#wrapper #mkreplaced-toc a { border-bottom: none; }
+
+/* =========================================================================
+   POETRY MODE  (body.poetry — tab-indented text as verse, not code)
+   ========================================================================= */
+.poetry pre code {
+  font-family: Georgia, Garamond, "Iowan Old Style", serif;
+  font-style: italic;
+  font-size: 1.05em;
+  line-height: 1.65;
+  display: block;
+  margin-left: 1em;
+  color: var(--text);
+}
+.poetry pre { background: transparent; box-shadow: none; padding-left: 0; }
+
+/* =========================================================================
+   RESPONSIVE — tighten on small screens
+   ========================================================================= */
+@media screen and (max-width: 600px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.45rem; }
+  h3 { font-size: 1.25rem; }
+
+  ul, ol { padding-left: 1.3em; }
+  blockquote { padding: 0.5em 0.9em; }
+
+  /* Let wide tables scroll horizontally instead of overflowing */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre { border-radius: 0.45em; }
+}
+
+@media screen and (max-width: 400px) {
+  html { font-size: 15px; }
+}
+
+/* =========================================================================
+   PRINT — clean, light, no backgrounds/shadows regardless of dark mode
+   ========================================================================= */
+@media print {
+  body, .inverted, .inverted #wrapper {
+    background: #fff !important;
+    color: #1a1a1a !important;
+  }
+  #wrapper { max-width: none; padding: 0; }
+
+  h1, h2, h3, h4, h5, h6 { color: #111 !important; }
+  h1 { border-bottom-color: #888; }
+  h2 { border-bottom-color: #ccc; }
+  h3 { color: #333 !important; }
+
+  a { color: #1a1a1a !important; border-bottom: none; }
+
+  pre, :not(pre) > code, kbd {
+    background: #f4f4f4 !important;
+    color: #1a1a1a !important;
+    border: 1px solid #ddd;
+    box-shadow: none !important;
+  }
+  .hljs-comment, .hljs-quote, .hljs-keyword, .hljs-string, .hljs-number,
+  .hljs-title, .hljs-built_in, .hljs-attr, .hljs-literal, .hljs-tag,
+  .hljs-name, .hljs-type, .hljs-operator, .hljs-params { color: #1a1a1a !important; }
+
+  blockquote {
+    background: transparent !important;
+    color: #333 !important;
+    border-left: 3px solid #999;
+  }
+  th, td { border-color: #bbb !important; }
+  thead th { background: #eee !important; color: #111 !important; border-bottom-color: #999; }
+  tbody tr:nth-child(even) { background: #f6f6f6 !important; }
+
+  figure img, pre { box-shadow: none !important; }
+  hr { background: #ccc; }
+  mark { background: #fff3b0 !important; color: #1a1a1a !important; }
+}
