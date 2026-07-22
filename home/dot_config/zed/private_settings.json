@@ -7,6 +7,11 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "auto_install_extensions": {
+    "catppuccin": true,
+    "catppuccin-icons": true,
+    "git-firefly": true
+  },
   "autosave": "on_focus_change",
   "debugger": {
     "button": false
@@ -34,6 +39,9 @@
   "agent_ui_font_size": 13.0,
   "redact_private_values": true,
   "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
     "cursor": {
       "type": "registry"
     }
