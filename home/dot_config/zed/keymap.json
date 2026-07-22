@@ -101,7 +101,7 @@
       // Git
       "space G": "git_panel::ToggleFocus",
       "cmd-shift-g": "git_panel::ToggleFocus",
-      "space g g": ["task::Spawn", { "task_name": "lazygit" }],
+      "space g g": ["task::Spawn", { "task_name": "lazygit", "reveal_target": "center" }],
       // File explorer & tools
       "space y": ["task::Spawn", { "task_name": "yazi" }],
       "space e": "workspace::ToggleLeftDock",
@@ -397,6 +397,13 @@
   {
     "unbind": {
       "cmd-shift-c": "collab_panel::ToggleFocus",
+    },
+  },{
+    "bindings": {
+      "cmd-p": [ // Or `ctrl-p`
+        "task::Spawn",
+        { "task_name": "Television File Finder", "reveal_target": "center" },
+      ],
     },
   },
 ]
