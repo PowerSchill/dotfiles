@@ -4,24 +4,24 @@
 # Legacy
 ################################################################################
 
-[profile dankops-admin]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 322653688247
-
-# D3 Hosting Account
-[profile d3banking-admin]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = administrator
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 087633845042
+# [profile dankops-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = administrator
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-west-2
+# sso_account_id = 322653688247
+#
+# # D3 Hosting Account
+# [profile d3banking-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = administrator
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-west-2
+# sso_account_id = 087633845042
 
 ################################################################################
 # Management Account
@@ -51,15 +51,15 @@ output = yaml
 region = us-west-2
 sso_account_id = 460535612184
 
-# Shared Services
-[profile sharedservices-admin]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = AWSAdministratorAccess
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-east-2
-sso_account_id = 739275481264
+# # Shared Services
+# [profile sharedservices-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = AWSAdministratorAccess
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-east-2
+# sso_account_id = 739275481264
 
 
 ################################################################################
@@ -81,37 +81,56 @@ sso_account_id = 089290167525
 ################################################################################
 
 # D3 Sandbox
-[profile sandbox-admin]
-sso_region = us-west-2
-sso_registration_scopes = sso:account:access
-sso_role_name = AWSAdministratorAccess
-sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
-output = yaml
-region = us-west-2
-sso_account_id = 789706088473
+# [profile sandbox-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = AWSAdministratorAccess
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-west-2
+# sso_account_id = 789706088473
 
 ################################################################################
 # FHN
 ################################################################################
 
-# D3 FHN NonProd
-[profile fhnnonprod-admin]
+# # D3 FHN NonProd
+# [profile fhnnonprod-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = AWSAdministratorAccess
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-west-2
+# sso_account_id = 228874976728
+#
+# # D3 FHN Prod
+# [profile fhnprod-admin]
+# sso_region = us-west-2
+# sso_registration_scopes = sso:account:access
+# sso_role_name = AWSAdministratorAccess
+# sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
+# output = yaml
+# region = us-west-2
+# sso_account_id = 699063096817
+
+# Golden Image 
+[profile c8t-golden-image]
 sso_region = us-west-2
 sso_registration_scopes = sso:account:access
 sso_role_name = AWSAdministratorAccess
 sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
 output = yaml
 region = us-west-2
-sso_account_id = 228874976728
+sso_account_id = 739275481264
 
-# D3 FHN Prod
-[profile fhnprod-admin]
+# Golden Image Release
+[profile c8t-golden-image-release]
 sso_region = us-west-2
 sso_registration_scopes = sso:account:access
 sso_role_name = AWSAdministratorAccess
 sso_start_url = https://ncr-digitalbanking.awsapps.com/start#
 output = yaml
 region = us-west-2
-sso_account_id = 699063096817
-
+sso_account_id = 054892330913
 {{- end }}
