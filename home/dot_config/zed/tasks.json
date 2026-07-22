@@ -25,6 +25,13 @@
     "env": { "EDITOR": "zed" },
   },
   {
+    "label": "Television File Finder",
+    "command": "zed \"$(tv files)\"",
+    "hide": "always",
+    "allow_concurrent_runs": true,
+    "use_new_terminal": true
+  },
+  {
     "label": "file finder",
     "command": "zed \"$(tv files)\"",
     "reveal": "always",
