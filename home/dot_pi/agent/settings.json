@@ -1,0 +1,9 @@
+{
+  "lastChangelogVersion": "0.82.1",
+  "theme": "catppuccin-mocha",
+  "packages": [
+    "npm:pi-cursor-sdk"
+  ],
+  "defaultProvider": "cursor",
+  "defaultModel": "auto-smart"
+}
