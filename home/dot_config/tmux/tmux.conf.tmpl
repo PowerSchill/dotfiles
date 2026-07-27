@@ -11,7 +11,9 @@ set-option -ga terminal-overrides ",xterm-256color:Tc"
 
 # Pass through extended key sequences (Shift+Enter, Ctrl+Shift, etc.) from WezTerm
 # Requires tmux >= 3.2
-set -s extended-keys on
+set -g extended-keys on
+set -g extended-keys-format csi-u
+
 set -as terminal-features 'xterm*:extkeys'
 
 unbind C-b
