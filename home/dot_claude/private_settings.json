@@ -14,9 +14,7 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "claude-code-setup@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
-{{- if eq .personal true }}
     "shortcuts-playground@shortcuts-playground": true,
-{{- end }}
     "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -39,11 +37,12 @@
       }
     }
   },
+  "awaySummaryEnabled": false,
   "theme": "dark-ansi",
   "editorMode": "vim",
   "remoteControlAtStartup": false,
-  "skipAutoPermissionPrompt": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "awaySummaryEnabled": false
+  "skipAutoPermissionPrompt": true,
+  "tui": "fullscreen"
 }
