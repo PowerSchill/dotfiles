@@ -1,9 +1,10 @@
 {
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.0",
   "theme": "catppuccin-mocha",
   "packages": [
     "npm:pi-cursor-sdk",
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "npm:pi-claude-auth"
   ],
   "defaultProvider": "cursor",
   "defaultModel": "auto-smart"
