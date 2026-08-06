@@ -2,8 +2,9 @@
   "model": "sonnet",
   "statusLine": {
     "type": "command",
-    "command": "ccstatusline",
-    "padding": 0
+    "command": "bunx -y ccstatusline",
+    "padding": 0,
+    "refreshInterval": 10
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
