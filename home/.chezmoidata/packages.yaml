@@ -404,6 +404,8 @@ packages:
         base:
           - nvim # builtin package is too old.
           - yazi
+        gui:
+          - ghostty # no apt package before Ubuntu 26.04
     fedora:
       cargo:
         base:
@@ -417,6 +419,7 @@ packages:
         dev:
           - dejan/lazygit
         gui:
+          - scottames/ghostty
           - wezfurlong/wezterm-nightly
       packages:
         base:
@@ -447,6 +450,7 @@ packages:
           - lazygit
         gui:
           - conky
+          - ghostty
           - polybar
           - rofi
           - wezterm

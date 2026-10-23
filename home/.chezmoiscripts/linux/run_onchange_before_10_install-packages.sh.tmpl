@@ -54,6 +54,15 @@ cargo install  {{ . | quote }}
 
 {{ if (eq .osid  "linux-fedora"  ) -}}
 ########################################
+# Enabling copr repos (before dnf install, which pulls packages from them)
+########################################
+{{- range $b := $buckets }}
+{{- range (index $.packages.linux.fedora.copr $b) }}
+{{ $sudo }}dnf -y copr enable  {{ . | quote }}
+{{- end }}
+{{- end }}
+
+########################################
 # Installing native os packages
 ########################################
 {{ $sudo }}dnf -y install
@@ -69,15 +78,6 @@ cargo install  {{ . | quote }}
 {{- range $b := $buckets }}
 {{- range (index $.packages.linux.fedora.cargo $b) }}
 cargo install  {{ . | quote }}
-{{- end }}
-{{- end }}
-
-########################################
-# Installing copr packages
-########################################
-{{- range $b := $buckets }}
-{{- range (index $.packages.linux.fedora.copr $b) }}
-{{ $sudo }}dnf -y copr enable  {{ . | quote }}
 {{- end }}
 {{- end }}
 
