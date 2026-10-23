@@ -1,0 +1,52 @@
+# oh-my-zsh
+.oh-my-zsh/cache
+.oh-my-zsh/cache/**
+.oh-my-zsh/**/*.zwc
+
+# System files
+**/.DS_Store
+
+.config/nvim/lazy-lock.json
+
+{{ if ne .chezmoi.os "darwin" }}
+Library/Application Support
+.chezmoiscripts/darwin/**
+Brewfile
+{{ end }}
+
+{{ if ne .chezmoi.os "linux" }}
+.chezmoiscripts/linux/**
+.hushlogin
+.local/share/fonts
+.config/conky
+.config/i3
+.config/polybar
+.config/rofi
+.config/sway
+.config/hypr
+{{ end }}
+
+
+{{ if ne .chezmoi.os "windows" }}
+.chezmoiscripts/windows/**
+Documents
+AppData
+{{ else }}
+# Ignore these for Windows
+.inputrc
+.oh-my-zsh
+.ssh
+.zshrc
+Brewfile
+{{ end }}
+
+{{ if .ephemeral}}
+.ssh
+.netrc
+{{ end }}
+
+{{/* GUI-only configuration */}}
+{{ if not .role.gui }}
+.local/share/fonts
+{{ end }}
+

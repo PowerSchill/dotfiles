@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+#
+# ipgeo - IP geolocation, timezone, and astronomy lookups via ipgeolocation.io
+#
+# Replaces the old `whereip` zsh function. Uses only free-plan-safe API
+# calls (no `lang`/`include` params, which require a paid plan).
+#
+# Usage:
+#   ipgeo [location] [ip] [-a|--all]
+#   ipgeo timezone [ip]
+#   ipgeo astronomy [ip]
+#
+# If [ip] is omitted, the API resolves the caller's own public IP.
+# Bare `ipgeo` (no args) is shorthand for `ipgeo location`.
+# `location` output is trimmed to ip/location/asn by default; pass
+# -a/--all to get the full response.
+#
+# Requires: curl, jq, and IPGEOLOCATION_API_KEY set in your environment
+# (e.g. in ~/.zshrc.local).
+
+: "${IPGEOLOCATION_API_KEY:=""}"
+
+usage() {
+    echo "Usage: ipgeo [location|timezone|astronomy] [ip_address] [-a|--all]"
+    echo
+    echo "  location   IP geolocation details (country, city, coordinates, ...)"
+    echo "  timezone   Time zone details for an IP (offset, DST, current time)"
+    echo "  astronomy  Astronomy details for an IP (sunrise/sunset, moon phase, ...)"
+    echo
+    echo "If ip_address is omitted, your own public IP is used."
+    echo "location output is trimmed to ip/location/asn; pass -a/--all for the full response."
+}
+
+fetch() {
+    # apiKey is passed via curl's stdin config (-K -) rather than as a URL
+    # argument, so it doesn't show up in `ps` output for other local users.
+    # The ipgeolocation.io API only accepts the key as a query param (no
+    # header-based auth is supported) so it still travels in the URL to the
+    # server itself; this only keeps it out of the local process list.
+    local endpoint="$1"
+    local ip="$2"
+    {
+        printf 'data-urlencode = "apiKey=%s"\n' "$IPGEOLOCATION_API_KEY"
+        [[ -n "$ip" ]] && printf 'data-urlencode = "ip=%s"\n' "$ip"
+    } | curl -s -G "https://api.ipgeolocation.io/v3/${endpoint}" -K -
+}
+
+function ipgeo() {
+    if [[ "$1" == "-h" || "$1" == "--help" || "$1" == "help" ]]; then
+        usage
+        return 0
+    fi
+
+    if [[ -z "$IPGEOLOCATION_API_KEY" ]]; then
+        echo "Error: IPGEOLOCATION_API_KEY not set"
+        echo "Set it in your environment: export IPGEOLOCATION_API_KEY='your_key'"
+        return 1
+    fi
+
+    if ! command -v jq &>/dev/null; then
+        echo "Error: jq is required but not installed"
+        return 1
+    fi
+
+    local all=false
+    local args=()
+    for arg in "$@"; do
+        case "$arg" in
+            -a|--all) all=true ;;
+            *) args+=("$arg") ;;
+        esac
+    done
+
+    # Bare `ipgeo` (no args) defaults to `ipgeo location`.
+    local subcommand="${args[0]:-location}"
+    local ip="${args[1]}"
+
+    case "$subcommand" in
+        location)
+            if $all; then
+                fetch "ipgeo" "$ip" | jq '.'
+            else
+                fetch "ipgeo" "$ip" | jq '{ip, location, asn}'
+            fi
+            ;;
+        timezone)
+            fetch "timezone" "$ip" | jq '.'
+            ;;
+        astronomy)
+            fetch "astronomy" "$ip" | jq '.'
+            ;;
+        *)
+            echo "Error: unknown subcommand '$subcommand'"
+            echo
+            usage
+            return 1
+            ;;
+    esac
+}
+
+ipgeo "$@"

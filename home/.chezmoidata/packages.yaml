@@ -1,0 +1,473 @@
+################################################################################
+# Package lists, bucketed by role.
+#
+# `base` is installed on every machine. Every other key is a role name from
+# $roleNames in .chezmoi.yaml.tmpl and is installed only when that role is
+# enabled. Buckets may be empty or absent -- the install scripts range over
+# `index` results and a missing key is a no-op.
+#
+# darwin entries are maps (name, optional excludeEphemeral, optional args).
+# linux and windows entries are bare strings.
+################################################################################
+packages:
+  darwin:
+    taps:
+      base:
+        - name: buo/cask-upgrade
+        - name: lazywalker/tap
+        - name: teamookla/speedtest
+      dev:
+      gui:
+        - name: darrylmorley/whatcable
+      security:
+      onepassword:
+        - name: 1password/tap
+      homelab:
+      work:
+      personal:
+        - name: vitalyrodnenko/omnifocus-mcp
+
+    brews:
+      base:
+        ########################################
+        # Packages required for system configuration
+        ########################################
+        - name: bat # Clone of cat(1) with syntax highlighting and Git integration
+        - name: bat-extras # Additional scripts and tools for bat
+        - name: chezmoi # Manage dotfiles across multiple machines
+        - name: eza # Modern replacement for ls with colors and icons
+        - name: fastfetch # Fast system information display utility
+        - name: fzf # Fuzzy finder for command-line searching
+        - name: git # Distributed version control system
+        - name: neovim # Highly extensible text editor
+        - name: tmux # Terminal multiplexer for managing windows and panes
+        - name: zsh # Z shell with advanced interactive features
+        - name: zsh-autosuggestions # Fish-like autosuggestions for zsh
+        - name: zsh-completions # Additional completion definitions for zsh
+        - name: zsh-syntax-highlighting # Syntax highlighting for zsh
+        - name: zoxide # Smarter cd command that learns your habits
+        #######################################
+        # Core system utilities
+        #######################################
+        - name: bash # GNU Bourne Again Shell
+        - name: coreutils # GNU core utilities for file manipulation
+        - name: curl # Transfer data using URLs with various protocols
+        - name: direnv # Load and unload environment variables per directory
+        - name: findutils # GNU find, xargs and locate utilities
+        - name: grep # Search text patterns in files
+        - name: less # Terminal pager for viewing file contents
+        - name: lesspipe # Filter for less to view compressed and binary files
+        - name: ncdu # Disk usage analyzer with ncurses interface
+        - name: openssl@3 # Cryptography and SSL/TLS toolkit
+        - name: p7zip # High compression ratio archiver (7z format)
+        - name: parallel # Execute jobs in parallel
+        - name: pcre # Perl-compatible regular expressions library
+        - name: readline # Library for command-line editing
+        - name: rename # Rename multiple files using Perl expressions
+        - name: trash # Move files to trash instead of permanent deletion
+        - name: tree # Display directory structure as a tree
+        - name: wget # Download files from the web
+        #######################################
+        # Extended system utilities
+        #######################################
+        - name: ack # Search tool optimized for source code
+        - name: btop # Resource monitor with a nice TUI interface
+        - name: ccat # Colorize output of cat utility
+        - name: cheat # Create and view cheatsheets on the command line
+        - name: dos2unix # Convert line endings between DOS and Unix
+        - name: fd # Fast and user-friendly alternative to find
+        - name: gdu # Fast disk usage analyzer written in Go
+        - name: glow # Render markdown on the command line
+        - name: gnupg # GNU Privacy Guard for encryption and signing
+        - name: gum # Style stdin/stdout with glamour
+        - name: highlight # Source code syntax highlighter
+        - name: jq # JSON query processor for command-line
+        - name: lnav # Log file navigator with highlighting
+        - name: rgrc # Rusty generic colouriser for program output (drop-in grc replacement)
+        - name: ripgrep # Fast recursive grep replacement
+        - name: source-highlight # Syntax highlighter for many languages
+        - name: the_silver_searcher # Fast code searching tool (ag)
+        - name: topgrade # Keep all tools updated automatically
+        - name: viddy # A modern watch command with syntax highlighting
+        - name: vivid # Themeable terminal color scheme generator
+        - name: watch # Execute a program periodically and display results
+        - name: yazi # Blazing fast terminal file manager
+        - name: yq # Lightweight YAML query processor
+        #######################################
+        # Media and document conversion
+        #######################################
+        - name: exiftool # Read and write metadata in image files
+        - name: ffmpeg # Video and audio processing framework
+        - name: ghostscript # Interpreter for PostScript and PDF
+        - name: imagemagick # Image manipulation and conversion tool
+        - name: streamlink # Extract and play video streams
+        - name: teamookla/speedtest/speedtest # Ookla Speedtest
+
+      dev:
+        #######################################
+        # Version control and workflow
+        #######################################
+        - name: commitizen # Conventional commit message helper
+        - name: gh # GitHub CLI for managing repositories and issues
+        - name: git-delta # Syntax-highlighting pager for git
+        - name: git-lfs # Git Large File Storage for versioning large files
+        - name: git-town # Git workflow helper for branching and merging
+        - name: lazygit # Simple Git GUI written in Go
+        - name: act # Run GitHub Actions locally
+        - name: pre-commit # Framework for managing git hooks
+        #######################################
+        # Languages and runtimes
+        #######################################
+        - name: bun # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
+        - name: dotnet # Microsoft .NET runtime and development platform
+        - name: gcc # GNU Compiler Collection for C/C++
+        - name: go # Go programming language compiler
+        - name: jenv # Manage Java versions with ease
+        - name: luarocks # Package manager for Lua modules
+        - name: node # JavaScript runtime built on V8
+        - name: nvm # Manage multiple Node.js versions
+        - name: php # Popular server-side scripting language
+        - name: powershell # Cross-platform command-line shell and scripting language
+        - name: python@3.15 # Python programming language interpreter
+        #######################################
+        # Language tooling, linters, formatters
+        #######################################
+        - name: delve # Debugger for Go programming language
+        - name: gofumpt # Stricter go fmt formatting
+        - name: goimports # Update Go import lines automatically
+        - name: golangci-lint # Fast Go linter aggregator
+        - name: gopls # Go language server for IDE integration
+        - name: gotestsum # Go test runner with better output formatting
+        - name: jsonlint # Validate JSON files
+        - name: markdownlint-cli # Lint markdown files
+        - name: prettier # Code formatter for JavaScript and more
+        - name: pygments # Syntax highlighter written in Python
+        - name: pytest # Python testing framework
+        - name: shellcheck # Shell script static analysis tool
+        - name: shfmt # Shell script formatter
+        - name: yamllint # Linter for YAML files
+        #######################################
+        # Python ecosystem
+        #######################################
+        - name: numpy # Fundamental package for Python numerical computing
+        - name: pillow # Python image processing library
+        - name: pipx # Install and run Python applications in isolated environments
+        - name: pycparser # Complete C99 parser written in Python
+        - name: pydantic # Data validation using Python type hints
+        - name: uv # Ultra-fast Python package installer and resolver
+        - name: virtualenv # Create isolated Python environments
+        #######################################
+        # Editors, docs, misc development
+        #######################################
+        - name: asciinema # Record and share terminal sessions
+        - name: aspell # Spell checker and interactive spelling corrector
+        - name: cloc # Count lines of code in various languages
+        - name: ctags # Generate tags file for code navigation
+        - name: graphviz # Graph visualization software
+        - name: jless # JSON viewer with pagination support
+        - name: multimarkdown # Markdown variant with more features
+        - name: pandoc # Universal markup document converter
+        #######################################
+        # Databases and connectivity libraries
+        #######################################
+        - name: freetds # Library for accessing Sybase and Microsoft SQL Server
+        - name: krb5 # Kerberos network authentication protocol
+        - name: mysql # Popular relational database
+        #######################################
+        # General
+        #######################################
+        - name: yubikey-agent # YubiKey SSH agent
+
+      gui:
+        # macOS desktop helper CLIs -- only meaningful with a GUI session
+        - name: blueutil # Control Bluetooth from the command line
+        - name: dockutil # Manage macOS dock from command line
+        - name: pinentry-mac # macOS GUI for entering passphrases
+        - name: switchaudio-osx # Switch audio input/output on macOS
+
+      security:
+        - name: nmap # Network mapper and security scanner
+        - name: checkov # Infrastructure as code security scanner
+        - name: sqlmap # free and open-source penetration testing tool written in Python that automates the process of detecting and exploiting SQL injection (SQLi) flaws
+        - name: tfsec # Security scanner for Terraform code
+        - name: trivy # Vulnerability and misconfiguration scanner
+        - name: hydra
+        - name: hashcat # Advanced password recovery utility
+
+      onepassword:
+
+      homelab:
+        - name: kubernetes-cli # Kubernetes command-line tool (kubectl)
+        - name: minikube # Local Kubernetes cluster for development
+        - name: terraform-docs # Generate Terraform documentation from code
+        - name: terragrunt # Terraform wrapper for orchestrating infrastructure
+        - name: ipcalc # IP address calculator for networking
+        - name: sipcalc # Advanced IP subnet calculator
+        - name: ssh-copy-id # Copy SSH public key to remote machines
+        - name: whois # Query domain registration information
+
+      work:
+
+      personal:
+        - name: mas
+          excludeEphemeral: true
+        - name: vitalyrodnenko/omnifocus-mcp/omnifocus-mcp # Model Context Protocol server for OmniFocus
+
+    casks:
+      base:
+
+      dev:
+        - name: dotnet-sdk # Microsoft .NET SDK for development
+        - name: postman # API development and testing platform
+        - name: ghostty # GPU-accelerated terminal emulator
+        - name: viscosity # OpenVPN client with AppleScript support
+        - name: codexbar # Menu bar app for tracking agentic coding limits and usage
+
+      gui:
+        #######################################
+        # Fonts
+        #######################################
+        - name: font-symbols-only-nerd-font # Nerd font with symbol glyphs
+        # - name: font-fira-code-nerd-font
+        # - name: font-jetbrains-mono
+        - name: font-meslo-for-powerline # Meslo font variant for powerline
+        - name: font-meslo-lg-nerd-font # Meslo Nerd font with larger size
+        #######################################
+        # Desktop applications
+        #######################################
+        - name: arc
+        - name: alfred # Application launcher and productivity tool
+        - name: beyond-compare # Advanced file and folder comparison tool
+        - name: bloom # Bloom language server utility
+        - name: camo-studio # Virtual camera app for video calls
+          excludeEphemeral: true
+        - name: claude-code@latest # Claude Code editor integration
+        - name: cyberduck # FTP/SFTP and cloud storage client
+        - name: daisydisk # Visual disk usage analyzer
+        - name: devonthink # Document and information management system
+          excludeEphemeral: true
+        - name: hazel # Automated file management tool
+          excludeEphemeral: true
+        - name: kaleidoscope # Visual difference and merge tool
+        - name: keyboard-maestro # Keyboard automation utility
+        - name: logi-options+ # Software for Logitech devices
+        - name: moom # Window management tool
+          excludeEphemeral: true
+        - name: mountain-duck # Mount cloud storage as local drive
+        - name: obsidian # Note-taking app with local-first storage
+        - name: omnifocus # Task management and productivity system
+        - name: orion # WebKit based web browser
+        - name: raindropio # Bookmark and link management service
+        - name: reader # Reading mode for web content
+        - name: setapp # Installed once manually
+        - name: sf-symbols # Apple San Francisco Symbols app
+        - name: snagit # Screen capture and editing tool
+        - name: soundsource # Advanced audio control utility
+        - name: textexpander # Text expansion and automation tool
+        - name: tower # Git desktop client
+        - name: visual-studio-code@insiders # VS Code insider development build
+        - name: whatcable # Menu bar app for USB-C cable diagnostics
+        - name: wezterm@nightly # Nightly build of WezTerm terminal emulator
+        - name: zed # High-performance code editor
+
+      security:
+        - name: burp-suite # Web security testing toolkits
+
+      onepassword:
+        - name: 1password-cli # Command-line access to 1Password vault
+        - name: 1password # Password manager and digital vault
+          args:
+            appdir: "/Applications"
+
+      homelab:
+        - name: docker-desktop # Docker container platform for macOS
+          excludeEphemeral: true
+          args:
+            appdir: "/Applications"
+        - name: gcloud-cli # Google Cloud command-line tool
+        - name: tailscale-app # Mesh VPN based on WireGuard
+          excludeEphemeral: true
+
+      work:
+        # - name: displaylink # DisplayLink graphics adapter drivers
+
+      personal:
+        - name: anylist # Shared grocery and household list app
+          excludeEphemeral: true
+        - name: backblaze # Cloud backup service
+          excludeEphemeral: true
+        - name: backblaze-downloader # Download tool for Backblaze backups
+          excludeEphemeral: true
+        - name: caldigit-docking-utility # CalDigit dock configuration app
+          excludeEphemeral: true
+        - name: caldigit-thunderbolt-charging # CalDigit Thunderbolt charging utility
+          excludeEphemeral: true
+        - name: calibre # E-book management library
+          excludeEphemeral: true
+        - name: cardhop # Contacts manager
+        - name: chatgpt # ChatGPT app by OpenAI
+        - name: claude # Claude AI assistant by Anthropic
+        - name: curseforge # Modding platform for games
+        - name: discord # Voice, video, and text communication platform
+        - name: dropbox # Cloud storage and file synchronization
+          excludeEphemeral: true
+        - name: elgato-stream-deck # Stream Deck control software
+          excludeEphemeral: true
+        - name: fastscripts # Keyboard shortcuts for AppleScripts
+        - name: fastmail # Email client
+        - name: firefox # Firefox web browser
+        - name: google-chrome # Google Chrome web browser
+        - name: grammarly-desktop # Grammar check and writing assistant
+        - name: helium-browser # Lightweight side window browser
+        - name: imazing
+          excludeEphemeral: true
+        - name: keyboardcleantool
+          excludeEphemeral: true
+        - name: little-snitch@nightly # Network activity monitor and firewall
+          args:
+            appdir: "/Applications"
+          excludeEphemeral: true
+        - name: mactracker # Detailed information on every Apple product ever made
+        - name: mailmate@beta # Powerful email client for macOS
+          excludeEphemeral: true
+        - name: microsoft-auto-update # Microsoft Office update tool
+        - name: microsoft-edge # Microsoft Edge web browser
+        - name: minecraft # Sandbox building and exploration game
+          excludeEphemeral: true
+        - name: opal-app # Virtual camera for professional video calls
+          excludeEphemeral: true
+        - name: openaudible # Audiobook manager and converter
+          excludeEphemeral: true
+        # - name: powershell # Command-line shell and scripting language
+        - name: signal # Instant messaging application focusing on security
+          excludeEphemeral: true
+        - name: slack # Team messaging and collaboration platform
+        - name: steam # Video game digital distribution service
+          excludeEphemeral: true
+        - name: visual-studio-code # Installed from self-service on work machines.
+          excludeEphemeral: true
+        - name: vlc # Multimedia player and framework
+          excludeEphemeral: true
+        - name: yubico-authenticator # YubiKey authentication application
+          excludeEphemeral: true
+        - name: zen # Privacy-focused web browser
+        - name: zoom # Video conferencing platform
+          excludeEphemeral: true
+        - name: zotero@beta # Research source manager and bibliography software
+          excludeEphemeral: true
+        - name: windows-app # Windows App for running Windows apps on macOS
+          excludeEphemeral: true
+
+  linux:
+    debian:
+      cargo:
+        base:
+          - cargo-update
+          - eza
+          - topgrade
+      packages:
+        base:
+          - bat
+          - curl
+          - direnv
+          - fastfetch
+          - fd-find
+          - fzf
+          - jq
+          - libssl-dev
+          - ncdu
+          - tmux
+          - trash-cli
+          - vim
+          - zoxide
+          - zsh
+        dev:
+          - gh
+          - git-delta
+          - golang
+          - lazygit
+          - npm
+        gui:
+          - chromium-browser
+          - conky-std
+          - i3
+          - polybar
+          - rofi
+          - wezterm-nightly
+          - xorg
+        security:
+        onepassword:
+        homelab:
+        work:
+        personal:
+      snap:
+        base:
+          - nvim # builtin package is too old.
+          - yazi
+    fedora:
+      cargo:
+        base:
+          - cargo-upgrades
+          - cargo-update
+          - eza
+      copr:
+        base:
+          - lilay/topgrade
+          - lihaohong/yazi
+        dev:
+          - dejan/lazygit
+        gui:
+          - wezfurlong/wezterm-nightly
+      packages:
+        base:
+          - bat
+          - direnv
+          - fastfetch
+          - fd
+          - fzf
+          - gnome-keyring
+          - gnome-keyring-pam
+          - jq
+          - ncdu
+          - neovim
+          - tar
+          - tldr
+          - tmux
+          - topgrade
+          - trash
+          - yazi
+          - yq
+          - zoxide
+          - zsh
+        dev:
+          - copr-cli
+          - gh
+          - git-delta
+          - golang
+          - lazygit
+        gui:
+          - conky
+          - polybar
+          - rofi
+          - wezterm
+        security:
+        onepassword:
+        homelab:
+        work:
+        personal:
+  windows:
+    winget:
+      base:
+        - fastfetch
+        - JanDeDobbeleer.OhMyPosh
+        - Microsoft.PowerShell
+        - Microsoft.WindowsTerminal
+      dev:
+        - Microsoft.VisualStudioCode
+      gui:
+        - Microsoft.PowerToys
+      security:
+      onepassword:
+      homelab:
+      work:
+      personal:

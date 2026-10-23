@@ -1,0 +1,1 @@
+$(grep /zsh$ /etc/shells | tail -1)

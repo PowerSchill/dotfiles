@@ -1,0 +1,167 @@
+{{/* ###########################################################################
+Roles
+
+A machine's configuration is the union of the `base` set plus one bucket per
+enabled role. Roles are chosen once at `chezmoi init` and persisted, so they no
+longer depend on network-visible hostname/FQDN state.
+
+To change a role later use the `cmrole` shell function (see
+dot_config/zsh/functions/role.zsh), which drives:
+
+    chezmoi init --promptBool "<role>=true|false" && chezmoi apply
+
+The prompt text below is deliberately the bare role name: chezmoi keys
+--promptBool on the *prompt string*, not on the state key.
+########################################################################### */}}
+{{- $roleNames := list "dev" "gui" "work" "personal" "security" "onepassword" "homelab" -}}
+{{- $roleDefaults := dict
+      "dev" true
+      "gui" true
+      "work" false
+      "personal" false
+      "security" false
+      "onepassword" false
+      "homelab" false -}}
+{{- "" -}}
+
+{{/* ephemeral is machine *lifetime*, not a capability: it is force-set by the
+     environment detection below rather than chosen, so it stays a plain flag. */}}
+{{- $ephemeral := false -}}
+{{- "" -}}
+
+{{/* ###########################################################################
+Operating System Identification
+########################################################################### */}}
+{{- $osID := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* Override some arch designations */}}
+{{- $uname_arch := "" -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if eq (output "uname" "-m" | trim) "aarch64" -}}
+{{-     $uname_arch = "arm64" -}}
+{{-   else -}}
+{{-     $uname_arch = output "uname" "-m" | trim -}}
+{{-   end -}}
+{{- end -}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{- end -}}
+
+{{- $hostname := .chezmoi.hostname -}}
+
+{{/* On macOS the hostname can change depending on the network, this gives a more stable result */}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $hostname = output "scutil" "--get" "ComputerName" | trim -}}
+{{- end -}}
+
+{{/* ###########################################################################
+Role selection
+########################################################################### */}}
+{{- $role := dict -}}
+{{- if $ephemeral -}}
+{{/*   Throwaway machines get a usable shell and toolchain, nothing else. */}}
+{{-   range $r := $roleNames -}}
+{{-     $_ := set $role $r (eq $r "dev") -}}
+{{-   end -}}
+{{- else if stdinIsATTY -}}
+{{-   range $r := $roleNames -}}
+{{-     $_ := set $role $r (promptBoolOnce $ (printf "role_%s" $r) $r (index $roleDefaults $r)) -}}
+{{-   end -}}
+{{- else -}}
+{{/*   Non-interactive and not detected as ephemeral: fall back to defaults. */}}
+{{-   range $r := $roleNames -}}
+{{-     $_ := set $role $r (index $roleDefaults $r) -}}
+{{-   end -}}
+{{- end -}}
+
+{{/* Ordered list of enabled roles, used to index into .packages buckets. */}}
+{{- $roles := list -}}
+{{- range $r := $roleNames -}}
+{{-   if index $role $r -}}
+{{-     $roles = append $roles $r -}}
+{{-   end -}}
+{{- end -}}
+
+{{/* ###########################################################################
+Sets the appearance of the desktop environment.
+########################################################################### */}}
+{{- $appearance := "dark" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $appearance = output "sh" "-c" "defaults read -g AppleInterfaceStyle 2>/dev/null || echo Light" | trim | lower -}}
+{{-   if ne $appearance "dark" -}}
+{{-     $appearance = "light" -}}
+{{-   end -}}
+{{- end }}
+
+
+{{- $name := "Mark E. Schill" -}}
+{{- $email := "" -}}
+{{- if index $role "personal" -}}
+{{-   $email = "Mark.Schill@cmschill.net" -}}
+{{- end -}}
+
+{{- if not $ephemeral -}}
+{{-   if $email | empty -}}
+{{-     if stdinIsATTY -}}
+{{-       $email = promptStringOnce . "email" "What is your email address?" -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+
+################################################################################
+# Chezmoi configuration file
+################################################################################
+
+scriptTempDir: "~/tmp"
+
+git:
+  autoCommit: true
+  autoPush: true
+diff:
+  # pager: delta
+{{- if lookPath "ksdiff" }}
+  command: "ksdiff"
+  args:
+    - "--partial-changeset"
+    - "--relative-path"
+    - "{{ `{{ .Target }}` }}"
+    - "--"
+    - "{{ `{{ .Target }}` }}"
+    - "{{ `{{ .Destination }}` }}"
+{{- end }}
+{{- if lookPath "bcomp" }}
+merge:
+  command: "bcomp"
+  args:
+    - "{{ `{{ .Destination }}` }}"
+    - "{{ `{{ .Source }}` }}"
+    - "{{ `{{ .Target }}` }}"
+    - "{{ `{{ .Source }}` }}"
+{{- end }}
+textconv:
+- pattern: "**/*.plist"
+  command: "plutil"
+  args:
+  - "-convert"
+  - "xml1"
+  - "-o"
+  - "-"
+  - "-"
+data:
+    name: {{ $name | quote }}
+    email: {{ $email | quote }}
+    ephemeral: {{ $ephemeral }}
+    hostname: {{ $hostname | quote }}
+    osid: {{ $osID | quote }}
+    uname_arch: {{ $uname_arch }}
+    appearance: {{ $appearance | quote }}
+    roles: {{ $roles | toJson }}
+    role:
+{{- range $r := $roleNames }}
+      {{ $r }}: {{ index $role $r }}
+{{- end }}

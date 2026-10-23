@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Install ccstatusline globally so the Claude Code statusLine can invoke the
+# binary directly instead of paying an npx/bunx registry round-trip per render.
+set -euo pipefail
+
+{{- if not .ephemeral }}
+
+if ! command -v bun >/dev/null 2>&1; then
+    echo "ccstatusline: bun not found, skipping install" >&2
+    exit 0
+fi
+
+echo "Installing ccstatusline..."
+bun install -g ccstatusline
+
+{{- end }}

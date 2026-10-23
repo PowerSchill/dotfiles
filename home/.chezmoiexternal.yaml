@@ -1,0 +1,77 @@
+{{- /* "chezmoi" is present as work around for https://github.com/twpayne/chezmoi/discussions/1724 */ -}}
+{{- $cache := dict "chezmoi" .chezmoi -}}
+
+{{- template "read-versions-and-revisions-cache" $cache -}}
+
+fzf-git:
+  type: git-repo
+  url: https://github.com/junegunn/fzf-git.sh.git
+  refreshPeriod: 168h
+
+.oh-my-zsh:
+  type: git-repo
+  url: https://github.com/ohmyzsh/ohmyzsh.git
+  refreshPeriod: 168h
+  clone:
+    args:
+      - "-c"
+      - "fetch.fsck.zeroPaddedFilemode=ignore"
+      - "-c"
+      - "receive.fsck.zeroPaddedFilemode=ignore"
+
+.oh-my-zsh/custom/themes/powerlevel10k:
+  type: git-repo
+  url: https://github.com/romkatv/powerlevel10k.git
+  refreshPeriod: 168h
+
+.oh-my-zsh/custom/plugins/zsh-autosuggestions:
+  type: git-repo
+  url: https://github.com/zsh-users/zsh-autosuggestions.git
+  refreshPeriod: 168h
+
+.oh-my-zsh/custom/plugins/fast-syntax-highlighting:
+  type: git-repo
+  url: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+  refreshPeriod: 168h
+
+.config/fsh/catppuccin-mocha.ini:
+  type: file
+  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-mocha.ini
+  refreshPeriod: 168h
+
+.config/fsh/catppuccin-latte.ini:
+  type: file
+  url: https://github.com/catppuccin/zsh-fsh/raw/main/themes/catppuccin-latte.ini
+  refreshPeriod: 168h
+
+.config/gitalias/gitalias.txt:
+  type: file
+  {{ $gitaliasRevision := includeTemplate "get-github-head-revision" (list "GitAlias/gitalias" $cache) }}
+  url: "https://github.com/GitAlias/gitalias/raw/{{ $gitaliasRevision }}/gitalias.txt"
+  refreshPeriod: 168h
+
+{{-   $fontDir := "" }}
+{{-   if eq .chezmoi.os "darwin" }}
+{{-     $fontDir = "Library/Fonts" }}
+{{-   else if eq .chezmoi.os "linux" }}
+{{-     $fontDir = ".local/share/fonts" }}
+{{-   else if eq .chezmoi.os "windows" }}
+{{-     $fontDir = "Fonts" }}
+{{-   end }}
+
+{{ $fontDir }}/MesloLGS NF Regular.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Regular.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Bold.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Bold.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Italic.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Italic.ttf
+  refreshPeriod: 168h
+{{ $fontDir }}/MesloLGS NF Bold Italic.ttf:
+  type: file
+  url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS NF Bold Italic.ttf
+  refreshPeriod: 168h

@@ -1,0 +1,299 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+notARepository: "prompt" # one of: 'prompt' | 'create' | 'skip'
+promptToReturnFromSubprocess: false
+gui:
+  nerdFontsVersion: "3"
+  showIcons: true
+  showFileTree: true
+  scrollHeight: 10
+  scrollPastBottom: true
+  mouseEvents: true
+  skipDiscardChangeWarning: false
+  skipStashWarning: true
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  enlargedSideViewLocation: top
+  mainPanelSplitMode: flexible
+  theme:
+{{- if eq .appearance "light" }}
+    activeBorderColor:
+      - "#1e66f5"
+      - bold
+    inactiveBorderColor:
+      - "#9ca0b0"
+    optionsTextColor:
+      - "#1e66f5"
+    selectedLineBgColor:
+      - "#ccd0da"
+    cherryPickedCommitBgColor:
+      - "#bcc0cc"
+    cherryPickedCommitFgColor:
+      - "#1e66f5"
+    unstagedChangesColor:
+      - "#d20f39"
+    defaultFgColor:
+      - "#4c4f69"
+    searchingActiveBorderColor:
+      - "#df8e1d"
+  authorColors:
+    "*": "#7287fd"
+{{- else }}
+    activeBorderColor:
+      - "#89b4fa"
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8"
+    optionsTextColor:
+      - "#89b4fa"
+    selectedLineBgColor:
+      - "#313244"
+    cherryPickedCommitBgColor:
+      - "#45475a"
+    cherryPickedCommitFgColor:
+      - "#89b4fa"
+    unstagedChangesColor:
+      - "#f38ba8"
+    defaultFgColor:
+      - "#cdd6f4"
+    searchingActiveBorderColor:
+      - "#f9e2af"
+  authorColors:
+    "*": "#b4befe"
+{{- end }}
+  commitLength:
+    show: true
+  skipNoStagedFilesWarning: false
+  spinner:
+    # The frames of the spinner animation.
+    frames:
+      - "⣷ "
+      - "⣯ "
+      - "⣟ "
+      - "⡿ "
+      - "⢿ "
+      - "⣻ "
+      - "⣽ "
+      - "⣾ "
+    rate: 100
+  # portraitMode: always
+  # windowSize: half
+  statusPanelView: allBranchesLog
+  commandLogSize: 2
+  showRandomTip: false
+os:
+  editPreset: "nvim"
+  # editCommand: "$XDG_CONFIG_HOME/lazygit/edit-nvim"
+  # editCommandTemplate: "{{ "{{editor}} {{filename}}" }}"
+git:
+  log:
+    showGraph: always
+    showWholeGraph: false
+  # branchLogCmd:
+  #   'git log --graph --color=always --abbrev-commit --decorate --date=relative
+  #   --pretty=format:"%C(auto)%h: %s (%C(blue)%an %C(white)|
+  #   %C(cyan)%ad%C(white))" {{ "{{branchName}}" }} --'
+  branchLogCmd: "git log --color=always --graph --date=relative --pretty=format:'%C(dim yellow)%h %C(reset)%<|(70,trunc)%s %C(dim white)@%an%C(reset) %C(dim white)(%cd)%C(reset)%C(auto)'"
+  overrideGpg: true
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+  skipHookPrefix: WIP
+  branchPrefix: "powerschill/"
+  allBranchesLogCmds:
+    - git log --color=always --graph --all --date=relative --pretty=format:'%C(auto)%h %C(reset)%<|(50,trunc)%s %C(bold blue)<%an>%C(reset) %C(green)(%cd)%C(reset)%C(auto)%d'
+customCommands:
+  # - key: "J"
+  #   command: $XDG_CONFIG_HOME/lazygit/create-jira-branch {{ "{{index .PromptResponses 0 | quote}}" }}
+  #   description: "create task in JIRA"
+  #   context: "localBranches"
+  #   loadingText: "creating task in JIRA"
+  #   prompts:
+  #     - type: "input"
+  #       title: "JIRA Task Title"
+  #       key: "Title"
+  #       suggestions:
+  #         preset: "branches"
+  # output: popup
+  - key: "Y"
+    context: "global"
+    description: "Git Town sYnc"
+    command: "git town sync --all"
+    loadingText: "Syncing"
+    output: log
+  - key: "U"
+    context: "global"
+    description: "Git Town Undo (undo the last Git Town command)"
+    command: "git-town undo"
+    prompts:
+      - type: "confirm"
+        title: "Undo Last Command"
+        body: "Are you sure you want to Undo the last Git Town command?"
+    loadingText: "Undoing Git Town Command"
+    output: log
+  - key: "!"
+    context: "global"
+    description: "Git Town Repo (opens the repo link)"
+    command: "git-town repo"
+    loadingText: "Opening Repo Link"
+    output: log
+  - key: "a"
+    context: "localBranches"
+    description: "Git Town Append"
+    prompts:
+      - type: "input"
+        title: "Enter name of new child branch. Branches off of '{{ "{{.CheckedOutBranch.Name}}" }}'"
+        key: "BranchName"
+    command: "git-town append {{ "{{.Form.BranchName}}" }}"
+    loadingText: "Appending"
+    output: log
+  - key: "h"
+    context: "localBranches"
+    description: "Git Town Hack (creates a new branch)"
+    prompts:
+      - type: "input"
+        title: "Enter name of new branch. Branches off of 'Main'"
+        key: "BranchName"
+    command: "git-town hack {{ "{{.Form.BranchName}}" }}"
+    loadingText: "Hacking"
+    output: log
+  - key: "K"
+    context: "localBranches"
+    description: "Git Town Delete (deletes the current feature branch and sYnc)"
+    command: "git-town delete"
+    prompts:
+      - type: "confirm"
+        title: "Delete current feature branch"
+        body: "Are you sure you want to delete the current feature branch?"
+    loadingText: "Deleting Feature Branch"
+    output: log
+  - key: "p"
+    context: "localBranches"
+    description: "Git Town Propose (creates a pull request)"
+    command: "git-town propose"
+    loadingText: "Creating pull request"
+    output: log
+  - key: "P"
+    context: "localBranches"
+    description: "Git Town Prepend (creates a branch between the curent branch and its parent)"
+    prompts:
+      - type: "input"
+        title: "Enter name of the for child branch between '{{ "{{.CheckedOutBranch.Name}}" }}' and its parent"
+        key: "BranchName"
+    command: "git-town prepend {{ "{{.Form.BranchName}}" }}"
+    loadingText: "Prepending"
+    output: log
+  - key: "S"
+    context: "localBranches"
+    description: "Git Town Skip (skip branch with merge conflicts when syncing)"
+    command: "git-town skip"
+    loadingText: "Skiping"
+    output: log
+  - key: "G"
+    context: "files"
+    description: "Git Town GO aka:continue (continue after resolving merge conflicts)"
+    command: "git-town continue"
+    loadingText: "Continuing"
+    output: log
+  - key: "R"
+    command: "gh repo view --web"
+    description: "view repo on github"
+    context: "global"
+    loadingText: "opening github..."
+  - key: "o"
+    command: "gh pr view --web"
+    description: "view PR on github"
+    context: "global"
+    loadingText: "opening github..."
+  - key: "O"
+    command: gh pr create -t "{{ "{{index .PromptResponses 0}}" }}" {{ "{{" }} if eq (index .PromptResponses 1) "yes"{{ "}}" }}{{ "{{" }} "--draft" {{ "}}" }}{{ "{{" }} end {{ "}}" }}
+    description: "Create a pull request using the GitHub CLI"
+    context: "localBranches"
+    prompts:
+      - type: "input"
+        title: "Title"
+        initialValue: "{{ "{{index .CheckedOutBranch.Name}}" }}"
+      - type: "menu"
+        title: "Mark pull request as draft?"
+        options:
+          - value: "yes"
+          - value: "no"
+    output: terminal
+  - key: "C"
+    command: |
+      git commit -m "{{ "{{" }} .Form.Type {{ "}}" }}{{ "{{" }}if .Form.Scopes{{ "}}" }}({{ "{{" }} .Form.Scopes {{ "}}" }}){{ "{{" }}end{{ "}}" }}: {{ "{{" }} .Form.Description {{ "}}" }}" \
+      {{ "{{" }}- if .Form.LongDescription {{ "}}" }}
+      -m "{{ "{{" }} .Form.LongDescription {{ "}}" }}" \
+      {{ "{{" }}- end {{ "}}" }}
+      {{ "{{" }}- if .Form.BreakingChange {{ "}}" }}
+      -m "BREAKING CHANGE: {{ "{{" }} .Form.BreakingChange {{ "}}" }}"
+      {{ "{{" }}- end {{ "}}" }}
+    description: "commit with commitizen"
+    context: "files"
+    prompts:
+      - type: "menu"
+        title: "Select the type of change you are committing."
+        key: "Type"
+        options:
+          - name: "Feature"
+            description: "a new feature"
+            value: "feat"
+          - name: "Fix"
+            description: "a bug fix"
+            value: "fix"
+          - name: "Documentation"
+            description: "Documentation only changes"
+            value: "docs"
+          - name: "Styles"
+            description: "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"
+            value: "style"
+          - name: "Code Refactoring"
+            description: "A code change that neither fixes a bug nor adds a feature"
+            value: "refactor"
+          - name: "Performance Improvements"
+            description: "A code change that improves performance"
+            value: "perf"
+          - name: "Tests"
+            description: "Adding missing tests or correcting existing tests"
+            value: "test"
+          - name: "Builds"
+            description: "Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)"
+            value: "build"
+          - name: "Continuous Integration"
+            description: "Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)"
+            value: "ci"
+          - name: "Chores"
+            description: "Other changes that don't modify src or test files"
+            value: "chore"
+          - name: "Reverts"
+            description: "Reverts a previous commit"
+            value: "revert"
+      - type: "input"
+        title: "Enter the scope(s) of this change."
+        key: "Scopes"
+      - type: "input"
+        title: "Enter the short description of the change."
+        key: "Description"
+      - type: "input"
+        title: "Enter a more detailed description (optional)."
+        key: "LongDescription"
+      - type: "input"
+        title: "Describe the breaking change, if any (leave empty if none)."
+        key: "BreakingChange"
+      - type: "confirm"
+        title: "Is the commit message correct?"
+        body: |
+          {{ "{{" }} .Form.Type {{ "}}" }}{{ "{{" }}if .Form.Scopes{{ "}}" }}({{ "{{" }} .Form.Scopes {{ "}}" }}){{ "{{" }}end{{ "}}" }}: {{ "{{" }} .Form.Description {{ "}}" }}
+          {{ "{{" }}- if .Form.LongDescription {{ "}}" }}
+
+          {{ "{{" }} .Form.LongDescription {{ "}}" }}
+          {{ "{{" }}- end {{ "}}" }}
+          {{ "{{" }}- if .Form.BreakingChange {{ "}}" }}
+
+          BREAKING CHANGE: {{ "{{" }} .Form.BreakingChange {{ "}}" }}
+          {{ "{{" }}- end {{ "}}" }}
+  # - key: "P"
+  #   command: 'git push && gh pr checks --watch --json name,state -q ".[] | select(.name == "Mark as draft") | .state == "SUCCESS" or .state == "SKIPPED""'
+  # context: "localBranches"
+  - key: "F"
+    command: "git push --force-with-lease --no-verify"
+    context: "localBranches"

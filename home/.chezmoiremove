@@ -1,0 +1,2 @@
+# Migrate tmux config to ~/.config/tmux
+.tmux.conf

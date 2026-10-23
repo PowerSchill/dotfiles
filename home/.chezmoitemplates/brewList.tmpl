@@ -1,0 +1,20 @@
+{{- /*
+  Render one Brewfile section.
+
+  Args: (list $items $type $isEphemeral)
+    $items       - a package bucket from .chezmoidata/packages.yaml (may be nil)
+    $type        - "tap", "brew" or "cask"
+    $isEphemeral - skip entries marked `excludeEphemeral: true`
+
+  Ranging over a nil bucket is a no-op, so empty/absent role buckets need no guard.
+*/ -}}
+{{- $items := index . 0 -}}
+{{- $type := index . 1 -}}
+{{- $isEphemeral := index . 2 -}}
+{{- range $items -}}
+  {{- if not (and $isEphemeral (index . "excludeEphemeral")) }}
+{{ $type }} {{ .name | quote }}
+    {{- with index . "args" }}, args: { {{- range $k, $v := . }} {{ $k }}: {{ $v | quote }}{{- end }} }
+    {{- end }}
+  {{- end }}
+{{- end -}}

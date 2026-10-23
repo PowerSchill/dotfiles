@@ -1,0 +1,209 @@
+{
+  "version": 4,
+  "colorLevel": 3,
+  "flexMode": "full",
+  "compactThreshold": 60,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [""],
+    "separatorInvertBackground": [false],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
+  },
+  "lines": [
+    [
+      {
+        "id": "cwd",
+        "type": "current-working-dir",
+        "color": "hex:B4BEFE",
+        "rawValue": true,
+        "metadata": {
+          "abbreviateHome": "true"
+        }
+      },
+      { "id": "s1", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "git-branch",
+        "type": "git-branch",
+        "color": "hex:CBA6F7",
+        "maxWidth": 32,
+        "metadata": {
+          "hide": "no-git"
+        }
+      },
+      { "id": "s2", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "git-changes",
+        "type": "git-changes",
+        "color": "hex:F38BA8",
+        "metadata": {
+          "hide": "no-git"
+        }
+      }
+    ],
+    [
+      {
+        "id": "model",
+        "type": "model",
+        "color": "hex:94E2D5",
+        "bold": true,
+        "rawValue": true
+      },
+      { "id": "s3", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "thinking-effort",
+        "type": "thinking-effort",
+        "color": "hex:F5C2E7",
+        "bold": true,
+        "rawValue": true
+      },
+      { "id": "s4", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "context-bar",
+        "type": "context-bar",
+        "color": "hex:89B4FA",
+        "rawValue": true,
+        "metadata": {
+          "display": "progress-short"
+        }
+      },
+      { "id": "s5", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "tokens-input",
+        "type": "tokens-input",
+        "color": "hex:74C7EC"
+      },
+      { "id": "s6", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "tokens-cached",
+        "type": "tokens-cached",
+        "color": "hex:89DCEB"
+      },
+      { "id": "s7", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "tokens-output",
+        "type": "tokens-output",
+        "color": "hex:A6E3A1"
+      }
+    ],
+{{ if .role.personal }}
+    [
+      {
+        "id": "session-usage",
+        "type": "session-usage",
+        "color": "hex:A6E3A1",
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
+      },
+      { "id": "s8", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "reset-timer",
+        "type": "reset-timer",
+        "color": "hex:A6ADC8",
+        "rawValue": true,
+        "metadata": {
+          "display": "time",
+          "compact": "true"
+        }
+      },
+      { "id": "s9", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "weekly-usage",
+        "type": "weekly-usage",
+        "color": "hex:FAB387",
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
+      },
+      { "id": "s10", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "weekly-reset-timer",
+        "type": "weekly-reset-timer",
+        "color": "hex:A6ADC8",
+        "rawValue": true,
+        "metadata": {
+          "absolute": "false",
+          "weekday": "false",
+          "compact": "true"
+        }
+      },
+      { "id": "s11", "type": "separator", "color": "hex:6C7086" },
+      {
+        "id": "session-cost",
+        "type": "session-cost",
+        "color": "hex:F9E2AF",
+        "rawValue": true
+      }
+    ]
+{{else}}
+    [
+      {
+        "id": "88c768df-47fa-404e-b2ca-9cc0356e0097",
+        "type": "custom-text",
+        "color": "hex:A6E3A1",
+        "customText": "Session: "
+      },
+      {
+        "id": "c337ecd2-2b69-4993-b075-0b03c83672bd",
+        "type": "session-cost",
+        "color": "hex:A6E3A1",
+        "rawValue": true
+      },
+      {
+        "id": "0070ecbf-6e18-4b68-9a8c-245fd0ea532b",
+        "type": "separator",
+        "color": "hex:6C7086"
+      },
+      {
+        "id": "feece9f8-7363-4d5c-8f86-9cb4db257ac5",
+        "type": "custom-text",
+        "customText": "Monthly ",
+        "color": "hex:FAB387"
+      },
+      {
+        "id": "36fe2ccb-69c8-417f-a3b7-dd2028eaed46",
+        "type": "extra-usage-used",
+        "rawValue": true,
+        "color": "hex:FAB387"
+      },
+      {
+        "id": "ae696c7f-dc15-4bce-988b-ead3090427f8",
+        "type": "custom-symbol",
+        "customText": "Remaining: ",
+        "customSymbol": "/",
+          "color": "hex:FAB387"
+      },
+      {
+        "id": "dc8a861d-95e2-44ad-9859-2c3c9f3bae38",
+        "type": "extra-usage-remaining",
+        "rawValue": true,
+        "color": "hex:FAB387"
+      },
+      {
+        "id": "7c960dc0-db66-47b4-971f-63257f985d1d",
+        "type": "custom-text",
+        "customText": " "
+      },
+      {
+        "id": "88a1a841-3528-4f49-9127-1678c55cb3ef",
+        "type": "extra-usage-utilization",
+        "metadata": {
+          "display": "progress",
+          "invert": "false"
+        },
+        "rawValue": true,
+        "color": "hex:FAB387"
+      }
+    ]
+{{- end }}
+  ]
+}

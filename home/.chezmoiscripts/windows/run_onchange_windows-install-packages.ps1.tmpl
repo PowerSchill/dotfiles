@@ -1,0 +1,19 @@
+{{- if eq .chezmoi.os "windows" -}}
+
+echo "Installing Packages: {{ .osid }}"
+
+{{- $buckets := prepend .roles "base" }}
+{{- range $b := $buckets }}
+{{- range (index $.packages.windows.winget $b) }}
+winget install  {{ . | quote }}
+{{- end }}
+{{- end }}
+
+
+
+oh-my-posh font install meslo
+
+{{ end -}}
+
+
+

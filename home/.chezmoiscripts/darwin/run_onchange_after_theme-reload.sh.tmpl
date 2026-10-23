@@ -1,0 +1,13 @@
+#!/bin/bash
+# hash: {{ .appearance }}
+# Reload running apps after appearance change
+
+# Reload tmux config if tmux is running
+if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
+  tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null
+fi
+
+# Set FSH theme
+if command -v fast-theme >/dev/null 2>&1; then
+  fast-theme XDG:catppuccin-{{ if eq .appearance "light" }}latte{{ else }}mocha{{ end }} >/dev/null 2>&1
+fi

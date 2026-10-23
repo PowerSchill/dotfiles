@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file_path=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty'); basename=$(basename \"$file_path\" 2>/dev/null); if [ \"$basename\" = \".env\" ] || [ \"$basename\" = \".envrc\" ] || echo \"$basename\" | grep -qE '^\\.env\\.'; then echo 'BLOCKED: Reading .env and .envrc files is not allowed.' >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file_path=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty'); basename=$(basename \"$file_path\" 2>/dev/null); if [ \"$basename\" = \".env\" ] || [ \"$basename\" = \".envrc\" ] || echo \"$basename\" | grep -qE '^\\.env\\.'; then echo 'BLOCKED: Editing .env and .envrc files is not allowed.' >&2; exit 2; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

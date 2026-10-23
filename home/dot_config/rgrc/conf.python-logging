@@ -1,0 +1,15 @@
+regexp=.*DEBUG.*
+colour=blue
+-
+regexp=.*INFO.*
+colour=green
+-
+regexp=.*WARNING.*
+colour=yellow
+-
+regexp=.*ERROR.*
+colour=red
+-
+regexp=.*CRITICAL.*
+colour=magenta
+-
