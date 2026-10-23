@@ -8,6 +8,13 @@
 {{- /* `base` is always installed; each enabled role appends its own bucket. */ -}}
 {{ $buckets := prepend .roles "base" }}
 
+{{- /* Packages in vmExclude are skipped inside VMs (systemd-detect-virt prints "none" on bare metal). */ -}}
+{{ $virt := output "sh" "-c" "systemd-detect-virt 2>/dev/null || true" | trim }}
+{{ $skip := list }}
+{{ if and $virt (ne $virt "none") -}}
+{{   $skip = .packages.linux.vmExclude | default list }}
+{{ end -}}
+
 echo "Installing Packages: {{ .osid }}"
 
 {{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-raspbian") -}}
@@ -27,7 +34,7 @@ sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 {{ $sudo }}apt-get update
 {{ $sudo }}apt-get install -y
 {{- range $b := $buckets }}
-{{- range (index $.packages.linux.debian.packages $b) }} {{ . | quote }}
+{{- range (index $.packages.linux.debian.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
 {{- end }}
 
@@ -46,7 +53,9 @@ cargo install  {{ . | quote }}
 ########################################
 {{- range $b := $buckets }}
 {{- range (index $.packages.linux.debian.snap $b) }}
+{{- if not (has . $skip) }}
 {{ $sudo }} snap install {{ . | quote }} --classic
+{{- end }}
 {{- end }}
 {{- end }}
 
@@ -67,7 +76,7 @@ cargo install  {{ . | quote }}
 ########################################
 {{ $sudo }}dnf -y install
 {{- range $b := $buckets }}
-{{- range (index $.packages.linux.fedora.packages $b) }} {{ . | quote }}
+{{- range (index $.packages.linux.fedora.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
 {{- end }}
 

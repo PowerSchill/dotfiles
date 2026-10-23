@@ -359,6 +359,11 @@ packages:
           excludeEphemeral: true
 
   linux:
+    # Skipped when systemd-detect-virt reports a VM. Ghostty needs OpenGL 4.3
+    # and renders a blank window on virgl guests (Parallels/UTM), even with
+    # llvmpipe forced; WezTerm works there.
+    vmExclude:
+      - ghostty
     debian:
       cargo:
         base:
