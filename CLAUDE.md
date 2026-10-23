@@ -136,6 +136,19 @@ Templates use Go template syntax. Access chezmoi data with `.chezmoi.os`, `.chez
 
 Oh My Zsh, plugins (zsh-autosuggestions, fast-syntax-highlighting, powerlevel10k), fzf-git, and MesloLGS NF fonts are fetched directly from GitHub releases/archives. The `read-versions-and-revisions-cache` template caches GitHub API responses for 10 minutes to avoid rate limiting.
 
+### Secret / Private-Info Hooks
+
+This repo is public. `.pre-commit-config.yaml` (repo root, not deployed) runs on commit and push:
+- `gitleaks` — generic secrets; pinned and built by pre-commit. The pre-push run scans the
+  pushed range, so `--no-verify` commits and chezmoi autoCommits are still checked.
+- `tools/hooks/check-private-info.sh` — key/credential filenames, home paths for foreign users,
+  emails outside allowed domains, and patterns from the **untracked** denylist
+  `~/.config/dotfiles/private-patterns` (employer names, work usernames). Never commit that file.
+  Exempt a single line with `allow-private-info`.
+
+`run_onchange_after_install-git-hooks.sh.tmpl` runs `pre-commit install` on non-ephemeral,
+non-Windows machines. Manual full scan: `pre-commit run --all-files`.
+
 ### Appearance
 
 Catppuccin Mocha (dark) is the default theme, applied consistently across: Zsh syntax highlighting, delta diffs, WezTerm, Ghostty, lazygit, and btop. The `appearance` variable in `home/.chezmoi.yaml.tmpl` controls which variant is active.

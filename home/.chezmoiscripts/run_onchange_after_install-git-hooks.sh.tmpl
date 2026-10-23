@@ -1,0 +1,15 @@
+{{- if and (ne .chezmoi.os "windows") (not .ephemeral) -}}
+#!/usr/bin/env bash
+# Install the secret/private-info git hooks into the chezmoi source repo.
+# Re-runs whenever the hook config changes.
+# .pre-commit-config.yaml hash: {{ joinPath .chezmoi.workingTree ".pre-commit-config.yaml" | include | sha256sum }}
+set -euo pipefail
+
+if ! command -v pre-commit >/dev/null 2>&1; then
+    echo "git hooks: pre-commit not found, skipping install (enable the dev role)" >&2
+    exit 0
+fi
+
+cd {{ .chezmoi.workingTree | quote }}
+pre-commit install --install-hooks
+{{ end -}}
