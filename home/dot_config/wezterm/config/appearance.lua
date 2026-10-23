@@ -83,6 +83,15 @@ return function(config, wezterm)
   config.tab_bar_at_bottom = false
   config.tab_max_width = 32
   --   config.window_decorations = "RESIZE"
+
+  -- GNOME on Wayland draws no server-side title bar, so put the window
+  -- management buttons into the (always visible) tab bar instead.
+  if wezterm.target_triple:find("linux") then
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+    config.integrated_title_button_style = "Gnome"
+    config.integrated_title_buttons = { "Hide", "Maximize", "Close" }
+    config.integrated_title_button_alignment = "Right"
+  end
   config.macos_window_background_blur = 30
   config.window_background_opacity = 0.9
 
