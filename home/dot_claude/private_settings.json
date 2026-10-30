@@ -7,7 +7,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline",
@@ -25,7 +25,10 @@
     "skins@hellosverre-mods": true,
     "reflect-mod@claude-reflect-marketplace": true,
     "cache-tax@claude-code-mods": true,
-    "mattpocock-skills@claude-plugins-official": true
+    "mattpocock-skills@claude-plugins-official": true,
+    "mod-builder@claude-code-mods": true,
+    "mod-finder@aidojo": true,
+    "image-view@claude-image-view": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -74,6 +77,18 @@
       "source": {
         "source": "github",
         "repo": "karanb192/claude-code-mods"
+      }
+    },
+    "aidojo": {
+      "source": {
+        "source": "github",
+        "repo": "karanb192/awesome-claude-code-mods"
+      }
+    },
+    "claude-image-view": {
+      "source": {
+        "source": "github",
+        "repo": "jarrodwatts/claude-image-view"
       }
     }
   },

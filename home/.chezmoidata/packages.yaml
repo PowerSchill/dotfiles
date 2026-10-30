@@ -192,6 +192,7 @@ packages:
         - name: tfsec # Security scanner for Terraform code
         - name: trivy # Vulnerability and misconfiguration scanner
         - name: hydra
+        - name: ffuf # Fast web fuzzer written in Go
         - name: hashcat # Advanced password recovery utility
 
       onepassword:
@@ -323,10 +324,10 @@ packages:
           excludeEphemeral: true
         - name: keyboardcleantool
           excludeEphemeral: true
-        - name: little-snitch@nightly # Network activity monitor and firewall
-          args:
-            appdir: "/Applications"
-          excludeEphemeral: true
+        # - name: little-snitch@nightly # Network activity monitor and firewall
+        #   args:
+        #     appdir: "/Applications"
+        #   excludeEphemeral: true
         - name: mactracker # Detailed information on every Apple product ever made
         - name: mailmate@beta # Powerful email client for macOS
           excludeEphemeral: true
@@ -401,6 +402,11 @@ packages:
           - wezterm-nightly
           - xorg
         security:
+          - ffuf
+          - hashcat
+          - hydra
+          - nmap
+          - sqlmap
         onepassword:
         homelab:
         work:
@@ -460,6 +466,11 @@ packages:
           - rofi
           - wezterm
         security:
+          - ffuf
+          - hashcat
+          - hydra
+          - nmap
+          - sqlmap
         onepassword:
         homelab:
         work:
