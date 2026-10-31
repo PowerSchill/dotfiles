@@ -1,5 +1,8 @@
 {{- if eq .chezmoi.os "darwin" -}}
-pinentry-program {{ output "which" "pinentry-mac" | trim }}
+{{- /* Only when installed: on a fresh Mac, Homebrew has not installed it yet. */ -}}
+{{-   with lookPath "pinentry-mac" -}}
+pinentry-program {{ . }}
 {{ end -}}
+{{- end -}}
 default-cache-ttl 600
 max-cache-ttl 7200

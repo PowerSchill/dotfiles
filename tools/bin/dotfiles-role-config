@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Write a chezmoi config for a synthetic Machine and print its path. Used by
+# the dry-run apply and the tests, so neither depends on this Machine's Roles.
+#
+#   dotfiles-role-config <roles> <dir>
+#
+#   <roles>   `ephemeral` (as detected in a container: dev only), or a
+#             comma-separated list of Roles on a non-Ephemeral Machine,
+#             e.g. `dev,gui,security`
+#   <dir>     where to write chezmoi.yaml (created if missing)
+set -euo pipefail
+
+roles="${1:?usage: dotfiles-role-config <roles> <dir>}"
+dir="${2:?usage: dotfiles-role-config <roles> <dir>}"
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+config_tmpl="$root/$(cat "$root/.chezmoiroot")/.chezmoi.yaml.tmpl"
+
+mkdir -p "$dir"
+# Render the real config template as an Ephemeral machine (no prompts, no 1Password).
+CODESPACES=true chezmoi --source "$root" --config "$dir/none.yaml" \
+  --persistent-state "$dir/init-state.boltdb" --no-tty \
+  execute-template --init <"$config_tmpl" >"$dir/chezmoi.yaml"
+
+if [[ "$roles" != ephemeral ]]; then
+  known=" $(yq '.data.role | keys | join(" ")' "$dir/chezmoi.yaml") "
+  for r in ${roles//,/ }; do
+    [[ "$known" == *" $r "* ]] || {
+      echo "dotfiles-role-config: unknown Role '$r' (known:$known)" >&2
+      exit 2
+    }
+  done
+  yq -i '.data.ephemeral = false | .data.roles = []' "$dir/chezmoi.yaml"
+  # Keep .roles in the template's declared order, which package buckets rely on.
+  for r in $known; do
+    if [[ ",$roles," == *",$r,"* ]]; then
+      NAME="$r" yq -i '.data.role[env(NAME)] = true | .data.roles += [env(NAME)]' "$dir/chezmoi.yaml"
+    else
+      NAME="$r" yq -i '.data.role[env(NAME)] = false' "$dir/chezmoi.yaml"
+    fi
+  done
+fi
+echo "$dir/chezmoi.yaml"

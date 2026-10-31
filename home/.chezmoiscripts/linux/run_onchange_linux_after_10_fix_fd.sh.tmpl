@@ -2,6 +2,6 @@
 
 {{ if (eq .osid "linux-ubuntu") -}}
 if [ ! -e ~/.local/bin/fd ]; then
-  /usr/bin/ln -s $(which fdfind) ~/.local/bin/fd
+  /usr/bin/ln -s "$(command -v fdfind)" ~/.local/bin/fd
 fi
 {{ end -}}

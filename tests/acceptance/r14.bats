@@ -61,8 +61,17 @@ fixture() {
   [ "$status" -ne 0 ]
 }
 
+@test "R14: the dry-run apply passes on the repo" {
+  run mise run -q check:apply
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+
 @test "R14: a template error fails the dry-run apply" {
-  if ! mise tasks ls --json | jq -e 'any(.[]; .name == "check:apply")' >/dev/null; then
-    skip "check:apply arrives in a later PR"
-  fi
+  scratch_repo
+  printf '{{ .nope.missing }}\n' >"home/dot_broken.tmpl"
+  run mise run -q check:apply
+  echo "$output"
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"dot_broken.tmpl"* ]]
 }

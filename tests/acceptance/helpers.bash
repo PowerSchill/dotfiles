@@ -8,6 +8,13 @@
 
 REPO_ROOT="$(cd "$BATS_TEST_DIRNAME/../.." && pwd)"
 ACCEPTANCE_IMAGE="${ACCEPTANCE_IMAGE:-ubuntu:24.04}"
+# macOS's bsdtar copies extended attributes unless told not to; GNU tar has no such flags.
+if tar --version 2>/dev/null | grep -q bsdtar; then
+  TAR_CREATE=(env COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -)
+else
+  TAR_CREATE=(tar --null -T - -cf -)
+fi
+
 # Not root/ubuntu/vagrant/vscode, so chezmoi does not detect an Ephemeral machine by username.
 CONTAINER_USER="dev"
 CONTAINER_REPO="/home/$CONTAINER_USER/dotfiles"
@@ -19,7 +26,7 @@ require_docker() {
   fi
 }
 
-# Start a clean container with only git, curl and CA certificates, plus a copy of the repo.
+# Start a clean container with only git, curl, CA certificates and zsh, plus a copy of the repo.
 # Extra arguments are passed to `docker run` (for example `-e CI=true`).
 container_start() {
   require_docker
@@ -27,13 +34,18 @@ container_start() {
   export CONTAINER
   docker run -d --rm --name "$CONTAINER" "$@" "$ACCEPTANCE_IMAGE" sleep infinity >/dev/null
 
-  container_root 'apt-get update -qq &&
+  # Base OS plus the Toolchain's system prerequisites (zsh for check:zsh).
+  container_root 'if command -v apt-get >/dev/null; then
+      apt-get update -qq &&
         DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-            git curl ca-certificates >/dev/null &&
-        useradd -m '"$CONTAINER_USER"
+          git curl ca-certificates zsh >/dev/null
+    else
+      dnf install -y -q git curl ca-certificates zsh tar gzip findutils shadow-utils >/dev/null
+    fi &&
+    useradd -m '"$CONTAINER_USER"
 
   (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
-    COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -) |
+    "${TAR_CREATE[@]}") |
     docker exec -i -u "$CONTAINER_USER" "$CONTAINER" \
       bash -c "mkdir -p $CONTAINER_REPO && tar -xf - -C $CONTAINER_REPO"
 
@@ -77,7 +89,7 @@ scratch_repo() {
   export SCRATCH
   mkdir -p "$SCRATCH"
   (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
-    COPYFILE_DISABLE=1 tar --null -T - -cf -) | tar -xf - -C "$SCRATCH"
+    "${TAR_CREATE[@]}") | tar -xf - -C "$SCRATCH"
   cd "$SCRATCH" || return 1
   git init -q -b main
   git -c user.name=test -c user.email=acceptance-test add -A

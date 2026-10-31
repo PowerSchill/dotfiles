@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Preview or Apply this checkout's dotfiles to the real home directory, using
+# this Machine's own chezmoi config and Roles.
+#
+#   dotfiles-apply preview [--no-externals] [target...]
+#       read-only: show what Apply would change
+#   dotfiles-apply apply [--yes] [--no-externals] [target...]
+#       without --yes: show the preview, then refuse (exit 1)
+#       with --yes:    write the changes into $HOME and run scripts
+#
+# Targets limit the operation to some files, e.g. ~/.zshrc.
+# --no-externals skips externals, so nothing is downloaded.
+set -euo pipefail
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+# Tests point this at a fake to observe what would run.
+chezmoi_bin="${DOTFILES_CHEZMOI:-chezmoi}"
+
+mode="${1:-preview}"
+(($#)) && shift
+confirmed=false
+opts=()
+targets=()
+while (($#)); do
+  case "$1" in
+    --yes) confirmed=true ;;
+    --no-externals) opts+=(--exclude externals) ;;
+    -*)
+      echo "dotfiles-apply: unknown option '$1'" >&2
+      exit 2
+      ;;
+    *) targets+=("$1") ;;
+  esac
+  shift
+done
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/chezmoi/chezmoi.yaml"
+if [[ ! -f "$config" ]]; then
+  echo "dotfiles-apply: no chezmoi config at $config. Run 'chezmoi init' first to choose Roles." >&2
+  exit 1
+fi
+
+preview() {
+  # The builtin diff and no pager: an external diff tool such as ksdiff would block.
+  "$chezmoi_bin" --source "$root" diff --use-builtin-diff --no-pager \
+    ${opts[@]+"${opts[@]}"} ${targets[@]+"${targets[@]}"}
+}
+
+case "$mode" in
+  preview)
+    preview
+    ;;
+  apply)
+    if [[ "$confirmed" != true ]]; then
+      preview || echo "dotfiles-apply: the preview failed (see above)" >&2
+      echo >&2
+      echo "dotfiles-apply: refusing to write to $HOME without confirmation." >&2
+      echo "  Review the preview above, then run: mise run apply --yes" >&2
+      exit 1
+    fi
+    "$chezmoi_bin" --source "$root" apply ${opts[@]+"${opts[@]}"} ${targets[@]+"${targets[@]}"}
+    ;;
+  *)
+    echo "usage: dotfiles-apply preview|apply [--yes] [--no-externals] [target...]" >&2
+    exit 2
+    ;;
+esac

@@ -2,6 +2,6 @@
 
 {{ if (eq .osid "linux-ubuntu") -}}
 if [ ! -e ~/.local/bin/bat ]; then
-  /usr/bin/ln -s $(which batcat) ~/.local/bin/bat
+  /usr/bin/ln -s "$(command -v batcat)" ~/.local/bin/bat
 fi
 {{ end -}}
