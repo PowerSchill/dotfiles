@@ -85,3 +85,19 @@ stage() {
   run "$REPO_ROOT/tools/checks/private-info.sh" --range HEAD~1..HEAD
   [ "$status" -eq 1 ]
 }
+
+@test "--all scans every tracked file, including lines committed long ago" {
+  stage notes.txt "contact someone@corp-example.io" # allow-private-info
+  git commit -q -m "test: old leak"
+  run "$REPO_ROOT/tools/checks/private-info.sh" --all
+  [ "$status" -eq 1 ]
+}
+
+@test "--all ignores lines already removed from the tree" {
+  stage notes.txt "contact someone@corp-example.io" # allow-private-info
+  git commit -q -m "test: leak"
+  stage notes.txt "clean now"
+  git commit -q -m "test: fix"
+  run "$REPO_ROOT/tools/checks/private-info.sh" --all
+  [ "$status" -eq 0 ]
+}

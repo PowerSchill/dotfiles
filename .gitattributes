@@ -1,5 +1,6 @@
-# Set default line ending behavior for all text files
-* text=auto
+# Set default line ending behavior for all text files.
+# Scripts must keep LF endings, including on Windows runners that run them in WSL.
+* text=auto eol=lf
 
 # Explicitly declare text files we want to always be normalized and converted
 # to native line endings on checkout.
