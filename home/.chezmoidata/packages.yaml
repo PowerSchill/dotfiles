@@ -107,8 +107,10 @@ packages:
         #######################################
         # Version control and workflow
         #######################################
+        - name: cocogitto # Conventional commits toolbox (cog verify in commit-msg hook)
         - name: commitizen # Conventional commit message helper
         - name: gh # GitHub CLI for managing repositories and issues
+        - name: git-cliff # Changelog generator driven by conventional commits
         - name: git-delta # Syntax-highlighting pager for git
         - name: git-lfs # Git Large File Storage for versioning large files
         - name: git-town # Git workflow helper for branching and merging
@@ -371,6 +373,9 @@ packages:
           - cargo-update
           - eza
           - topgrade
+        dev:
+          - cocogitto # provides `cog` for the commit-msg hook
+          - git-cliff # changelog generator
       packages:
         base:
           - bat
@@ -393,6 +398,9 @@ packages:
           - golang
           - lazygit
           - npm
+          - pre-commit
+          - shellcheck
+          - shfmt
         gui:
           - chromium-browser
           - conky-std
@@ -423,6 +431,9 @@ packages:
           - cargo-upgrades
           - cargo-update
           - eza
+        dev:
+          - cocogitto # provides `cog` for the commit-msg hook
+          - git-cliff # changelog generator
       copr:
         base:
           - lilay/topgrade
@@ -459,6 +470,9 @@ packages:
           - git-delta
           - golang
           - lazygit
+          - pre-commit
+          - ShellCheck
+          - shfmt
         gui:
           - conky
           - ghostty
@@ -484,6 +498,7 @@ packages:
         - Microsoft.WindowsTerminal
       dev:
         - Microsoft.VisualStudioCode
+        - orhun.git-cliff
       gui:
         - Microsoft.PowerToys
       security:

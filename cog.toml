@@ -1,0 +1,13 @@
+# cocogitto configuration
+# https://docs.cocogitto.io/
+#
+# In this repo, cocogitto is used **only for commit-message validation**
+# (via `cog verify` in the lefthook commit-msg hook). Version bumping
+# and CHANGELOG generation are owned by release-please \u2014 see
+# `.github/workflows/release-please.yml`.
+
+tag_prefix = "v"
+from_latest_tag = true
+ignore_merge_commits = true
+disable_changelog = true
+

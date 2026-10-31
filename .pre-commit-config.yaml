@@ -1,7 +1,8 @@
-# Guards against secrets and private information reaching this public repo.
+# Guards against secrets and private information reaching this public repo,
+# lints/formats shell scripts, and enforces Conventional Commits messages.
 # Installed on each machine by home/.chezmoiscripts/run_onchange_after_install-git-hooks.sh.tmpl.
 # Manual run: pre-commit run --all-files
-default_install_hook_types: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
 default_stages: [pre-commit]
 
 repos:
@@ -39,3 +40,47 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [pre-commit, pre-push]
+
+      # Shell script hooks. Tools are managed via mise and exposed through the
+      # mise shims directory (~/.local/share/mise/shims), so they are called
+      # directly (`language: system`).
+
+      # SC2310/SC2311/SC2312 are excluded. They come from the
+      # `check-set-e-suppressed` and `check-extra-masked-returns` options in the
+      # centrally synced .shellcheckrc and flag `if my_function; then` and
+      # `x=$(cmd)`, idioms this shell library uses deliberately throughout.
+      # .shellcheckrc is overwritten by the config sync, so the exclusion lives
+      # here instead.
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck -x --exclude=SC2310,SC2311,SC2312
+        language: system
+        files: '(\.sh$|^[^/]+\.bash$)'
+        exclude: '(\.zsh|zshrc|\.bats|\.tmpl)$'
+
+      # Indentation is left to .editorconfig (`[*.sh] indent_size = 4`, spaces).
+      # pre-commit cannot re-stage files: if shfmt rewrites one, the hook fails
+      # and you `git add -u` and commit again.
+      - id: shfmt
+        name: shfmt
+        entry: shfmt --write
+        language: system
+        files: '(\.sh$|^[^/]+\.bash$)'
+        exclude: '(\.zsh|zshrc|\.bats|\.tmpl)$'
+
+      - id: file-set-execution-bit
+        name: shell scripts are executable
+        entry: ./home/dot_config/shell/functions/file-set-execution-bit.sh
+        language: system
+        files: '(\.sh$|^[^/]+\.bash$)'
+
+      # Validate the commit message against Conventional Commits via cocogitto.
+      # Mirrors the rule used by `cog bump`. pre-commit passes the path of the
+      # commit message file as the filename argument.
+      # See .github/skills/commit-and-release/SKILL.md.
+      - id: cog-verify
+        name: cog verify (conventional commits)
+        entry: cog verify --file
+        language: system
+        stages: [commit-msg]
+        always_run: true

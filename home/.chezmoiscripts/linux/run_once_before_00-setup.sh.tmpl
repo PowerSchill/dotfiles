@@ -1,0 +1,21 @@
+#!/bin/bash
+# This script runs once after chezmoi init
+# Use it for initial system setup
+
+set -e
+
+# Source the shared logging library from the chezmoi source dir (the
+# destination copy at ~/.config/shell/functions/log.sh isn't applied yet
+# at run_once_before_* time).
+# shellcheck source=../dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="setup"
+
+log_state "Running initial setup"
+
+# Create necessary directories
+mkdir -p "$HOME/.vim/undo"
+mkdir -p "$HOME/bin"
+mkdir -p "$HOME/projects"
+
+log_result "Initial setup complete"
