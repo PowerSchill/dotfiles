@@ -95,3 +95,9 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,vim,visualstudiocodes
 /.claude/settings.local.json
 .env
+
+# Toolchain (mise.toml): per-checkout Profile choice and repo-local artifacts
+.miserc.local.toml
+mise.local.toml
+/.cache/
+/tests/.tmp/

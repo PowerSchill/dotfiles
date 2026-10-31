@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Show the Toolchain Profile, this Machine's Roles, and Toolchain versions.
+# Read-only: never initializes or changes chezmoi state.
+set -euo pipefail
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
+echo "Repository : $root"
+echo "Profile    : $("$root/tools/bin/dotfiles-profile")"
+echo "mise       : $(mise --version 2>/dev/null | awk '{print $1}')"
+echo
+
+echo "Machine (from chezmoi state):"
+if data="$(chezmoi data --format json 2>/dev/null)" && [[ -n "$data" ]]; then
+    printf '%s' "$data" | jq -r '
+        "  ephemeral : \(.ephemeral // "unknown")",
+        "  roles     : \((.roles // []) | if length == 0 then "none" else join(", ") end)"'
+else
+    echo "  not initialized (run chezmoi init to choose Roles)"
+fi
+echo
+
+echo "Toolchain:"
+mise ls --current
