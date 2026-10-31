@@ -189,23 +189,14 @@
 [apply]
 	whitespace = nowarn
 
+
 [gpg]
   format = ssh
 
 [gpg "ssh"]
 	allowedSignersFile = ~/.config/git/allowed_signers
-{{- if $signingKey }}
-[user]
-	signingkey = {{ $signingKey }}
-[commit]
-	gpgsign = true
-[tag]
-	gpgsign = true
-{{- else }}
-# No FIDO2 SSH pubkey found yet. Run `yk-enroll` then re-run `chezmoi apply`
-# to enable signing.
-{{- end }}
-{{ else if .gitSigningKey }}
+
+{{ if .gitSigningKey }}
 # SSH-based commit signing with the key held by the 1Password SSH agent.
 # Signing is delegated to 1Password's own signer binary rather than the local
 # ssh-keygen, because the private key never leaves 1Password. The binary is

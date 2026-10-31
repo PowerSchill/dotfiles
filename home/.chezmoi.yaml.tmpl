@@ -1,3 +1,11 @@
+{{- /* Detect special environments first */ -}}
+{{- $codespaces:= env "CODESPACES" | not | not -}}
+{{- $ci:= env "CI" | not | not -}}
+
+{{- /* Checks if running interactively */ -}}
+{{- /* In Codespaces and CI, force non-interactive mode */ -}}
+{{- $interactive := and stdinIsATTY (not $codespaces) (not $ci) -}}
+
 {{/* ###########################################################################
 Roles
 
@@ -113,6 +121,111 @@ Sets the appearance of the desktop environment.
 {{-   end -}}
 {{- end -}}
 
+
+{{- if $interactive -}}
+{{-   writeToStdout "💡 Tip: you can re-enter your details with `chezmoi init --data=false`.\n" -}}
+{{- end -}}
+{{- $remoteContainers:= env "REMOTE_CONTAINERS" | not | not -}}
+{{- $devcontainer:= or $remoteContainers (stat "/.dockerenv") | not | not -}}
+{{- $wsl:= and (lookPath "wslinfo") (output "wslinfo" "--version" | trim | ne "") | not | not -}}
+
+
+
+{{/* TODO: Add logic detection for work machines */}}
+{{- $isWork := false -}}
+
+
+
+
+
+{{- /* CLIs wrapped by a 1Password shell plugin (`op plugin run -- <cli>`).     */ -}}
+{{- /* Accepts a comma-separated string or a YAML list in your local chezmoi    */ -}}
+{{- /* config; not prompted, since the default suits every machine. Each entry  */ -}}
+{{- /* still needs a one-off `op plugin init <cli>`. Shell plugins are not      */ -}}
+{{- /* supported in WSL, where the wrappers are skipped entirely.               */ -}}
+{{- /* See docs/1password-shell-plugins.md.                                     */ -}}
+{{- $opShellPlugins := list "gh" -}}
+{{- if hasKey . "opShellPlugins" -}}
+{{-   $opShellPlugins = .opShellPlugins -}}
+{{- end -}}
+{{- if kindIs "string" $opShellPlugins -}}
+{{-   $opShellPlugins = splitList "," $opShellPlugins -}}
+{{- end -}}
+{{- /* Trim before de-duplicating: "aws, aws " would otherwise survive uniq as */ -}}
+{{- /* two distinct strings and only collapse to duplicates afterwards.        */ -}}
+{{- $opShellPluginList := list -}}
+{{- range $opShellPlugins -}}
+{{-   $entry := . | toString | trim -}}
+{{-   if $entry -}}{{- $opShellPluginList = append $opShellPluginList $entry -}}{{- end -}}
+{{- end -}}
+{{- $opShellPluginList = $opShellPluginList | sortAlpha | uniq -}}
+
+{{- /* SSH public key used to sign Git commits when the 1Password SSH agent is  */ -}}
+{{- /* driving signing. Copy it from the 1Password app ("Configure Commit       */ -}}
+{{- /* Signing" -> Copy Snippet). Works on WSL, native Windows and macOS; the   */ -}}
+{{- /* platform-specific signer binary is auto-detected. Ignored when           */ -}}
+{{- /* useYubiKey is true. See docs/git-signing.md.                             */ -}}
+{{- /*                                                                          */ -}}
+{{- /* These are PUBLIC keys, not secrets — the personal one is already         */ -}}
+{{- /* published at https://github.com/DevSecNinja.keys — so they are safe to   */ -}}
+{{- /* ship as defaults. Two defaults ship: one for work machines (see          */ -}}
+{{- /* `isWork` below) and one for everything else; the pick happens after the  */ -}}
+{{- /* Entra ID detection has run. Override it per-machine by setting           */ -}}
+{{- /* `gitSigningKey` in your local chezmoi config. `get` (not `hasKey`) so an */ -}}
+{{- /* existing config that already carries an empty value still picks a        */ -}}
+{{- /* default up.                                                              */ -}}
+{{- $gitSigningKeyPersonal := "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzFDH1jE1t0tW1Bg89b0YZmBgSUC27AgBRxyIW+dk/H" -}}
+{{- $gitSigningKeyWork := "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPdccqdHq+xUo8RMqFLn7LfjHMOF+TZOqVnBTsK7VNyU" -}}
+{{- $gitSigningKey := "" -}}
+{{- if get . "gitSigningKey" -}}
+{{-   $gitSigningKey = .gitSigningKey -}}
+{{- end -}}
+
+{{- /* Path to the 1Password SSH signer binary. Empty means auto-detect per   */ -}}
+{{- /* platform: op-ssh-sign-wsl.exe in WSL, op-ssh-sign.exe on Windows and   */ -}}
+{{- /* op-ssh-sign on macOS. Set this for a non-standard install, or on Linux */ -}}
+{{- /* where there is no standard path. See docs/git-signing.md.             */ -}}
+{{- $opSshSignProgram := "" -}}
+{{- if hasKey . "opSshSignProgram" -}}
+{{-   $opSshSignProgram = .opSshSignProgram -}}
+{{- end -}}
+
+{{- /* 1Password vault the SSH agent offers keys from, written to the Windows  */ -}}
+{{- /* agent.toml. Empty means pick per machine below: the work vault on work */ -}}
+{{- /* devices, Private elsewhere. Set it to use a differently-named vault.   */ -}}
+{{- /* See docs/git-signing.md.                                              */ -}}
+{{- $opSshVaultWork := "Employee" -}}
+{{- $opSshVaultPersonal := "Development" -}}
+{{- $opSshVault := "" -}}
+{{- if get . "opSshVault" -}}
+{{-   $opSshVault = .opSshVault -}}
+{{- end -}}
+
+{{- /* Now that work/personal is known, fall back to the matching default key.  */ -}}
+{{- /* A value that is merely one of the shipped defaults is not a real         */ -}}
+{{- /* override — re-pick it, so a config written by an earlier init (or on a   */ -}}
+{{- /* machine that has since changed work/personal status) does not pin the    */ -}}
+{{- /* wrong key forever.                                                       */ -}}
+{{- $gitSigningKeyTrimmed := $gitSigningKey | toString | trim -}}
+{{- if or (not $gitSigningKeyTrimmed) (eq $gitSigningKeyTrimmed $gitSigningKeyPersonal) (eq $gitSigningKeyTrimmed $gitSigningKeyWork) -}}
+{{-   if $isWork -}}
+{{-     $gitSigningKey = $gitSigningKeyWork -}}
+{{-   else -}}
+{{-     $gitSigningKey = $gitSigningKeyPersonal -}}
+{{-   end -}}
+{{- end -}}
+
+{{- /* Same treatment for the SSH agent's vault: a persisted shipped default is */ -}}
+{{- /* re-picked, only a differently-named vault counts as an override.         */ -}}
+{{- $opSshVaultTrimmed := $opSshVault | toString | trim -}}
+{{- if or (not $opSshVaultTrimmed) (eq $opSshVaultTrimmed $opSshVaultPersonal) (eq $opSshVaultTrimmed $opSshVaultWork) -}}
+{{-   if $isWork -}}
+{{-     $opSshVault = $opSshVaultWork -}}
+{{-   else -}}
+{{-     $opSshVault = $opSshVaultPersonal -}}
+{{-   end -}}
+{{- end -}}
+
 ################################################################################
 # Chezmoi configuration file
 ################################################################################
@@ -153,15 +266,21 @@ textconv:
   - "-"
   - "-"
 data:
-    name: {{ $name | quote }}
+    appearance: {{ $appearance | quote }}
+    codespaces: {{ $codespaces }}
     email: {{ $email | quote }}
     ephemeral: {{ $ephemeral }}
+    gitSigningKey: {{ $gitSigningKey | quote }}
     hostname: {{ $hostname | quote }}
+    name: {{ $name | quote }}
     osid: {{ $osID | quote }}
-    uname_arch: {{ $uname_arch }}
-    appearance: {{ $appearance | quote }}
+    opShellPlugins: {{ $opShellPluginList | toJson }}
+    opSshSignProgram: {{ $opSshSignProgram | quote }}
+    opSshVault: {{ $opSshVault | quote }}
     roles: {{ $roles | toJson }}
+    uname_arch: {{ $uname_arch }}
     role:
 {{- range $r := $roleNames }}
       {{ $r }}: {{ index $role $r }}
 {{- end }}
+    wsl: {{ $wsl }}
