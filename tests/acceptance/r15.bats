@@ -51,8 +51,18 @@ teardown() { container_stop; }
     [ "$status" -ne 0 ]
 }
 
+@test "R15: the full Profile fails early when a system library is missing" {
+    container_start -e CI=true
+    run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
+    [ "$status" -ne 0 ]
+    [[ "$output" == *"needs libatomic.so.1"* ]]
+    run container_exec 'test -e ~/.local/bin/mise'
+    [ "$status" -ne 0 ] # failed before downloading anything
+}
+
 @test "R15: DOTFILES_PROFILE=full in CI installs the extras" {
     container_start -e CI=true
+    container_root 'DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libatomic1 >/dev/null'
     run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
     [ "$status" -eq 0 ]
     run container_exec 'mise which git-cliff'

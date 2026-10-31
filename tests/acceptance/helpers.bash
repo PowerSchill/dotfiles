@@ -33,7 +33,7 @@ container_start() {
         useradd -m '"$CONTAINER_USER"
 
     (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
-        COPYFILE_DISABLE=1 tar --null -T - -cf -) |
+        COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -) |
         docker exec -i -u "$CONTAINER_USER" "$CONTAINER" \
             bash -c "mkdir -p $CONTAINER_REPO && tar -xf - -C $CONTAINER_REPO"
 

@@ -6,6 +6,7 @@
 #   DOTFILES_PROFILE=minimal tools/bootstrap.sh
 #
 # Steps:
+#   0. pick the Profile and check system prerequisites (fails before downloading anything)
 #   1. ensure mise >= MISE_VERSION is available (installs the pinned, checksum-verified
 #      release into ~/.local/bin when it is not)
 #   2. trust this repo's mise config without prompting
@@ -73,6 +74,22 @@ sha256() {
     fi
 }
 
+# System libraries the Toolchain's prebuilt binaries need but mise cannot install.
+check_prerequisites() {
+    local profile="$1" lib
+    if [[ "$(uname -s)" == Linux && "$profile" == full ]]; then
+        # node (full Profile) links against libatomic, which slim images omit.
+        for lib in /lib/libatomic.so.1 /lib64/libatomic.so.1 /usr/lib/libatomic.so.1 \
+            /usr/lib64/libatomic.so.1 /usr/lib/*-linux-gnu/libatomic.so.1; do
+            [[ -e "$lib" ]] && return 0
+        done
+        die "the full Profile needs libatomic.so.1 (for node). Install it with
+  apt-get install libatomic1   (Debian/Ubuntu)
+  dnf install libatomic        (Fedora)
+or use DOTFILES_PROFILE=minimal."
+    fi
+}
+
 install_mise() {
     local plat want tmp url
     plat="$(platform)"
@@ -109,12 +126,20 @@ ensure_mise() {
 
 main() {
     require git "Install git with your package manager."
+    cd "$root"
+
+    # Decide the Profile and check system prerequisites before downloading anything.
+    # Recording it now also means mise loads the right tool set for `install`.
+    local profile
+    profile="$(tools/bin/dotfiles-profile --write)"
+    log "profile: $profile"
+    check_prerequisites "$profile"
+
     ensure_mise
 
     # Non-interactive from here on: trust this checkout's config and answer yes to prompts.
     export MISE_YES=1
     export MISE_TRUSTED_CONFIG_PATHS="$root${MISE_TRUSTED_CONFIG_PATHS:+:$MISE_TRUSTED_CONFIG_PATHS}"
-    cd "$root"
     # Tasks call `mise` by name, so make sure the one we chose is first on PATH.
     PATH="$(dirname "$MISE"):$PATH"
     export PATH
@@ -123,8 +148,6 @@ main() {
         "$MISE" trust --quiet "$root/$config" </dev/null
     done
 
-    # Record the Profile before mise loads config, so `install` sees the right tool set.
-    log "profile: $(tools/bin/dotfiles-profile --write)"
     env -u MISE_ENV "$MISE" run install </dev/null
 
     if [[ "$MISE" == "$install_dir/mise" ]] && ! command -v mise >/dev/null 2>&1; then
