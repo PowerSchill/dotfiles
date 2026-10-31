@@ -6,8 +6,9 @@
 # ignored). Each Check keeps only the files of the kind it understands, so the
 # commit hook can pass every staged file to every Check.
 
+# Checks operate on the git repo in the current directory (mise runs tasks from
+# the repo root); DOTFILES_ROOT only locates this repo's scripts and cache.
 DOTFILES_ROOT="${DOTFILES_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
-cd "$DOTFILES_ROOT" || exit 1
 
 die() {
   printf '%s: error: %s\n' "${CHECK_NAME:-check}" "$*" >&2
