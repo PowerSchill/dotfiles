@@ -8,7 +8,12 @@ load helpers
 
 setup() {
   cd "$REPO_ROOT" || return 1
+  # Keep using the real Toolchain: without this, mise would reinstall every tool
+  # into the fake home (its data dir follows HOME).
+  export MISE_DATA_DIR="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}"
+  export MISE_TRUSTED_CONFIG_PATHS="$REPO_ROOT${MISE_TRUSTED_CONFIG_PATHS:+:$MISE_TRUSTED_CONFIG_PATHS}"
   export HOME="$BATS_TEST_TMPDIR/fakehome" XDG_CONFIG_HOME="$BATS_TEST_TMPDIR/fakehome/.config"
+  unset XDG_DATA_HOME XDG_CACHE_HOME XDG_STATE_HOME
   mkdir -p "$XDG_CONFIG_HOME/chezmoi"
   # Keep mise's own caches out of the home directory being measured.
   export MISE_CACHE_DIR="$BATS_TEST_TMPDIR/mise-cache" MISE_STATE_DIR="$BATS_TEST_TMPDIR/mise-state"
@@ -16,8 +21,19 @@ setup() {
   cp "$BATS_TEST_TMPDIR/cfg/chezmoi.yaml" "$XDG_CONFIG_HOME/chezmoi/chezmoi.yaml"
 }
 
+# One "hash  path" line per file, so a failure shows which files changed.
 home_snapshot() {
-  (cd "$HOME" && find . -type f -print0 | sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+  (cd "$HOME" && find . -type f -print0 | sort -z | xargs -0 -r shasum -a 256)
+}
+
+assert_home_unchanged() {
+  local now
+  now="$(home_snapshot)"
+  [ "$now" = "$1" ] || {
+    echo "files changed in HOME:"
+    diff <(echo "$1") <(echo "$now") || true
+    return 1
+  }
 }
 
 @test "R10: apply without --yes exits non-zero and leaves HOME unchanged" {
@@ -25,14 +41,14 @@ home_snapshot() {
   run mise run -q apply --no-externals
   [ "$status" -ne 0 ]
   [[ "$output" == *"refusing to write"* ]]
-  [ "$(home_snapshot)" = "$before" ]
+  assert_home_unchanged "$before"
 }
 
 @test "R10: preview is read-only" {
   before="$(home_snapshot)"
   run mise run -q preview --no-externals
   [ "$status" -eq 0 ]
-  [ "$(home_snapshot)" = "$before" ]
+  assert_home_unchanged "$before"
 }
 
 @test "R10: apply --yes runs chezmoi apply (observed with a fake chezmoi)" {

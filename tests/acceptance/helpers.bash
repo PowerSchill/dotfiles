@@ -8,6 +8,13 @@
 
 REPO_ROOT="$(cd "$BATS_TEST_DIRNAME/../.." && pwd)"
 ACCEPTANCE_IMAGE="${ACCEPTANCE_IMAGE:-ubuntu:24.04}"
+# macOS's bsdtar copies extended attributes unless told not to; GNU tar has no such flags.
+if tar --version 2>/dev/null | grep -q bsdtar; then
+  TAR_CREATE=(env COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -)
+else
+  TAR_CREATE=(tar --null -T - -cf -)
+fi
+
 # Not root/ubuntu/vagrant/vscode, so chezmoi does not detect an Ephemeral machine by username.
 CONTAINER_USER="dev"
 CONTAINER_REPO="/home/$CONTAINER_USER/dotfiles"
@@ -38,7 +45,7 @@ container_start() {
     useradd -m '"$CONTAINER_USER"
 
   (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
-    COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -) |
+    "${TAR_CREATE[@]}") |
     docker exec -i -u "$CONTAINER_USER" "$CONTAINER" \
       bash -c "mkdir -p $CONTAINER_REPO && tar -xf - -C $CONTAINER_REPO"
 
@@ -82,7 +89,7 @@ scratch_repo() {
   export SCRATCH
   mkdir -p "$SCRATCH"
   (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
-    COPYFILE_DISABLE=1 tar --null -T - -cf -) | tar -xf - -C "$SCRATCH"
+    "${TAR_CREATE[@]}") | tar -xf - -C "$SCRATCH"
   cd "$SCRATCH" || return 1
   git init -q -b main
   git -c user.name=test -c user.email=acceptance-test add -A

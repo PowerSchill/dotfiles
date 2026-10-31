@@ -10,7 +10,8 @@ load helpers
 
 setup() {
   scratch_repo
-  mise run -q hooks:install >/dev/null
+  # hooks:install skips itself in CI; this test needs the hooks installed.
+  env -u CI mise run -q hooks:install >/dev/null
   printf '#!/usr/bin/env bash\nif [ -n $1 ]; then echo "$1"; fi\n' >broken.sh # SC2070
   git add broken.sh
 }
