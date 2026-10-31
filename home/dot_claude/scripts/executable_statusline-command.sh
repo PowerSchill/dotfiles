@@ -16,8 +16,7 @@ current_time=$(date +%H:%M:%S)
 git_info=""
 if git rev-parse --git-dir >/dev/null 2>&1; then
   branch=$(
-    git -c core.fileMode=false -c advice.detachedHead=false symbolic-ref --short HEAD 2>/dev/null || git -c core.fileMode=false -c advice.detachedHead=false rev-parse
-    --short HEAD 2>/dev/null
+    git -c core.fileMode=false -c advice.detachedHead=false symbolic-ref --short HEAD 2>/dev/null || git -c core.fileMode=false -c advice.detachedHead=false rev-parse --short HEAD 2>/dev/null
   )
 
   # Check for changes (skip optional locks for performance)
@@ -65,7 +64,7 @@ if [ -n "$remaining" ]; then
   else
     color="150" # Green
   fi
-  components="${components} $(printf "\033[38;5;${color}m")${remaining}%$(printf '\033[0m')"
+  components="${components} $(printf '\033[38;5;%sm' "$color")${remaining}%$(printf '\033[0m')"
 fi
 
 # Output the final status line

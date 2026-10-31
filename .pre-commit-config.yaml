@@ -1,41 +1,59 @@
-# Guards against secrets and private information reaching this public repo.
-# Installed on each machine by home/.chezmoiscripts/run_onchange_after_install-git-hooks.sh.tmpl.
-# Manual run: pre-commit run --all-files
+# Git hooks for this public repo. Every hook calls a `mise run check:*` task, so the
+# commit hook, CI and `mise run check` run the same definitions (docs/adr/0001).
+# Tool versions live in mise.toml, not here.
+#
+# Installed by `mise run hooks:install` (also run by tools/bootstrap.sh).
+# Each hook id `<name>` runs task `check:<name>`; `check` depends on exactly these.
 default_install_hook_types: [pre-commit, pre-push]
 default_stages: [pre-commit]
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
-      - id: detect-private-key
-      - id: check-added-large-files
-        args: [--maxkb=1024]
-
   - repo: local
     hooks:
-      # gitleaks is built by pre-commit from a pinned version, so it does not
-      # depend on whatever is installed on the machine.
-      - id: gitleaks
-        name: gitleaks (staged changes)
-        language: golang
-        additional_dependencies: [github.com/zricethezav/gitleaks/v8@v8.30.1]
-        entry: gitleaks git --pre-commit --staged --no-banner --redact --verbose
-        pass_filenames: false
+      - id: syntax
+        name: check:syntax
+        entry: tools/hooks/mise-run check:syntax
+        language: script
+        types: [file]
 
-      - id: gitleaks-push
-        name: gitleaks (pushed commits)
-        language: golang
-        additional_dependencies: [github.com/zricethezav/gitleaks/v8@v8.30.1]
-        entry: tools/hooks/gitleaks-push.sh
+      - id: shellcheck
+        name: check:shellcheck
+        entry: tools/hooks/mise-run check:shellcheck
+        language: script
+        types: [file]
+
+      - id: shfmt
+        name: check:shfmt
+        entry: tools/hooks/mise-run check:shfmt
+        language: script
+        types: [file]
+
+      - id: zsh
+        name: check:zsh
+        entry: tools/hooks/mise-run check:zsh
+        language: script
+        types: [file]
+
+      - id: large-files
+        name: check:large-files
+        entry: tools/hooks/mise-run check:large-files
+        language: script
+        types: [file]
+
+      # Secrets and private information scan the staged diff at commit, and the
+      # pushed range at push (so --no-verify commits and chezmoi autoCommits are caught).
+      - id: secrets
+        name: check:secrets
+        entry: tools/hooks/mise-run check:secrets
+        language: script
         pass_filenames: false
         always_run: true
-        stages: [pre-push]
+        stages: [pre-commit, pre-push]
 
-      - id: check-private-info
-        name: private information
+      - id: private-info
+        name: check:private-info
+        entry: tools/hooks/mise-run check:private-info
         language: script
-        entry: tools/hooks/check-private-info.sh
         pass_filenames: false
         always_run: true
         stages: [pre-commit, pre-push]

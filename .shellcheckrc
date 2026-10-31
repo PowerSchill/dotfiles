@@ -1,0 +1,3 @@
+# Follow `source` lines even when a file is checked on its own (the commit hook
+# passes files in batches). Directive paths are relative to the repo root.
+external-sources=true
