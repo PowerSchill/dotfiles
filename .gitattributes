@@ -1,0 +1,2 @@
+# Scripts must keep LF endings, including on Windows runners that run them in WSL.
+* text=auto eol=lf

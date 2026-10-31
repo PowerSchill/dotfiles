@@ -55,7 +55,7 @@ tracks:
       #   condition: "text contains source: Drafts.app"
       #   continue: true
       #   sequence:
-      #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)"
+      #     - filter: "replaceAll(](images/,](/Users/stephen/Library/Mobile%20Documents/iCloud%7Ecom%7Eagiletortoise%7EDrafts5/Documents/Library/Previews/images/)" # allow-private-info (upstream example)
 
       # - title: Always applied
       #   condition: any

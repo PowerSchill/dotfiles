@@ -1,0 +1,101 @@
+# CI calls the same `mise run` tasks a developer runs (R17). The only other steps
+# are checkout, caching, and two pieces of environment plumbing, each marked
+# "Plumbing" below. tests/acceptance/r17.bats enforces this.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 6 * * 1" # weekly, Monday: also runs the WSL job
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # chezmoi's gitHub* template functions use this to avoid API rate limits.
+  CHEZMOI_GITHUB_ACCESS_TOKEN: ${{ github.token }}
+
+jobs:
+  validate:
+    name: validate (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # check:repo scans every commit
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.local/share/mise
+          key: mise-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
+      # Plumbing: zsh is a system prerequisite mise cannot install (check:zsh).
+      # Goes away once CI runs in the dev container image.
+      - name: Install zsh
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh
+      - run: tools/bootstrap.sh
+      # Plumbing: make the mise that bootstrap installed visible to later steps.
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: mise run validate
+
+  apply:
+    name: check:apply (${{ matrix.os }}, ${{ matrix.roles }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        roles:
+          - ephemeral
+          - dev,gui,work,personal,security,onepassword,homelab
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.local/share/mise
+          key: mise-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
+      - run: tools/bootstrap.sh
+      # Plumbing: make the mise that bootstrap installed visible to later steps.
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: mise run check:apply --roles "${{ matrix.roles }}"
+
+  acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.local/share/mise
+          key: mise-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
+      # Plumbing: zsh is a system prerequisite mise cannot install (check:zsh).
+      - name: Install zsh
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh
+      - run: tools/bootstrap.sh
+      # Plumbing: make the mise that bootstrap installed visible to later steps.
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: mise run test:acceptance
+
+  wsl:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: wsl-bash {0}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: Vampire/setup-wsl@4c48163d9f981914dd8caa0fc335fe19cca5bff4 # v7.2.0
+        with:
+          distribution: Ubuntu-24.04
+          additional-packages: git curl ca-certificates zsh
+      - run: tools/bootstrap.sh
+      - run: ~/.local/bin/mise run check

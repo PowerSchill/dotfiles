@@ -19,7 +19,7 @@ require_docker() {
   fi
 }
 
-# Start a clean container with only git, curl and CA certificates, plus a copy of the repo.
+# Start a clean container with only git, curl, CA certificates and zsh, plus a copy of the repo.
 # Extra arguments are passed to `docker run` (for example `-e CI=true`).
 container_start() {
   require_docker
@@ -27,10 +27,15 @@ container_start() {
   export CONTAINER
   docker run -d --rm --name "$CONTAINER" "$@" "$ACCEPTANCE_IMAGE" sleep infinity >/dev/null
 
-  container_root 'apt-get update -qq &&
+  # Base OS plus the Toolchain's system prerequisites (zsh for check:zsh).
+  container_root 'if command -v apt-get >/dev/null; then
+      apt-get update -qq &&
         DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-            git curl ca-certificates >/dev/null &&
-        useradd -m '"$CONTAINER_USER"
+          git curl ca-certificates zsh >/dev/null
+    else
+      dnf install -y -q git curl ca-certificates zsh tar gzip findutils shadow-utils >/dev/null
+    fi &&
+    useradd -m '"$CONTAINER_USER"
 
   (cd "$REPO_ROOT" && git ls-files -z --cached --others --exclude-standard |
     COPYFILE_DISABLE=1 tar --no-xattrs --no-mac-metadata --null -T - -cf -) |

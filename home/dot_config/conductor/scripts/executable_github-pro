@@ -7,4 +7,4 @@ require 'shellwords'
 
 input = $stdin.read.force_encoding('utf-8')
 
-# puts `echo #{Shellwords.escape(input)} | /Users/ttscoff/.asdf/shims/rdiscount`
+# puts `echo #{Shellwords.escape(input)} | /Users/ttscoff/.asdf/shims/rdiscount` # allow-private-info (upstream example)
