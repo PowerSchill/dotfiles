@@ -56,7 +56,7 @@ repos:
         entry: shellcheck -x --exclude=SC2310,SC2311,SC2312
         language: system
         files: '(\.sh$|^[^/]+\.bash$)'
-        exclude: '(\.zsh|zshrc|\.bats|\.tmpl)$'
+        exclude: '(\.zsh|zshrc|\.bats|\.tmpl|executable_(build_footer|url2mdlink)\.sh)$'
 
       # Indentation is left to .editorconfig (`[*.sh] indent_size = 4`, spaces).
       # pre-commit cannot re-stage files: if shfmt rewrites one, the hook fails
