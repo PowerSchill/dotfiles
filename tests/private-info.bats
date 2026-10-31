@@ -101,3 +101,18 @@ stage() {
   run "$REPO_ROOT/tools/checks/private-info.sh" --all
   [ "$status" -eq 0 ]
 }
+
+@test "push mode skips commits a remote already has" {
+  stage notes.txt "contact someone@corp-example.io" # allow-private-info
+  git commit -q -m "test: leak already published"
+  git update-ref refs/remotes/origin/main HEAD
+  base="$(git rev-parse HEAD~1)"
+  stage clean.txt "nothing private"
+  git commit -q -m "test: new work"
+  run env PRE_COMMIT_FROM_REF="$base" PRE_COMMIT_TO_REF=HEAD PRE_COMMIT_REMOTE_NAME=origin \
+    "$REPO_ROOT/tools/hooks/check-private-info.sh"
+  [ "$status" -eq 0 ]
+  # Without a push (CI or a manual --range), the whole range is still scanned.
+  run "$REPO_ROOT/tools/checks/private-info.sh" --range "$base..HEAD"
+  [ "$status" -eq 1 ]
+}

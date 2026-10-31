@@ -45,6 +45,11 @@ elif [[ -n "${PRE_COMMIT_FROM_REF:-}" && -n "${PRE_COMMIT_TO_REF:-}" ]]; then
   else
     range=("$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF")
   fi
+  # At an actual push (pre-commit sets PRE_COMMIT_REMOTE_NAME), skip commits a
+  # remote already has: merging main into a branch must not rescan main.
+  if [[ -n "${PRE_COMMIT_REMOTE_NAME:-}" && ! "$PRE_COMMIT_FROM_REF" =~ ^0+$ ]]; then
+    range+=(--not --remotes)
+  fi
   files=$(git log --format= --name-only --diff-filter=AR "${range[@]}" | sort -u)
   diff=$(git log -p --format= --unified=0 --no-color "${range[@]}")
 else

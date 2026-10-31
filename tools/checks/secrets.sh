@@ -23,7 +23,9 @@ elif [[ -n "${PRE_COMMIT_TO_REF:-}" ]]; then
   if [[ "${PRE_COMMIT_FROM_REF:-}" =~ ^0*$ ]]; then
     exec gitleaks git "${common[@]}" --log-opts="$PRE_COMMIT_TO_REF --not --remotes" .
   fi
-  exec gitleaks git "${common[@]}" --log-opts="$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF" .
+  # At a push, skip commits a remote already has (merging main must not rescan it).
+  exec gitleaks git "${common[@]}" \
+    --log-opts="$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF${PRE_COMMIT_REMOTE_NAME:+ --not --remotes}" .
 else
   exec gitleaks git "${common[@]}" --pre-commit --staged .
 fi
