@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
-# Run a mise task from a git hook. Hooks can run from GUI git clients that do
-# not have the shell's PATH, so look for mise in the usual install locations.
+# Run a mise task (or, with --exec, a Toolchain command) from a git hook.
+# Hooks can run from GUI git clients or shells without mise activated, so look
+# for mise in the usual install locations instead of relying on PATH.
+#
+#   mise-run <task> [args...]        mise run --quiet <task> [args...]
+#   mise-run --exec <cmd> [args...]  mise exec -- <cmd> [args...]
 set -euo pipefail
 for m in "$(command -v mise 2>/dev/null || true)" "$HOME/.local/bin/mise" \
   /opt/homebrew/bin/mise /usr/local/bin/mise; do
   if [[ -n "$m" && -x "$m" ]]; then
+    if [[ "${1:-}" == --exec ]]; then
+      shift
+      exec "$m" exec -- "$@"
+    fi
     exec "$m" run --quiet "$@"
   fi
 done

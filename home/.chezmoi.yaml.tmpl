@@ -122,6 +122,8 @@ scriptTempDir: "~/tmp"
 git:
   autoCommit: true
   autoPush: true
+  # Conventional Commits message, so the commit-msg hook accepts autoCommits.
+  commitMessageTemplateFile: .commit_message.tmpl
 diff:
   # pager: delta
 {{- if lookPath "ksdiff" }}

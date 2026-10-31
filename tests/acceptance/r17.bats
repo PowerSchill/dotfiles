@@ -51,5 +51,5 @@ steps() {
 
 @test "R17: validate is the CI entry point and composes the Checks and tests" {
   deps="$(mise tasks info validate --json | jq -r '.depends[]' | sort | tr '\n' ' ')"
-  [ "$deps" = "check check:apply check:repo test " ]
+  [ "$deps" = "check check:apply check:commits check:repo test " ]
 }

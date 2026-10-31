@@ -7,6 +7,11 @@
 # worktree's .git file points at a host path the container cannot see.
 
 REPO_ROOT="$(cd "$BATS_TEST_DIRNAME/../.." && pwd)"
+# Ignore the developer's global and system git config: commit signing (for
+# example through 1Password), hooks paths and identities must not leak in.
+export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1
+export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=acceptance-test
+export GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=acceptance-test
 ACCEPTANCE_IMAGE="${ACCEPTANCE_IMAGE:-ubuntu:24.04}"
 # macOS's bsdtar copies extended attributes unless told not to; GNU tar has no such flags.
 if tar --version 2>/dev/null | grep -q bsdtar; then
