@@ -50,3 +50,49 @@ load helpers
   [ "$(yq -o json -I0 '.data.roles' "$cfg")" = '["dev","homelab"]' ]
   [ "$(yq '.data.ephemeral' "$cfg")" = false ]
 }
+
+# Simulated WSL: a fake `wslinfo` and a fake `dsregcmd.exe` (CRLF output, as
+# Windows prints it) on PATH, then render the real config template.
+init_data_with_dsregcmd() {
+  local bin="$BATS_TEST_TMPDIR/bin"
+  mkdir -p "$bin"
+  printf '#!/bin/sh\necho 2.4.0\n' >"$bin/wslinfo"
+  printf '#!/bin/sh\nprintf "%%b" "%s"\n' "$1" >"$bin/dsregcmd.exe"
+  chmod +x "$bin/wslinfo" "$bin/dsregcmd.exe"
+  PATH="$bin:$PATH" CODESPACES=true chezmoi --source "$REPO_ROOT" --config "$BATS_TEST_TMPDIR/none.yaml" \
+    --no-tty execute-template --init <"$SOURCE_DIR/.chezmoi.yaml.tmpl" | yq -o json '.data'
+}
+
+@test "enrollment: an Entra-joined, Intune-enrolled device is detected through dsregcmd" {
+  run init_data_with_dsregcmd '| Device State |\r\n\r\n             AzureAdJoined : YES\r\n              DomainJoined : NO\r\n\r\n| Tenant Details |\r\n\r\n                TenantName : Contoso\r\n                  TenantId : 00000000-1111-2222-3333-444444444444\r\n                    MdmUrl : https://enrollment.manage.microsoft.com/x\r\n\r\n| User State |\r\n\r\n           WorkplaceJoined : NO\r\n'
+  [ "$status" -eq 0 ]
+  [ "$(jq -r .wsl <<<"$output")" = true ]
+  [ "$(jq -r .isEntraIDJoined <<<"$output")" = true ]
+  [ "$(jq -r .isIntuneJoined <<<"$output")" = true ]
+  [ "$(jq -r .isADDomainJoined <<<"$output")" = false ]
+  [ "$(jq -r .isEntraRegistered <<<"$output")" = false ]
+  [ "$(jq -r .entraIDTenantName <<<"$output")" = Contoso ]
+  [ "$(jq -r .entraIDTenantId <<<"$output")" = 00000000-1111-2222-3333-444444444444 ]
+}
+
+@test "enrollment: an unenrolled device has every flag false and no tenant" {
+  run init_data_with_dsregcmd '             AzureAdJoined : NO\r\n              DomainJoined : NO\r\n           WorkplaceJoined : NO\r\n'
+  [ "$status" -eq 0 ]
+  [ "$(jq -r '[.isEntraIDJoined, .isIntuneJoined, .isADDomainJoined, .isEntraRegistered] | any' <<<"$output")" = false ]
+  [ "$(jq -r .entraIDTenantName <<<"$output")" = "" ]
+}
+
+@test "isWork follows the work Role; githubUsername has a default" {
+  cfg="$(role_config dev,work)"
+  [ "$(yq '.data.isWork' "$cfg")" = true ]
+  [ "$(yq '.data.githubUsername' "$cfg")" = PowerSchill ]
+  cfg="$(role_config dev)"
+  [ "$(yq '.data.isWork' "$cfg")" = false ]
+}
+
+@test "the PowerShell chezmoi template renders with the new data" {
+  run render_with dev,work dot_config/powershell/chezmoi.ps1.tmpl
+  [ "$status" -eq 0 ]
+  [[ "$output" == *'CHEZMOI_GITHUB_USERNAME = "PowerSchill"'* ]]
+  [[ "$output" == *'CHEZMOI_IS_WORK = "true"'* ]]
+}

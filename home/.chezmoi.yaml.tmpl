@@ -131,8 +131,48 @@ Sets the appearance of the desktop environment.
 
 
 
-{{/* TODO: Add logic detection for work machines */}}
-{{- $isWork := false -}}
+{{/* ###########################################################################
+Work machine and Windows enterprise enrollment
+
+`isWork` follows the `work` Role, so Roles stay the single source of truth.
+
+`dsregcmd /status` reports whether this device is Entra ID (Azure AD) joined,
+Entra registered (WorkplaceJoined), AD domain joined, and MDM (Intune)
+enrolled. It runs on native Windows, and in WSL through Windows interop. On
+any other OS, or when it cannot run, every flag is false and the tenant
+fields are empty.
+########################################################################### */}}
+{{- $isWork := index $role "work" -}}
+
+{{- $dsreg := "" -}}
+{{- if eq .chezmoi.os "windows" -}}
+{{-   if lookPath "dsregcmd.exe" -}}
+{{-     $dsreg = output "dsregcmd.exe" "/status" -}}
+{{-   end -}}
+{{- else if $wsl -}}
+{{-   if lookPath "dsregcmd.exe" -}}
+{{-     $dsreg = output "sh" "-c" "dsregcmd.exe /status 2>/dev/null || true" -}}
+{{-   else if stat "/mnt/c/Windows/System32/dsregcmd.exe" -}}
+{{-     $dsreg = output "sh" "-c" "/mnt/c/Windows/System32/dsregcmd.exe /status 2>/dev/null || true" -}}
+{{-   end -}}
+{{- end -}}
+{{- $isEntraIDJoined := regexMatch "(?m)^\\s*AzureAdJoined\\s*:\\s*YES" $dsreg -}}
+{{- $isEntraRegistered := regexMatch "(?m)^\\s*WorkplaceJoined\\s*:\\s*YES" $dsreg -}}
+{{- $isADDomainJoined := regexMatch "(?m)^\\s*DomainJoined\\s*:\\s*YES" $dsreg -}}
+{{- $isIntuneJoined := regexMatch "(?m)^\\s*MdmUrl\\s*:\\s*\\S" $dsreg -}}
+{{- $entraIDTenantName := regexReplaceAll "^\\s*TenantName\\s*:\\s*" (regexFind "(?m)^\\s*TenantName\\s*:.*$" $dsreg) "" | trim -}}
+{{- $entraIDTenantId := regexReplaceAll "^\\s*TenantId\\s*:\\s*" (regexFind "(?m)^\\s*TenantId\\s*:.*$" $dsreg) "" | trim -}}
+
+{{- /* GitHub account used by scripts (CHEZMOI_GITHUB_USERNAME). Override it  */ -}}
+{{- /* per machine with `githubUsername` in your local chezmoi config.        */ -}}
+{{- $githubUsername := "PowerSchill" -}}
+{{- if get . "githubUsername" -}}
+{{-   $githubUsername = .githubUsername -}}
+{{- end -}}
+
+{{- /* 1Password Environment ID for the copilot-ssh helper. Optional and not  */ -}}
+{{- /* prompted: set `opCopilotEnvironmentId` in your local chezmoi config.   */ -}}
+{{- $opCopilotEnvironmentId := get . "opCopilotEnvironmentId" | default "" -}}
 
 
 
@@ -271,10 +311,19 @@ data:
     appearance: {{ $appearance | quote }}
     codespaces: {{ $codespaces }}
     email: {{ $email | quote }}
+    entraIDTenantId: {{ $entraIDTenantId | quote }}
+    entraIDTenantName: {{ $entraIDTenantName | quote }}
     ephemeral: {{ $ephemeral }}
     gitSigningKey: {{ $gitSigningKey | quote }}
+    githubUsername: {{ $githubUsername | quote }}
     hostname: {{ $hostname | quote }}
+    isADDomainJoined: {{ $isADDomainJoined }}
+    isEntraIDJoined: {{ $isEntraIDJoined }}
+    isEntraRegistered: {{ $isEntraRegistered }}
+    isIntuneJoined: {{ $isIntuneJoined }}
+    isWork: {{ $isWork }}
     name: {{ $name | quote }}
+    opCopilotEnvironmentId: {{ $opCopilotEnvironmentId | quote }}
     osid: {{ $osID | quote }}
     opShellPlugins: {{ $opShellPluginList | toJson }}
     opSshSignProgram: {{ $opSshSignProgram | quote }}
