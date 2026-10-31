@@ -21,3 +21,9 @@ indent_size = 4
 ; them. Keep them indented like every other shell script in the repo.
 [home/dot_local/bin/*]
 indent_size = 4
+
+; Repo tooling under tools/ is indented with 2 spaces and indented case bodies
+; (shfmt reads these keys; the check:shfmt task passes no style flags).
+[tools/**]
+indent_size = 2
+switch_case_indent = true

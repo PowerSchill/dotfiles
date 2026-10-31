@@ -66,8 +66,8 @@ function ipgeo() {
     local args=()
     for arg in "$@"; do
         case "$arg" in
-            -a|--all) all=true ;;
-            *) args+=("$arg") ;;
+        -a | --all) all=true ;;
+        *) args+=("$arg") ;;
         esac
     done
 
@@ -76,25 +76,25 @@ function ipgeo() {
     local ip="${args[1]}"
 
     case "$subcommand" in
-        location)
-            if $all; then
-                fetch "ipgeo" "$ip" | jq '.'
-            else
-                fetch "ipgeo" "$ip" | jq '{ip, location, asn}'
-            fi
-            ;;
-        timezone)
-            fetch "timezone" "$ip" | jq '.'
-            ;;
-        astronomy)
-            fetch "astronomy" "$ip" | jq '.'
-            ;;
-        *)
-            echo "Error: unknown subcommand '$subcommand'"
-            echo
-            usage
-            return 1
-            ;;
+    location)
+        if $all; then
+            fetch "ipgeo" "$ip" | jq '.'
+        else
+            fetch "ipgeo" "$ip" | jq '{ip, location, asn}'
+        fi
+        ;;
+    timezone)
+        fetch "timezone" "$ip" | jq '.'
+        ;;
+    astronomy)
+        fetch "astronomy" "$ip" | jq '.'
+        ;;
+    *)
+        echo "Error: unknown subcommand '$subcommand'"
+        echo
+        usage
+        return 1
+        ;;
     esac
 }
 
