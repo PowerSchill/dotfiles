@@ -15,20 +15,20 @@ current_time=$(date +%H:%M:%S)
 # Get git branch and status if in a git repo
 git_info=""
 if git rev-parse --git-dir >/dev/null 2>&1; then
-  branch=$(
-    git -c core.fileMode=false -c advice.detachedHead=false symbolic-ref --short HEAD 2>/dev/null || git -c core.fileMode=false -c advice.detachedHead=false rev-parse --short HEAD 2>/dev/null
-  )
+    branch=$(
+        git -c core.fileMode=false -c advice.detachedHead=false symbolic-ref --short HEAD 2>/dev/null || git -c core.fileMode=false -c advice.detachedHead=false rev-parse --short HEAD 2>/dev/null
+    )
 
-  # Check for changes (skip optional locks for performance)
-  if ! git -c core.fileMode=false diff --quiet 2>/dev/null || ! git -c core.fileMode=false diff --cached --quiet 2>/dev/null; then
-    git_status="*"
-  else
-    git_status=""
-  fi
+    # Check for changes (skip optional locks for performance)
+    if ! git -c core.fileMode=false diff --quiet 2>/dev/null || ! git -c core.fileMode=false diff --cached --quiet 2>/dev/null; then
+        git_status="*"
+    else
+        git_status=""
+    fi
 
-  if [ -n "$branch" ]; then
-    git_info=" $(printf '\033[38;5;147m')  ${branch}${git_status}$(printf '\033[0m')"
-  fi
+    if [ -n "$branch" ]; then
+        git_info=" $(printf '\033[38;5;147m')  ${branch}${git_status}$(printf '\033[0m')"
+    fi
 fi
 
 # Format directory path with colors (similar to P10k blue)
@@ -51,20 +51,20 @@ components="${components} $(printf '\033[38;5;247m')│$(printf '\033[0m') $(pri
 
 # Add output style if set and not default
 if [ -n "$output_style" ] && [ "$output_style" != "default" ]; then
-  components="${components} $(printf '\033[38;5;247m')[${output_style}]$(printf '\033[0m')"
+    components="${components} $(printf '\033[38;5;247m')[${output_style}]$(printf '\033[0m')"
 fi
 
 # Add context remaining if available
 if [ -n "$remaining" ]; then
-  # Color code based on remaining percentage
-  if (($(echo "$remaining < 20" | bc -l 2>/dev/null || echo 0))); then
-    color="203" # Red
-  elif (($(echo "$remaining < 50" | bc -l 2>/dev/null || echo 0))); then
-    color="221" # Yellow
-  else
-    color="150" # Green
-  fi
-  components="${components} $(printf '\033[38;5;%sm' "$color")${remaining}%$(printf '\033[0m')"
+    # Color code based on remaining percentage
+    if (($(echo "$remaining < 20" | bc -l 2>/dev/null || echo 0))); then
+        color="203" # Red
+    elif (($(echo "$remaining < 50" | bc -l 2>/dev/null || echo 0))); then
+        color="221" # Yellow
+    else
+        color="150" # Green
+    fi
+    components="${components} $(printf '\033[38;5;%sm' "$color")${remaining}%$(printf '\033[0m')"
 fi
 
 # Output the final status line

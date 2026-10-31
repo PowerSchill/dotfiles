@@ -231,27 +231,27 @@ defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 #defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false      # For VS Code Insider
 
 for dockItemLabel in \
-  Launchpad \
-  Safari \
-  Mail \
-  FaceTime \
-  Messages \
-  Maps \
-  Photos \
-  Contacts \
-  Calendar \
-  Reminders \
-  Notes \
-  Music \
-  Podcasts \
-  TV \
-  News \
-  Numbers \
-  Keynote \
-  Pages \
-  "App Store" \
-  "System Preferences"; do
-  dockutil --find "$dockItemLabel" >/dev/null && dockutil --no-restart --remove "$dockItemLabel"
+    Launchpad \
+    Safari \
+    Mail \
+    FaceTime \
+    Messages \
+    Maps \
+    Photos \
+    Contacts \
+    Calendar \
+    Reminders \
+    Notes \
+    Music \
+    Podcasts \
+    TV \
+    News \
+    Numbers \
+    Keynote \
+    Pages \
+    "App Store" \
+    "System Preferences"; do
+    dockutil --find "$dockItemLabel" >/dev/null && dockutil --no-restart --remove "$dockItemLabel"
 done
 
 killall Dock

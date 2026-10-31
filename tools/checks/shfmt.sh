@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check: shell scripts are formatted (2-space indent, indented case bodies).
+# Check: shell scripts are formatted (style comes from .editorconfig).
 #   --write   format in place instead of reporting (the `fmt` task)
 # Templates are skipped: formatting their rendered output says nothing about the source.
 set -euo pipefail
@@ -20,7 +20,7 @@ while IFS= read -r -d '' f; do files+=("$f"); done < <(select_files shell -- "$@
 ((${#files[@]})) || exit 0
 
 # Keep these flags in one place: they are the repo's shell style.
-if shfmt -i 2 -ci "${mode[@]}" "${files[@]}"; then
+if shfmt "${mode[@]}" "${files[@]}"; then
   echo "$CHECK_NAME: ${#files[@]} file(s) ok"
 else
   echo "$CHECK_NAME: run 'mise run fmt' to fix formatting" >&2
