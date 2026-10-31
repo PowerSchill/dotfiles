@@ -4,4 +4,6 @@
 # Third-party key hard-coded in the vendored Conductor help-docs library (upstream
 # ttscoff/conductor, already public there). Added in the initial commit, removed
 # from the tree in 831ae73. Not a credential of this repo's owner.
+# gitleaks writes the commit in full in CI and abbreviated locally; both are listed.
+fb0136dead3a473058a9693cbb351528513f0c58:home/dot_config/conductor/scripts/lib/knowledge.rb:generic-api-key:5
 fb0136d:home/dot_config/conductor/scripts/lib/knowledge.rb:generic-api-key:5
