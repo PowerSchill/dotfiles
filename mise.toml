@@ -137,6 +137,11 @@ run = 'eval "set -- ${usage_files:-}"; tools/checks/shfmt.sh --write "$@"'
 
 # --- Tests ------------------------------------------------------------------
 
+[tasks.test]
+description = "Run the bats unit tests"
+usage = 'arg "[file]" help="One test file, e.g. tests/templates.bats" default="tests"'
+run = 'bats --timing --print-output-on-failure "${usage_file?}"'
+
 [tasks."test:acceptance"]
 description = "Run requirement acceptance tests (needs Docker)"
 usage = 'arg "[file]" help="One acceptance test file, e.g. tests/acceptance/r02.bats" default="tests/acceptance"'
