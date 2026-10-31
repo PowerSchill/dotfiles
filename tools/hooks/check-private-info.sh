@@ -10,8 +10,9 @@
 #   - patterns from a local, untracked denylist (employer names, work
 #     usernames, internal hostnames...) so they are never published here
 #
-# Scans only *added* lines: staged changes at pre-commit, or the pushed range
-# at pre-push (PRE_COMMIT_FROM_REF / PRE_COMMIT_TO_REF, set by pre-commit).
+# Scans only *added* lines: staged changes at pre-commit, the pushed range at
+# pre-push (PRE_COMMIT_FROM_REF / PRE_COMMIT_TO_REF, set by pre-commit), or the
+# whole committed tree when DOTFILES_SCAN_ALL is set (CI).
 #
 # A single line can be exempted by putting `allow-private-info` on it.
 ################################################################################
@@ -32,7 +33,13 @@ FORBIDDEN_PATH+='|\.(pem|p12|pfx|key|kdbx|keychain|ovpn|tfstate|tfvars)(\.tmpl)?
 FORBIDDEN_PATH+='|(^|/)(private_)*(dot_|\.)(aws|kube|op)/'
 FORBIDDEN_PATH+='|(^|/)(private_)*(dot_|\.)docker/(private_)*config\.json'
 
-if [[ -n "${PRE_COMMIT_FROM_REF:-}" && -n "${PRE_COMMIT_TO_REF:-}" ]]; then
+if [[ -n "${DOTFILES_SCAN_ALL:-}" ]]; then
+  # Whole tree (CI): every line of every tracked file in the working tree.
+  # History is not rescanned: lines already removed cannot be fixed here.
+  empty_tree=$(git hash-object -t tree /dev/null)
+  files=$(git ls-files)
+  diff=$(git diff --unified=0 --no-color "$empty_tree")
+elif [[ -n "${PRE_COMMIT_FROM_REF:-}" && -n "${PRE_COMMIT_TO_REF:-}" ]]; then
   if [[ "$PRE_COMMIT_FROM_REF" =~ ^0+$ ]]; then
     range=("$PRE_COMMIT_TO_REF" --not --remotes)
   else

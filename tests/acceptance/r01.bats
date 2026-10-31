@@ -1,7 +1,8 @@
 #!/usr/bin/env bats
 # R1: every tool the repo needs is declared, with a version, in the root manifest.
-# Test: in a clean container with only git and curl, after bootstrap, with PATH limited
-# to mise and the base OS, every declared tool runs and the repo's chores work.
+# Test: in a clean container with only git, curl and zsh (a declared system
+# prerequisite), after bootstrap, with PATH limited to mise and the base OS, every
+# declared tool runs and `mise run validate` passes.
 
 # Commands in single quotes are expanded inside the container, not here.
 # shellcheck disable=SC2016
@@ -28,12 +29,7 @@ teardown_file() { container_stop; }
 }
 
 @test "R1: the repo's chores run using only declared tools" {
-  run container_exec 'mise run info'
+  run container_exec 'mise run info && mise run validate'
+  echo "$output"
   [ "$status" -eq 0 ]
-  if container_exec 'mise tasks ls --json | jq -e "any(.[]; .name == \"validate\")"' >/dev/null; then
-    run container_exec 'mise run validate'
-    [ "$status" -eq 0 ]
-  else
-    skip "validate task arrives in a later PR"
-  fi
 }

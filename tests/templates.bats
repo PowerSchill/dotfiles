@@ -30,3 +30,23 @@ load helpers
   [ "$status" -eq 0 ]
   [[ "$output" == *"IdentityAgent"* ]]
 }
+
+@test "a CI runner is detected as an Ephemeral machine" {
+  run env -u CODESPACES -u REMOTE_CONTAINERS_IPC CI=true chezmoi --source "$REPO_ROOT" \
+    --config "$BATS_TEST_TMPDIR/none.yaml" --no-tty execute-template --init <"$SOURCE_DIR/.chezmoi.yaml.tmpl"
+  [ "$status" -eq 0 ]
+  [ "$(yq '.data.ephemeral' <<<"$output")" = true ]
+  [ "$(yq -o json -I0 '.data.roles' <<<"$output")" = '["dev"]' ]
+}
+
+@test "dotfiles-role-config rejects an unknown Role" {
+  run "$REPO_ROOT/tools/bin/dotfiles-role-config" dev,gaming "$BATS_TEST_TMPDIR/cfg"
+  [ "$status" -eq 2 ]
+  [[ "$output" == *"unknown Role 'gaming'"* ]]
+}
+
+@test "dotfiles-role-config keeps Roles in the template's order" {
+  cfg="$(role_config homelab,dev)"
+  [ "$(yq -o json -I0 '.data.roles' "$cfg")" = '["dev","homelab"]' ]
+  [ "$(yq '.data.ephemeral' "$cfg")" = false ]
+}

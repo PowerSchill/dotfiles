@@ -33,6 +33,7 @@ cocogitto = "7.0.0"
 bats = "1.14.0"
 yq = "4.54.1"
 jq = "1.8.2"
+actionlint = "1.7.12"
 
 # --- Setup -----------------------------------------------------------------
 
@@ -87,6 +88,7 @@ depends = [
   "check:large-files",
   "check:secrets",
   "check:private-info",
+  "check:workflows",
 ]
 
 [tasks."check:syntax"]
@@ -127,8 +129,63 @@ exec tools/checks/secrets.sh ${usage_range:+--range "$usage_range"}
 
 [tasks."check:private-info"]
 description = "Scan staged changes (or a range) for private information"
-usage = 'flag "--range <range>" help="Scan added lines in A..B instead of staged changes"'
-run = 'exec tools/checks/private-info.sh ${usage_range:+--range "$usage_range"}'
+usage = '''
+flag "--range <range>" help="Scan added lines in A..B instead of staged changes"
+flag "--all" help="Scan every tracked file"
+'''
+run = '''
+if [ "${usage_all:-false}" = true ]; then exec tools/checks/private-info.sh --all; fi
+exec tools/checks/private-info.sh ${usage_range:+--range "$usage_range"}
+'''
+
+[tasks."check:workflows"]
+description = "Lint GitHub Actions workflows with actionlint"
+usage = 'arg "[files]" var=#true help="Files to check (default: all)"'
+run = 'eval "set -- ${usage_files:-}"; tools/checks/workflows.sh "$@"'
+
+[tasks."check:repo"]
+description = "Scan every commit for secrets and every file for private information"
+depends = [
+  { task = "check:secrets", args = ["--all"] },
+  { task = "check:private-info", args = ["--all"] },
+]
+
+[tasks.validate]
+description = "Run everything CI runs: Checks, whole-repo scan, dry-run apply, tests"
+depends = ["check", "check:repo", "check:apply", "test"]
+
+[tasks."check:apply"]
+description = "Dry-run apply for a set of Roles into a scratch home"
+usage = 'flag "--roles <roles>" help="ephemeral, or a comma-separated Role list" default="ephemeral"'
+run = 'tools/checks/apply.sh "${usage_roles?}"'
+
+# --- Preview and Apply ------------------------------------------------------
+
+[tasks.preview]
+description = "Show what Apply would change in your home directory (read-only)"
+usage = '''
+flag "--no-externals" help="Skip externals, so nothing is downloaded"
+arg "[targets]" var=#true help="Limit to these files, e.g. ~/.zshrc"
+'''
+run = '''
+eval "set -- ${usage_targets:-}"
+if [ "${usage_no_externals:-false}" = true ]; then set -- --no-externals "$@"; fi
+exec dotfiles-apply preview "$@"
+'''
+
+[tasks.apply]
+description = "Apply dotfiles to your home directory (requires --yes)"
+usage = '''
+flag "--yes" help="Confirm writing to $HOME and running scripts"
+flag "--no-externals" help="Skip externals, so nothing is downloaded"
+arg "[targets]" var=#true help="Limit to these files, e.g. ~/.zshrc"
+'''
+run = '''
+eval "set -- ${usage_targets:-}"
+if [ "${usage_no_externals:-false}" = true ]; then set -- --no-externals "$@"; fi
+if [ "${usage_yes:-false}" = true ]; then set -- --yes "$@"; fi
+exec dotfiles-apply apply "$@"
+'''
 
 [tasks.fmt]
 description = "Format shell scripts in place"

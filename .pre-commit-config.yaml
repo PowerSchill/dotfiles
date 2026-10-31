@@ -42,6 +42,12 @@ repos:
         language: script
         types: [file]
 
+      - id: workflows
+        name: check:workflows
+        entry: tools/hooks/mise-run check:workflows
+        language: script
+        files: ^\.github/workflows/
+
       # Secrets and private information scan the staged diff at commit, and the
       # pushed range at push (so --no-verify commits and chezmoi autoCommits are caught).
       - id: secrets
