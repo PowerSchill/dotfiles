@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # R11: commands accept parameters, for example "check one specific file".
-# Test: a Check given one file checks only that file. (Running one test file is
-# covered once the `test` task exists.)
+# Test: a Check given one file checks only that file, and `test` given one test
+# file runs only that file's tests.
 
 load helpers
 
@@ -23,4 +23,11 @@ setup() { cd "$REPO_ROOT" || return 1; }
 @test "R11: tasks document their parameters" {
   run mise run check:secrets --help
   [[ "$output" == *"--range"* ]]
+}
+
+@test "R11: mise run test with one file runs only that file's tests" {
+  expected="$(grep -c '^@test' tests/syntax.bats)"
+  run mise run -q test tests/syntax.bats
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"1..$expected"* ]]
 }
