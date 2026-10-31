@@ -1,13 +1,12 @@
 # cocogitto configuration
 # https://docs.cocogitto.io/
 #
-# In this repo, cocogitto is used **only for commit-message validation**
-# (via `cog verify` in the lefthook commit-msg hook). Version bumping
-# and CHANGELOG generation are owned by release-please \u2014 see
-# `.github/workflows/release-please.yml`.
+# cocogitto only validates commit messages here, through `check:commit-msg`
+# (commit-msg hook) and `check:commits` (CI); tools/checks/commits.sh adds this
+# repo's type list on top. It does not bump versions or write a changelog:
+# Releases are date tags created by hand, and `mise run release:preview`
+# prints their notes with git-cliff (cliff.toml). See GLOSSARY.md.
 
 tag_prefix = "v"
-from_latest_tag = true
 ignore_merge_commits = true
 disable_changelog = true
-
