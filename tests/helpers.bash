@@ -3,6 +3,11 @@
 # tests/acceptance/). Unit tests run on the host and never touch $HOME.
 
 REPO_ROOT="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
+# Ignore the developer's global and system git config: commit signing (for
+# example through 1Password), hooks paths and identities must not leak in.
+export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1
+export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=acceptance-test
+export GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=acceptance-test
 SOURCE_DIR="$REPO_ROOT/$(cat "$REPO_ROOT/.chezmoiroot")"
 
 # A throwaway git repo in the test's temp dir; cd into it.

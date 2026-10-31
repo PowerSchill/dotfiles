@@ -22,11 +22,11 @@ Function New-MailAlias {
         [ValidateNotNullOrEmpty()]
         [int]$NumberOfAliases,
 
-        [parameter(Mandatory = $true, HelpMessage = "Specify the domain name that is used for the email address. E.g. johndoe.com")]
+        [parameter(Mandatory = $true, HelpMessage = "Specify the domain name that is used for the email address. E.g. example.com")]
         [ValidateNotNullOrEmpty()]
         [string]$EmailDomain,
 
-        [parameter(Mandatory = $true, HelpMessage = "Specify the owner of the alias. E.g. john@johndoe.com")]
+        [parameter(Mandatory = $true, HelpMessage = "Specify the owner of the alias. E.g. john@example.com")]
         [ValidateNotNullOrEmpty()]
         [string]$Owner,
 

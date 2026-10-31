@@ -21,6 +21,8 @@ DOTFILES_ROOT = "{{config_root}}"
 # pre-commit is a Python zipapp; keep it from littering the tree or reading user site-packages.
 PYTHONDONTWRITEBYTECODE = "1"
 PYTHONNOUSERSITE = "1"
+# The last commit before Conventional Commits were adopted; check:commits starts after it.
+DOTFILES_CONVENTIONAL_SINCE = "b2cdbf97bec54d7512aef5e4ef3fb32eb67ae3f2"
 
 [tools]
 chezmoi = "2.73.3"
@@ -54,14 +56,14 @@ run = [
 
 [tasks."hooks:install"]
 description = "Install the git hooks (skipped in CI)"
-sources = [".pre-commit-config.yaml"]
+sources = [".pre-commit-config.yaml", "tools/hooks/install.sh"]
 outputs = { auto = true }
 run = '''
 if [ -n "${CI:-}" ]; then
   echo "hooks:install: CI detected, skipping"
   exit 0
 fi
-pre-commit install --install-hooks
+tools/hooks/install.sh
 '''
 
 [tasks.lock]
@@ -89,6 +91,7 @@ depends = [
   "check:secrets",
   "check:private-info",
   "check:workflows",
+  "check:exec-bit",
 ]
 
 [tasks."check:syntax"]
@@ -151,8 +154,8 @@ depends = [
 ]
 
 [tasks.validate]
-description = "Run everything CI runs: Checks, whole-repo scan, dry-run apply, tests"
-depends = ["check", "check:repo", "check:apply", "test"]
+description = "Run everything CI runs: Checks, whole-repo scan, commit messages, dry-run apply, tests"
+depends = ["check", "check:repo", "check:commits", "check:apply", "test"]
 
 [tasks."check:apply"]
 description = "Dry-run apply for a set of Roles into a scratch home"
@@ -187,10 +190,38 @@ if [ "${usage_yes:-false}" = true ]; then set -- --yes "$@"; fi
 exec dotfiles-apply apply "$@"
 '''
 
+[tasks."check:commits"]
+description = "Verify commit messages follow Conventional Commits"
+usage = 'arg "[range]" help="Commits to check (default: since Conventional Commits were adopted)"'
+run = 'exec tools/checks/commits.sh ${usage_range:+"$usage_range"}'
+
+[tasks."check:commit-msg"]
+description = "Verify one commit message file (the commit-msg hook)"
+usage = 'arg "<file>" help="Path to the commit message"'
+run = 'exec tools/checks/commits.sh --message-file "${usage_file?}"'
+
+[tasks."check:exec-bit"]
+description = "Make staged shell scripts executable (fixes, then reports)"
+usage = 'arg "[files]" var=#true help="Files to check (default: changed files)"'
+run = 'eval "set -- ${usage_files:-}"; home/dot_config/shell/functions/file-set-execution-bit.sh "$@"'
+
 [tasks.fmt]
 description = "Format shell scripts in place"
 usage = 'arg "[files]" var=#true help="Files to format (default: all)"'
 run = 'eval "set -- ${usage_files:-}"; tools/checks/shfmt.sh --write "$@"'
+
+# --- Release notes ----------------------------------------------------------
+
+[tasks."release:preview"]
+description = "Print release notes since the last Release (nothing is published)"
+usage = 'flag "--tag <tag>" help="Name the upcoming Release, e.g. v2026.10.31"'
+run = '''
+if ! command -v git-cliff >/dev/null 2>&1; then
+  echo "release:preview: git-cliff is in the full Profile. Run: DOTFILES_PROFILE=full tools/bootstrap.sh" >&2
+  exit 1
+fi
+exec git-cliff --config cliff.toml --unreleased ${usage_tag:+--tag "$usage_tag"}
+'''
 
 # --- Tests ------------------------------------------------------------------
 

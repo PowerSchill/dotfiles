@@ -4,8 +4,8 @@
 #
 # Installed by `mise run hooks:install` (also run by tools/bootstrap.sh).
 # Each hook id `<name>` runs task `check:<name>`; `check` depends on exactly these.
-# The two hooks at the end are not checks: an execution-bit guard and the
-# Conventional Commits message validator (commit-msg stage).
+# exec-bit fixes file modes rather than only reporting; commit-msg runs at the
+# commit-msg stage, so `check` leaves it out (check:commits covers CI).
 default_install_hook_types: [pre-commit, pre-push, commit-msg]
 default_stages: [pre-commit]
 
@@ -66,19 +66,17 @@ repos:
         always_run: true
         stages: [pre-commit, pre-push]
 
-      - id: file-set-execution-bit
-        name: shell scripts are executable
-        entry: ./home/dot_config/shell/functions/file-set-execution-bit.sh
-        language: system
+      # Not a pure check: makes staged shell scripts executable (and stages the mode).
+      - id: exec-bit
+        name: check:exec-bit
+        entry: tools/hooks/mise-run check:exec-bit
+        language: script
         files: '(\.sh$|^[^/]+\.bash$)'
 
-      # Validate the commit message against Conventional Commits via cocogitto.
-      # Mirrors the rule used by `cog bump`. pre-commit passes the path of the
-      # commit message file as the filename argument.
-      # See .github/skills/commit-and-release/SKILL.md.
-      - id: cog-verify
-        name: cog verify (conventional commits)
-        entry: cog verify --file
-        language: system
+      # Conventional Commits with this repo's type list, checked when the message
+      # is written. pre-commit passes the path of the message file.
+      - id: commit-msg
+        name: check:commit-msg
+        entry: tools/hooks/mise-run check:commit-msg
+        language: script
         stages: [commit-msg]
-        always_run: true

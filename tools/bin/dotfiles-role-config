@@ -38,5 +38,7 @@ if [[ "$roles" != ephemeral ]]; then
       NAME="$r" yq -i '.data.role[env(NAME)] = false' "$dir/chezmoi.yaml"
     fi
   done
+  # Data the config template derives from Roles must follow the new Roles too.
+  yq -i '.data.isWork = .data.role.work' "$dir/chezmoi.yaml"
 fi
 echo "$dir/chezmoi.yaml"
