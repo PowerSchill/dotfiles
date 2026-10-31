@@ -33,31 +33,31 @@ FORBIDDEN_PATH+='|(^|/)(private_)*(dot_|\.)(aws|kube|op)/'
 FORBIDDEN_PATH+='|(^|/)(private_)*(dot_|\.)docker/(private_)*config\.json'
 
 if [[ -n "${PRE_COMMIT_FROM_REF:-}" && -n "${PRE_COMMIT_TO_REF:-}" ]]; then
-    if [[ "$PRE_COMMIT_FROM_REF" =~ ^0+$ ]]; then
-        range=("$PRE_COMMIT_TO_REF" --not --remotes)
-    else
-        range=("$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF")
-    fi
-    files=$(git log --format= --name-only --diff-filter=AR "${range[@]}" | sort -u)
-    diff=$(git log -p --format= --unified=0 --no-color "${range[@]}")
+  if [[ "$PRE_COMMIT_FROM_REF" =~ ^0+$ ]]; then
+    range=("$PRE_COMMIT_TO_REF" --not --remotes)
+  else
+    range=("$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF")
+  fi
+  files=$(git log --format= --name-only --diff-filter=AR "${range[@]}" | sort -u)
+  diff=$(git log -p --format= --unified=0 --no-color "${range[@]}")
 else
-    files=$(git diff --cached --name-only --diff-filter=AR)
-    diff=$(git diff --cached --unified=0 --no-color)
+  files=$(git diff --cached --name-only --diff-filter=AR)
+  diff=$(git diff --cached --unified=0 --no-color)
 fi
 
 failed=0
 report() {
-    printf '  %s\n' "$@" >&2
-    failed=1
+  printf '  %s\n' "$@" >&2
+  failed=1
 }
 
 # --- forbidden file names -----------------------------------------------------
 while IFS= read -r f; do
-    [[ -z "$f" ]] && continue
-    [[ "$(basename "$f")" == encrypted_* ]] && continue
-    if [[ "$f" =~ $FORBIDDEN_PATH ]]; then
-        report "forbidden file: $f (keys/credentials belong in 1Password or encrypted_ files)"
-    fi
+  [[ -z "$f" ]] && continue
+  [[ "$(basename "$f")" == encrypted_* ]] && continue
+  if [[ "$f" =~ $FORBIDDEN_PATH ]]; then
+    report "forbidden file: $f (keys/credentials belong in 1Password or encrypted_ files)"
+  fi
 done <<<"$files"
 
 # --- added lines, tagged with their file -------------------------------------
@@ -71,9 +71,9 @@ added=$(awk '
 
 # --- home directory paths -----------------------------------------------------
 while IFS=$'\t' read -r f user; do
-    if ! [[ "$user" =~ $ALLOWED_USERS ]]; then
-        report "$f: home path for user '$user'"
-    fi
+  if ! [[ "$user" =~ $ALLOWED_USERS ]]; then
+    report "$f: home path for user '$user'"
+  fi
 done < <(perl -ne '
     my ($f, $l) = split /\t/, $_, 2;
     print "$f\t$2\n" while $l =~ m{(?<![\w\}.])(?:/|\\/|\\\\)(Users|home)(?:/|\\/|\\\\)([A-Za-z0-9_-][A-Za-z0-9._-]*)}g;
@@ -81,9 +81,9 @@ done < <(perl -ne '
 
 # --- email addresses ----------------------------------------------------------
 while IFS=$'\t' read -r f email; do
-    if ! [[ "$email" =~ $ALLOWED_EMAIL ]]; then
-        report "$f: email address '$email'"
-    fi
+  if ! [[ "$email" =~ $ALLOWED_EMAIL ]]; then
+    report "$f: email address '$email'"
+  fi
 done < <(perl -ne '
     my ($f, $l) = split /\t/, $_, 2;
     print "$f\t$1\n" while $l =~ /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
@@ -91,18 +91,18 @@ done < <(perl -ne '
 
 # --- local denylist -----------------------------------------------------------
 if [[ -r "$DENYLIST" ]]; then
-    while IFS= read -r pattern; do
-        [[ -z "$pattern" || "$pattern" == \#* ]] && continue
-        while IFS= read -r hit; do
-            report "${hit%%$'\t'*}: matches private pattern '$pattern'"
-        done < <(PAT="$pattern" perl -ne 'print if /$ENV{PAT}/i' <<<"$added" | sort -u -t$'\t' -k1,1)
-    done <"$DENYLIST"
+  while IFS= read -r pattern; do
+    [[ -z "$pattern" || "$pattern" == \#* ]] && continue
+    while IFS= read -r hit; do
+      report "${hit%%$'\t'*}: matches private pattern '$pattern'"
+    done < <(PAT="$pattern" perl -ne 'print if /$ENV{PAT}/i' <<<"$added" | sort -u -t$'\t' -k1,1)
+  done <"$DENYLIST"
 else
-    echo "check-private-info: no denylist at $DENYLIST (employer/host patterns not checked)" >&2
+  echo "check-private-info: no denylist at $DENYLIST (employer/host patterns not checked)" >&2
 fi
 
 if ((failed)); then
-    echo "check-private-info: private information found (see above)." >&2
-    echo "  Remove it, move it to ~/.zshrc.local or 1Password, or mark the line with allow-private-info." >&2
+  echo "check-private-info: private information found (see above)." >&2
+  echo "  Remove it, move it to ~/.zshrc.local or 1Password, or mark the line with allow-private-info." >&2
 fi
 exit $failed
