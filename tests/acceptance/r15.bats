@@ -8,63 +8,63 @@ load helpers
 teardown() { container_stop; }
 
 @test "R15: CI selects minimal" {
-    run host_profile CI=true
-    [ "$output" = "minimal" ]
+  run host_profile CI=true
+  [ "$output" = "minimal" ]
 }
 
 @test "R15: Codespaces and dev containers select minimal" {
-    run host_profile CODESPACES=true
-    [ "$output" = "minimal" ]
-    run host_profile REMOTE_CONTAINERS_IPC=/tmp/x
-    [ "$output" = "minimal" ]
+  run host_profile CODESPACES=true
+  [ "$output" = "minimal" ]
+  run host_profile REMOTE_CONTAINERS_IPC=/tmp/x
+  [ "$output" = "minimal" ]
 }
 
 @test "R15: a container marker file selects minimal" {
-    marker="$BATS_TEST_TMPDIR/dockerenv"
-    touch "$marker"
-    DOTFILES_CONTAINER_MARKERS="$marker" run host_profile
-    [ "$output" = "minimal" ]
+  marker="$BATS_TEST_TMPDIR/dockerenv"
+  touch "$marker"
+  DOTFILES_CONTAINER_MARKERS="$marker" run host_profile
+  [ "$output" = "minimal" ]
 }
 
 @test "R15: a plain environment selects full" {
-    run host_profile
-    [ "$output" = "full" ]
+  run host_profile
+  [ "$output" = "full" ]
 }
 
 @test "R15: DOTFILES_PROFILE overrides detection" {
-    run host_profile CI=true DOTFILES_PROFILE=full
-    [ "$output" = "full" ]
-    run host_profile DOTFILES_PROFILE=minimal
-    [ "$output" = "minimal" ]
+  run host_profile CI=true DOTFILES_PROFILE=full
+  [ "$output" = "full" ]
+  run host_profile DOTFILES_PROFILE=minimal
+  [ "$output" = "minimal" ]
 }
 
 @test "R15: an unknown DOTFILES_PROFILE is rejected" {
-    run host_profile DOTFILES_PROFILE=everything
-    [ "$status" -eq 2 ]
+  run host_profile DOTFILES_PROFILE=everything
+  [ "$status" -eq 2 ]
 }
 
 @test "R15: in simulated CI the minimal Toolchain is installed and extras are absent" {
-    container_start -e CI=true
-    run container_exec 'CI=true tools/bootstrap.sh'
-    [ "$status" -eq 0 ]
-    run container_exec 'CI=true mise which git-cliff'
-    [ "$status" -ne 0 ]
+  container_start -e CI=true
+  run container_exec 'CI=true tools/bootstrap.sh'
+  [ "$status" -eq 0 ]
+  run container_exec 'CI=true mise which git-cliff'
+  [ "$status" -ne 0 ]
 }
 
 @test "R15: the full Profile fails early when a system library is missing" {
-    container_start -e CI=true
-    run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
-    [ "$status" -ne 0 ]
-    [[ "$output" == *"needs libatomic.so.1"* ]]
-    run container_exec 'test -e ~/.local/bin/mise'
-    [ "$status" -ne 0 ] # failed before downloading anything
+  container_start -e CI=true
+  run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"needs libatomic.so.1"* ]]
+  run container_exec 'test -e ~/.local/bin/mise'
+  [ "$status" -ne 0 ] # failed before downloading anything
 }
 
 @test "R15: DOTFILES_PROFILE=full in CI installs the extras" {
-    container_start -e CI=true
-    container_root 'DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libatomic1 >/dev/null'
-    run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
-    [ "$status" -eq 0 ]
-    run container_exec 'mise which git-cliff'
-    [ "$status" -eq 0 ]
+  container_start -e CI=true
+  container_root 'DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libatomic1 >/dev/null'
+  run container_exec 'CI=true DOTFILES_PROFILE=full tools/bootstrap.sh'
+  [ "$status" -eq 0 ]
+  run container_exec 'mise which git-cliff'
+  [ "$status" -eq 0 ]
 }
