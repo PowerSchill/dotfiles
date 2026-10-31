@@ -157,12 +157,12 @@ Managed via `~/.zshrc` with modular configuration loaded from `~/.config/zsh/*.z
 
 ### Git
 
-Git is configured in `~/.gitconfig` with:
+Git is configured in `~/.config/git/config` with:
 
 - **Diff/merge pager:** [delta](https://github.com/dandavison/delta) with Catppuccin theme and side-by-side view
 - **Aliases:** [gitalias](https://github.com/GitAlias/gitalias) plus custom shortcuts (`glog`, `fpush`, `amend`, `reword`, `undo`, etc.)
 - **Branch management:** [git-town](https://www.git-town.com/) integration (`hack`, `sync`, `propose`, ...)
-- **Commit template:** `~/.gitmessage`
+- **Commit template:** `~/.config/git/message`
 - **Pull:** fast-forward only with rebase; `rerere` enabled
 - **Credentials:** with the `onepassword` role, `gh` via the 1Password CLI plugin and SSH signing via `op-ssh-sign`; otherwise macOS Keychain (`osxkeychain`) or the git `cache` helper on Linux
 - **Diff tool:** Kaleidoscope (`ksdiff`) when installed

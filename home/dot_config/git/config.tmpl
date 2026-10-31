@@ -1,0 +1,331 @@
+# Get Paths for commands
+{{- $ghPath := lookPath "gh" }}
+
+# Directories (git-config gitdir globs) containing public, read-only repos
+# managed by tools that shell out to `git pull`/`clone` over HTTPS -- plugin
+# managers and the like. Each gets the github.com credential helper cleared
+# (see no-credential-helper.gitconfig) so the credential helper isn't invoked
+# for repos that need no auth. Add new directories to this list, no other edits needed.
+{{- $noAuthGitDirs := list "~/.tmux/plugins/" }}
+
+[include]
+  path = ~/.config/delta/catppuccin.gitconfig
+  
+[user]
+	name = {{ .name }}
+	email = {{ .email }}
+
+[core]
+	editor = nvim
+	autocrlf = input
+	excludesfile = ~/.config/git/ignore
+# {{ if .wsl }}
+	sshCommand = ssh.exe
+# {{ else if eq .chezmoi.os "windows" }}
+	sshCommand = "C:/Windows/System32/OpenSSH/ssh.exe"
+# {{ end }}
+    pager = delta
+
+[commit]
+  	template = ~/.config/git/message
+	cleanup = strip
+
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+	
+{{- if lookPath "ksdiff" }}
+[difftool "Kaleidoscope"]
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+
+[mergetool "Kaleidoscope"]
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
+{{- end }}
+
+{{- if lookPath "bc" }}
+[mergetool "bc"]
+    prompt = false
+    trustExitCode = true
+{{- end }}  
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[push]
+	default = simple
+	autoSetupRemote = true
+
+[color]
+	ui = auto
+
+
+
+
+[alias]
+	st = status
+	co = checkout
+	br = branch
+	ci = commit
+	unstage = reset HEAD --
+	last = log -1 HEAD
+	
+# Because I constantly forget how to do this
+
+# https://git-scm.com/docs/git-fetch#git-fetch--p
+    prune = fetch --prune
+
+# Not quite as common as an amend, but still common
+# https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
+    undo = reset --soft HEAD^
+
+# We wanna grab those pesky un-added files!
+# https://git-scm.com/docs/git-stash
+    stash-all = stash save --include-untracked
+
+# No need for a GUI - a nice, colorful, graphical representation
+# https://git-scm.com/docs/git-log
+# via https://medium.com/@payload.dd/thanks-for-the-git-st-i-will-use-this-4da5839a21a
+    glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+# A safer git push --force
+    fpush = push --force-with-lease
+
+# These are extremely nice
+    ignore = "!f() { for arg in \"$@\"; do echo \"$arg\" >> .gitignore; done; git add .gitignore 2>/dev/null; }; f"
+    exclude = "!f() { for arg in \"$@\"; do echo \"$arg\" >> \"$(git rev-parse --git-dir)/info/exclude\"; done; }; f"
+# The incantation to list ignored files is terrible
+# (but maybe I should use git status --ignored?)
+    ignored = ls-files --others -i --exclude-standard
+
+# When you git pull and want to see what you've just pulled in, do git new [branch] [git log options]
+# inspired by https://git.wiki.kernel.org/index.php/Aliases
+    new = "!f() { case \"$1\" in -*|\"\") b=;; *) b=$1; shift;; esac; git log $b@{1}..$b@{0} \"$@\"; }; f"
+
+# show tag name of the last release tag on current branch
+    last-release = describe --tags --abbrev=0 --exclude=last*
+    penultimate-release = !git describe --tags --abbrev=0 --exclude=last* --exclude=$(git last-release)
+
+# show commits after the last release
+    unreleased = !git shortlog $(git last-release)..
+    unreleased-log = !git log $(git last-release)..
+
+# show diff since the last release
+    unreleased-diff = !git diff $(git last-release)
+
+# git changelog-filename [name] -- get or set the filename of the changelog file (default: CHANGES.rst)
+# used by other aliases such as 'git unreleased-changelog'
+    changelog-filename = "!f() { git config alias.changelog.filename \"$@\" || echo CHANGES.rst; }; f"
+
+# show changelog since the last release
+    unreleased-changelog = !git diff $(git last-release) -- $(git changelog-filename)
+
+# git amend [-a|-p|FILE] to just add something to the last commit
+# (lately I've mostly been using git add [-p]; git show --staged; git amend)
+    amend = commit --amend --no-edit
+
+# Clean
+    clear = clean -d -x -i
+
+# git reword -- edit the last commit message
+    reword = commit --amend --only -v
+
+# git-town aliases
+    append = town append
+    compress = town compress
+    diff-parent = town diff-parent
+    hack = town hack
+    prepend = town prepend
+    propose = town propose
+    repo = town repo
+    sync = town sync
+
+# {{ if and (eq .chezmoi.os "darwin") (not .codespaces) }}
+[credential]
+	helper = osxkeychain
+# {{ else if eq .chezmoi.os "windows" }}
+[credential]
+	helper = manager
+# {{ else if and (eq .chezmoi.os "linux") (not .codespaces) }}
+[credential]
+	helper = cache
+# {{ end }}
+{{ $gh := lookPath "gh" }}
+{{- if $gh }}
+# HTTPS auth for GitHub via the GitHub CLI's credential helper — the same thing
+# `gh auth setup-git` writes. It lives here because that command appends to this
+# very file, so the next `chezmoi apply` would silently drop it again and leave
+# `git push` falling back to the generic helper above (and prompting).
+#
+# The empty `helper =` first resets the inherited generic helper for these hosts,
+# so a stale keychain/cache entry cannot shadow the gh token. The path is quoted
+# because git hands `!`-prefixed helpers to a shell.
+{{- $ghPath := $gh | replace "\\" "/" }}
+[credential "https://github.com"]
+	helper =
+	helper = !'{{ $ghPath }}' auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !'{{ $ghPath }}' auth git-credential
+{{- end }}
+
+[diff]
+  	tool = nvimdiff
+  
+
+
+[merge]
+	conflictstyle = diff3
+	autoStash = true
+
+[rebase]
+	autoStash = true
+
+[apply]
+	whitespace = nowarn
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+{{- if $signingKey }}
+[user]
+	signingkey = {{ $signingKey }}
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+{{- else }}
+# No FIDO2 SSH pubkey found yet. Run `yk-enroll` then re-run `chezmoi apply`
+# to enable signing.
+{{- end }}
+{{ else if .gitSigningKey }}
+# SSH-based commit signing with the key held by the 1Password SSH agent.
+# Signing is delegated to 1Password's own signer binary rather than the local
+# ssh-keygen, because the private key never leaves 1Password. The binary is
+# platform-specific, and 1Password's "Configure Commit Signing" snippet names a
+# different one per platform:
+#
+#   WSL             op-ssh-sign-wsl.exe   (under /mnt/c, runs on the Windows host)
+#   native Windows  op-ssh-sign.exe
+#   macOS           op-ssh-sign           (inside the 1Password app bundle)
+#
+# See docs/git-signing.md. Set `opSshSignProgram` to skip auto-detection.
+{{- $signer := "" -}}
+{{- if .opSshSignProgram -}}
+{{-   $signer = .opSshSignProgram -}}
+{{- else if .wsl -}}
+{{- /* The signer moved with the 8.11.18 MSIX installer, so probe the current */ -}}
+{{- /* location first and fall back to the pre-MSIX one.                     */ -}}
+{{-   $localAppData := "" -}}
+{{-   if and (lookPath "sh") (lookPath "cmd.exe") -}}
+{{-     $windowsLocalAppData := output "sh" "-c" "cmd.exe /d /c 'echo %LOCALAPPDATA%' 2>/dev/null || true" | trim -}}
+{{-     if and $windowsLocalAppData (not (contains "%LOCALAPPDATA%" $windowsLocalAppData)) (lookPath "wslpath") -}}
+{{-       $localAppData = output "sh" "-c" "wslpath -u \"$1\" 2>/dev/null || true" "sh" $windowsLocalAppData | trim -}}
+{{-     end -}}
+{{-   end -}}
+{{-   if $localAppData -}}
+{{-     $candidates := list
+          (joinPath $localAppData "Microsoft" "WindowsApps" "op-ssh-sign-wsl.exe")
+          (joinPath $localAppData "1Password" "app" "8" "op-ssh-sign-wsl") -}}
+{{-     range $candidates -}}
+{{-       if and (not $signer) (stat .) -}}{{- $signer = . -}}{{- end -}}
+{{-     end -}}
+{{-   end -}}
+{{- else if eq .chezmoi.os "windows" -}}
+{{-   $localAppData := env "LOCALAPPDATA" -}}
+{{-   if not $localAppData -}}
+{{-     $localAppData = joinPath .chezmoi.homeDir "AppData" "Local" -}}
+{{-   end -}}
+{{-   $candidates := list
+        (joinPath $localAppData "Microsoft" "WindowsApps" "op-ssh-sign.exe")
+        (joinPath $localAppData "1Password" "app" "8" "op-ssh-sign.exe") -}}
+{{-   range $candidates -}}
+{{-     if and (not $signer) (stat .) -}}{{- $signer = . -}}{{- end -}}
+{{-   end -}}
+{{- else if eq .chezmoi.os "darwin" -}}
+{{-   $macSigner := "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" -}}
+{{-   if stat $macSigner -}}{{- $signer = $macSigner -}}{{- end -}}
+{{- end -}}
+{{- /* git config reads backslashes as escapes, so use forward slashes even on */ -}}
+{{- /* Windows — which is also the form 1Password's own snippet uses.          */ -}}
+{{- $signer = $signer | replace "\\" "/" -}}
+{{- /* `user.signingkey` may hold a literal public key or a path; git needs the */ -}}
+{{- /* `key::` prefix to read a literal key unambiguously.                      */ -}}
+{{- $signingKey := .gitSigningKey | trim -}}
+{{- if hasPrefix "ssh-" $signingKey -}}{{- $signingKey = printf "key::%s" $signingKey -}}{{- end }}
+{{- if $signer }}
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+	program = "{{ $signer }}"
+[user]
+	signingkey = {{ $signingKey }}
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+{{- else }}
+# gitSigningKey is set but no 1Password signer binary was found, so
+# signing is left OFF on purpose.
+#
+# Turning it on without a signer would make git fall back to the local
+# ssh-keygen, which cannot reach the key held by 1Password — every
+# `git commit` would fail. Install or update 1Password, or set the chezmoi
+# `opSshSignProgram` variable, then re-run `chezmoi apply`.
+{{- end }}
+{{ end -}}
+
+[delta]
+  navigate = true
+  side-by-side = true
+{{- if eq .appearance "light" -}}
+    features = catppuccin-latte
+{{- else -}}
+    features = catppuccin-mocha
+{{- end }}
+
+[git-town]
+  github-connector = gh
+  main-branch = main
+
+[status]
+    showUntrackedFiles = all
+    # Sometimes a newly-added folder, since it's only one line in git status, can slip under the radar.
+    # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+
+[transfer]
+    fsckobjects = true
+    # To combat repository corruption!
+    # Note: this global option applies during receive and transmit
+    # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
+    # via https://groups.google.com/forum/#!topic/binary-transparency/f-BI4o8HZW0
+
+    # Some settings pulled from https://gist.github.com/scottnonnenberg/fefa3f65fdb3715d25882f3023b31c29
+
+[interactive]
+    diffFilter = delta --color-only
+
+
+[help]
+    autoCorrect = 1
+
+[log]
+    abbrevCommit = true
+    decorate = short
+
+
+
+[rerere]
+    enabled = true
+    autoUpdate = true
+
+[am]
+    threeWay = true

@@ -1,2 +1,8 @@
 # Migrate tmux config to ~/.config/tmux
 .tmux.conf
+
+# Migrate git config to ~/.config/git
+.gitconfig
+.gitignore_global
+.gitattributes
+.gitmessage

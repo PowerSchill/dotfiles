@@ -76,7 +76,7 @@ while IFS=$'\t' read -r f user; do
     fi
 done < <(perl -ne '
     my ($f, $l) = split /\t/, $_, 2;
-    print "$f\t$2\n" while $l =~ m{(?:/|\\/|\\\\)(Users|home)(?:/|\\/|\\\\)([A-Za-z0-9._-]+)}g;
+    print "$f\t$2\n" while $l =~ m{(?:/|\\/|\\\\)(Users|home)(?:/|\\/|\\\\)([A-Za-z0-9_-][A-Za-z0-9._-]*)}g;
 ' <<<"$added" | sort -u)
 
 # --- email addresses ----------------------------------------------------------
