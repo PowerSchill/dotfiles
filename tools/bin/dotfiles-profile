@@ -18,63 +18,63 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 container_markers="${DOTFILES_CONTAINER_MARKERS:-/.dockerenv /run/.containerenv}"
 
 detect() {
-    if [[ -n "${DOTFILES_PROFILE:-}" ]]; then
-        case "$DOTFILES_PROFILE" in
-        minimal | full)
-            echo "$DOTFILES_PROFILE"
-            return 0
-            ;;
-        *)
-            echo "dotfiles-profile: DOTFILES_PROFILE must be 'minimal' or 'full', got '$DOTFILES_PROFILE'" >&2
-            return 2
-            ;;
-        esac
-    fi
-
-    if [[ -n "${CI:-}" || -n "${CODESPACES:-}" || -n "${REMOTE_CONTAINERS_IPC:-}" ]]; then
-        echo minimal
+  if [[ -n "${DOTFILES_PROFILE:-}" ]]; then
+    case "$DOTFILES_PROFILE" in
+      minimal | full)
+        echo "$DOTFILES_PROFILE"
         return 0
+        ;;
+      *)
+        echo "dotfiles-profile: DOTFILES_PROFILE must be 'minimal' or 'full', got '$DOTFILES_PROFILE'" >&2
+        return 2
+        ;;
+    esac
+  fi
+
+  if [[ -n "${CI:-}" || -n "${CODESPACES:-}" || -n "${REMOTE_CONTAINERS_IPC:-}" ]]; then
+    echo minimal
+    return 0
+  fi
+
+  local marker
+  for marker in $container_markers; do
+    if [[ -e "$marker" ]]; then
+      echo minimal
+      return 0
     fi
+  done
 
-    local marker
-    for marker in $container_markers; do
-        if [[ -e "$marker" ]]; then
-            echo minimal
-            return 0
-        fi
-    done
-
-    echo full
+  echo full
 }
 
 # Write .miserc.local.toml only when its content changes, so the file's mtime
 # (an input of the `install` task) stays put on re-runs.
 write() {
-    local profile="$1" file="$root/.miserc.local.toml" want
-    if [[ "$profile" == full ]]; then
-        want='# Written by tools/bin/dotfiles-profile. Selects the full Profile (mise.full.toml).
+  local profile="$1" file="$root/.miserc.local.toml" want
+  if [[ "$profile" == full ]]; then
+    want='# Written by tools/bin/dotfiles-profile. Selects the full Profile (mise.full.toml).
 env = ["full"]'
-    else
-        want='# Written by tools/bin/dotfiles-profile. minimal Profile: mise.toml only.
+  else
+    want='# Written by tools/bin/dotfiles-profile. minimal Profile: mise.toml only.
 env = []'
-    fi
-    if [[ ! -f "$file" ]] || [[ "$(cat "$file")" != "$want" ]]; then
-        printf '%s\n' "$want" >"$file"
-    fi
+  fi
+  if [[ ! -f "$file" ]] || [[ "$(cat "$file")" != "$want" ]]; then
+    printf '%s\n' "$want" >"$file"
+  fi
 }
 
 main() {
-    local profile
-    profile="$(detect)"
-    case "${1:-}" in
+  local profile
+  profile="$(detect)"
+  case "${1:-}" in
     "") ;;
     --write) write "$profile" ;;
     *)
-        echo "usage: dotfiles-profile [--write]" >&2
-        return 2
-        ;;
-    esac
-    echo "$profile"
+      echo "usage: dotfiles-profile [--write]" >&2
+      return 2
+      ;;
+  esac
+  echo "$profile"
 }
 
 main "$@"
