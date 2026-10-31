@@ -38,10 +38,13 @@ role_config() {
 }
 
 # Render a source template with the given Roles enabled.
-#   render_with dev,onepassword private_dot_gitconfig.tmpl
+#   render_with dev,onepassword dot_config/git/config.tmpl
+# Set RENDER_YQ to a yq expression to adjust the config data first, e.g.
+#   RENDER_YQ='.data.opSshSignProgram = "/x/op-ssh-sign"' render_with dev dot_config/git/config.tmpl
 render_with() {
   local cfg
   cfg="$(role_config "$1")"
+  [ -z "${RENDER_YQ:-}" ] || yq -i "$RENDER_YQ" "$cfg"
   chezmoi --source "$REPO_ROOT" --config "$cfg" \
     --persistent-state "$(dirname "$cfg")/state.boltdb" \
     --destination "$BATS_TEST_TMPDIR/fakehome" --no-tty \

@@ -14,17 +14,12 @@ load helpers
   [ -n "$cfg" ]
 }
 
-@test "git: without onepassword there is no 1Password signer or credential helper" {
-  run render_with dev private_dot_gitconfig.tmpl
+@test "git: commit signing uses the configured 1Password signer" {
+  RENDER_YQ='.data.opSshSignProgram = "/opt/test/op-ssh-sign"' \
+    run render_with dev dot_config/git/config.tmpl
   [ "$status" -eq 0 ]
-  [[ "$output" != *"op-ssh-sign"* ]]
-  [[ "$output" == *"No onepassword role"* ]]
-}
-
-@test "git: with onepassword the 1Password signer is configured" {
-  run render_with dev,onepassword private_dot_gitconfig.tmpl
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"op-ssh-sign"* ]]
+  [[ "$output" == *'program = "/opt/test/op-ssh-sign"'* ]]
+  [[ "$output" == *"gpgsign = true"* ]]
 }
 
 @test "ssh: the 1Password agent is used only with the onepassword Role" {
