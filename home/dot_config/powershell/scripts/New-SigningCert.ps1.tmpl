@@ -1,0 +1,186 @@
+#Requires -Version 7.0
+<#
+.SYNOPSIS
+    Creates a self-signed code signing certificate for PowerShell scripts.
+
+.DESCRIPTION
+    This script generates a self-signed certificate that can be used to sign PowerShell
+    scripts in GitHub Actions. It exports the certificate as a PFX file and converts it
+    to base64 for easy storage in GitHub Secrets.
+
+.PARAMETER SubjectName
+    The subject name for the certificate (e.g., "Your Name" or "CN=Your Name").
+    If not provided, uses the chezmoi configured name or prompts for input.
+
+.PARAMETER Password
+    The password to protect the certificate (minimum 8 characters). This parameter is mandatory
+    and will prompt securely if not provided on the command line.
+
+.EXAMPLE
+    .\New-SigningCert.ps1
+    Prompts for password securely (SubjectName uses chezmoi default).
+
+.EXAMPLE
+    .\New-SigningCert.ps1 -SubjectName "John Doe"
+    Creates a certificate for "John Doe" and prompts for password.
+
+.EXAMPLE
+    $securePass = ConvertTo-SecureString "MyStrongPassword123!" -AsPlainText -Force
+    .\New-SigningCert.ps1 -SubjectName "John Doe" -Password $securePass
+    Creates a certificate with provided subject name and password (non-interactive).
+
+.NOTES
+    This script must be run on Windows with PowerShell 5.1 or later.
+    Run as Administrator for best compatibility.
+#>
+
+[CmdletBinding()]
+param(
+    [Parameter(
+        Mandatory = $false,
+        Position = 0,
+        HelpMessage = "The subject name for the certificate (e.g., 'Your Name'). Will be prefixed with 'CN=' if not present."
+    )]
+    [ValidateNotNullOrEmpty()]
+    [string]$SubjectName = "{{ .name }}",
+
+    [Parameter(
+        Mandatory = $true,
+        Position = 1,
+        HelpMessage = "The password to protect the certificate (minimum 8 characters)."
+    )]
+    [ValidateNotNull()]
+    [ValidateScript({
+        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($_)
+        try {
+            $plainText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+            if ($plainText.Length -lt 8) {
+                throw "Password must be at least 8 characters long."
+            }
+        } finally {
+            [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
+        }
+        $true
+    })]
+    [SecureString]$Password
+)
+
+# Check PowerShell version
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Error "This script requires PowerShell 7.0 or later. Windows PowerShell 5.1 is not supported."
+    Write-Host "Download PowerShell: https://aka.ms/powershell" -ForegroundColor Yellow
+    exit 1
+}
+
+# Check if running on Windows
+if (-not $IsWindows) {
+    Write-Error "This script must be run on Windows (certificate operations require Windows APIs)."
+    exit 1
+}
+
+# Ensure subject name has CN= prefix
+if ($SubjectName -notmatch '^CN=') {
+    $SubjectName = "CN=$SubjectName"
+}
+
+Write-Host "==================================="
+Write-Host "PowerShell Code Signing Certificate Creator"
+Write-Host "==================================="
+Write-Host ""
+Write-Host "This script will create a self-signed code signing certificate for:"
+Write-Host "  Subject: $SubjectName"
+Write-Host ""
+Write-Host "Creating self-signed code signing certificate..."
+
+try {
+    # Create the certificate
+    $certParams = @{
+        Type              = 'CodeSigningCert'
+        Subject           = $SubjectName
+        CertStoreLocation = 'Cert:\CurrentUser\My'
+        NotAfter          = (Get-Date).AddYears(5)
+        KeyExportPolicy   = 'Exportable'
+        KeyLength         = 4096
+        HashAlgorithm     = 'SHA256'
+        OutVariable       = 'cert'
+    }
+    New-SelfSignedCertificate @certParams | Out-Null
+
+    Write-Host "✓ Certificate created successfully"
+    Write-Host "  Thumbprint: $($cert.Thumbprint)"
+    Write-Host "  Valid until: $($cert.NotAfter)"
+    Write-Host ""
+
+    # Export paths
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $pfxPath = Join-Path $PSScriptRoot "CodeSigningCert-$timestamp.pfx"
+    $base64Path = Join-Path $PSScriptRoot "cert-base64-$timestamp.txt"
+
+    # Export as PFX
+    Write-Host "Exporting certificate to PFX..."
+    $exportParams = @{
+        Cert     = "Cert:\CurrentUser\My\$($cert.Thumbprint)"
+        FilePath = $pfxPath
+        Password = $Password
+    }
+    Export-PfxCertificate @exportParams | Out-Null
+    Write-Host "✓ PFX exported: $pfxPath"
+    Write-Host ""
+
+    # Verify export succeeded
+    if (-not (Test-Path -Path $pfxPath)) {
+        throw "PFX file was not created at: $pfxPath"
+    }
+
+    # Convert to base64
+    Write-Host "Converting to base64 for GitHub Secrets..."
+    $pfxBytes = [IO.File]::ReadAllBytes($pfxPath)
+    $base64 = [Convert]::ToBase64String($pfxBytes)
+    $base64 | Out-File -FilePath $base64Path -Encoding ASCII
+    Write-Host "✓ Base64 file created: $base64Path"
+    Write-Host ""
+
+    # Display instructions
+    Write-Host "==================================="
+    Write-Host "SUCCESS! Next Steps:"
+    Write-Host "==================================="
+    Write-Host ""
+    Write-Host "1. Go to your GitHub repository:"
+    Write-Host "   https://github.com/<your username>/<your repo name>/settings/secrets/actions"
+    Write-Host ""
+    Write-Host "2. Click 'New repository secret' and add TWO secrets:"
+    Write-Host ""
+    Write-Host "   Secret #1:"
+    Write-Host "   Name:  CODE_SIGNING_CERT"
+    Write-Host "   Value: Copy the ENTIRE contents of:"
+    Write-Host "          $base64Path"
+    Write-Host ""
+    Write-Host "   Secret #2:"
+    Write-Host "   Name:  CODE_SIGNING_PASSWORD"
+    Write-Host "   Value: The password you entered above"
+    Write-Host ""
+    Write-Host "3. The GitHub Actions workflow (.github/workflows/sign-powershell.yml)"
+    Write-Host "   will automatically sign your PowerShell scripts on push."
+    Write-Host ""
+    Write-Host "==================================="
+    Write-Host "SECURITY NOTES:"
+    Write-Host "==================================="
+    Write-Host ""
+    Write-Host "⚠️  IMPORTANT: Keep these files secure!"
+    Write-Host "   - Store the PFX file in a safe location (password manager, encrypted drive)"
+    Write-Host "   - Delete the base64 file after uploading to GitHub"
+    Write-Host "   - Never commit these files to git"
+    Write-Host ""
+    Write-Host "To verify signing locally after GitHub Actions runs:"
+    Write-Host '  Get-AuthenticodeSignature -FilePath .\install.ps1 | Format-List'
+    Write-Host ""
+    Write-Host "Certificate details:"
+    Write-Host "  Location: Cert:\CurrentUser\My\$($cert.Thumbprint)"
+    Write-Host "  Subject: $($cert.Subject)"
+    Write-Host "  Expires: $($cert.NotAfter.ToString('yyyy-MM-dd'))"
+    Write-Host ""
+
+} catch {
+    Write-Error "Failed to create certificate: $_"
+    exit 1
+}
