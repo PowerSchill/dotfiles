@@ -130,6 +130,39 @@ description = "Scan staged changes (or a range) for private information"
 usage = 'flag "--range <range>" help="Scan added lines in A..B instead of staged changes"'
 run = 'exec tools/checks/private-info.sh ${usage_range:+--range "$usage_range"}'
 
+[tasks."check:apply"]
+description = "Dry-run apply for a set of Roles into a scratch home"
+usage = 'flag "--roles <roles>" help="ephemeral, or a comma-separated Role list" default="ephemeral"'
+run = 'tools/checks/apply.sh "${usage_roles?}"'
+
+# --- Preview and Apply ------------------------------------------------------
+
+[tasks.preview]
+description = "Show what Apply would change in your home directory (read-only)"
+usage = '''
+flag "--no-externals" help="Skip externals, so nothing is downloaded"
+arg "[targets]" var=#true help="Limit to these files, e.g. ~/.zshrc"
+'''
+run = '''
+eval "set -- ${usage_targets:-}"
+if [ "${usage_no_externals:-false}" = true ]; then set -- --no-externals "$@"; fi
+exec dotfiles-apply preview "$@"
+'''
+
+[tasks.apply]
+description = "Apply dotfiles to your home directory (requires --yes)"
+usage = '''
+flag "--yes" help="Confirm writing to $HOME and running scripts"
+flag "--no-externals" help="Skip externals, so nothing is downloaded"
+arg "[targets]" var=#true help="Limit to these files, e.g. ~/.zshrc"
+'''
+run = '''
+eval "set -- ${usage_targets:-}"
+if [ "${usage_no_externals:-false}" = true ]; then set -- --no-externals "$@"; fi
+if [ "${usage_yes:-false}" = true ]; then set -- --yes "$@"; fi
+exec dotfiles-apply apply "$@"
+'''
+
 [tasks.fmt]
 description = "Format shell scripts in place"
 usage = 'arg "[files]" var=#true help="Files to format (default: all)"'
