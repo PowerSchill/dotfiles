@@ -1,0 +1,94 @@
+# Toolchain for working on this repository (see GLOSSARY.md, docs/adr/0001, docs/adr/0002).
+#
+# This file is the `minimal` Profile: everything CI and the commit hook need.
+# `mise.full.toml` adds optional extras and is loaded when the `full` Profile is
+# selected (tools/bin/dotfiles-profile writes `.miserc.local.toml` to choose it).
+#
+# Versions are exact pins so the commit hook and CI cannot drift; Renovate bumps
+# them. `latest` is allowed only in mise.full.toml.
+#
+# Fresh machine: tools/bootstrap.sh. Afterwards: `mise tasks` lists every chore.
+
+min_version = "2026.10.25"
+
+[settings]
+lockfile = true
+lockfile_platforms = ["linux-x64", "linux-arm64", "macos-arm64", "macos-x64"]
+
+[env]
+_.path = ["{{config_root}}/tools/bin"]
+DOTFILES_ROOT = "{{config_root}}"
+# pre-commit is a Python zipapp; keep it from littering the tree or reading user site-packages.
+PYTHONDONTWRITEBYTECODE = "1"
+PYTHONNOUSERSITE = "1"
+
+[tools]
+chezmoi = "2.73.3"
+python = "3.14.10" # interpreter for pre-commit's .pyz
+pre-commit = "4.7.0"
+shellcheck = "0.11.0"
+shfmt = "3.14.1"
+gitleaks = "8.30.1"
+cocogitto = "7.0.0"
+bats = "1.14.0"
+yq = "4.54.1"
+taplo = "0.10.0"
+jq = "1.8.2"
+
+# --- Setup -----------------------------------------------------------------
+
+[tasks.profile]
+description = "Detect the Toolchain Profile and record it for mise"
+run = "dotfiles-profile --write"
+
+[tasks.install]
+description = "Install the Toolchain for the current Profile"
+depends = ["profile"]
+sources = ["mise.toml", "mise.*.toml", "mise.lock", ".miserc.local.toml"]
+outputs = { auto = true }
+# A fresh process so the Profile written by `profile` is picked up.
+run = [
+  "env -u MISE_ENV mise install --yes",
+  { task = "hooks:install" },
+]
+
+[tasks."hooks:install"]
+description = "Install the git hooks (skipped in CI)"
+sources = [".pre-commit-config.yaml"]
+outputs = { auto = true }
+run = '''
+if [ -n "${CI:-}" ]; then
+  echo "hooks:install: CI detected, skipping"
+  exit 0
+fi
+pre-commit install --install-hooks
+'''
+
+[tasks.lock]
+description = "Regenerate mise.lock for every supported platform"
+run = "mise lock"
+
+# --- Information ------------------------------------------------------------
+
+[tasks.info]
+description = "Show the Profile, Machine Roles and Toolchain versions"
+run = "dotfiles-info"
+
+# --- Tests ------------------------------------------------------------------
+
+[tasks."test:acceptance"]
+description = "Run requirement acceptance tests (needs Docker)"
+usage = 'arg "[file]" help="One acceptance test file, e.g. tests/acceptance/r02.bats" default="tests/acceptance"'
+run = '''
+if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
+  echo "test:acceptance: docker is required (install Docker and start the daemon)" >&2
+  exit 1
+fi
+bats --timing --print-output-on-failure "${usage_file?}"
+'''
+
+# --- Housekeeping -----------------------------------------------------------
+
+[tasks.clean]
+description = "Remove build and test artifacts inside the repo"
+run = "rm -rf .cache tests/.tmp && echo 'clean: removed .cache tests/.tmp'"

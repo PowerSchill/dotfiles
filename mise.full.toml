@@ -1,0 +1,9 @@
+# `full` Profile: optional extras for workstations, layered on top of mise.toml.
+# Selected automatically outside CI and containers; see docs/adr/0002.
+# `latest` is allowed here (and only here) for tools that need no reproducibility.
+
+[tools]
+git-cliff = "2.14.2" # release:preview
+act = "0.2.93"       # run the CI workflow locally
+node = "26.13.0"     # runtime for the devcontainer CLI
+"npm:@devcontainers/cli" = "0.90.0"
