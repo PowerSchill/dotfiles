@@ -7,8 +7,8 @@
 # If not running interactively, don't do anything
 # This prevents errors from Docker Desktop WSL integration messages
 case $- in
-  *i*) ;;
-  *) return ;;
+*i*) ;;
+*) return ;;
 esac
 
 # Source the main shell config
