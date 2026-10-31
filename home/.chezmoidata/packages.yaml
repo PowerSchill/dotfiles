@@ -117,6 +117,7 @@ packages:
         - name: lazygit # Simple Git GUI written in Go
         - name: act # Run GitHub Actions locally
         - name: pre-commit # Framework for managing git hooks
+        - name: mise # Tool versions and tasks; runs this repo's Checks (mise.toml)
         #######################################
         # Languages and runtimes
         #######################################

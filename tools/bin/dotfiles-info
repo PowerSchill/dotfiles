@@ -12,11 +12,11 @@ echo
 
 echo "Machine (from chezmoi state):"
 if data="$(chezmoi data --format json 2>/dev/null)" && [[ -n "$data" ]]; then
-    printf '%s' "$data" | jq -r '
+  printf '%s' "$data" | jq -r '
         "  ephemeral : \(if has("ephemeral") then .ephemeral else "unknown" end)",
         "  roles     : \((.roles // []) | if length == 0 then "none" else join(", ") end)"'
 else
-    echo "  not initialized (run chezmoi init to choose Roles)"
+  echo "  not initialized (run chezmoi init to choose Roles)"
 fi
 echo
 

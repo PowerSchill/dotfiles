@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run a mise task from a git hook. Hooks can run from GUI git clients that do
+# not have the shell's PATH, so look for mise in the usual install locations.
+set -euo pipefail
+for m in "$(command -v mise 2>/dev/null || true)" "$HOME/.local/bin/mise" \
+  /opt/homebrew/bin/mise /usr/local/bin/mise; do
+  if [[ -n "$m" && -x "$m" ]]; then
+    exec "$m" run --quiet "$@"
+  fi
+done
+echo "git hook: mise not found. Run tools/bootstrap.sh in the dotfiles repo." >&2
+exit 1
