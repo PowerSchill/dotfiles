@@ -17,24 +17,10 @@ scratch_git() {
 }
 
 # Write a chezmoi config whose data enables exactly the given Roles
-# (comma-separated) on a non-Ephemeral machine, and print its path.
+# (comma-separated, or `ephemeral`) and print its path.
 #   cfg="$(role_config dev,onepassword)"
 role_config() {
-  local roles="$1" dir="$BATS_TEST_TMPDIR/chezmoi-$1" r
-  mkdir -p "$dir"
-  CODESPACES=true chezmoi --source "$REPO_ROOT" --config "$dir/none.yaml" \
-    --persistent-state "$dir/state.boltdb" --no-tty \
-    execute-template --init <"$SOURCE_DIR/.chezmoi.yaml.tmpl" >"$dir/base.yaml"
-  cp "$dir/base.yaml" "$dir/chezmoi.yaml"
-  yq -i '.data.ephemeral = false | .data.roles = []' "$dir/chezmoi.yaml"
-  for r in $(yq '.data.role | keys | .[]' "$dir/base.yaml"); do
-    if [[ ",$roles," == *",$r,"* ]]; then
-      NAME="$r" yq -i '.data.role[env(NAME)] = true | .data.roles += [env(NAME)]' "$dir/chezmoi.yaml"
-    else
-      NAME="$r" yq -i '.data.role[env(NAME)] = false' "$dir/chezmoi.yaml"
-    fi
-  done
-  echo "$dir/chezmoi.yaml"
+  "$REPO_ROOT/tools/bin/dotfiles-role-config" "$1" "$BATS_TEST_TMPDIR/chezmoi-$1"
 }
 
 # Render a source template with the given Roles enabled.
