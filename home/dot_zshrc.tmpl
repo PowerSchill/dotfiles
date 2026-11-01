@@ -119,10 +119,6 @@ zstyle ':completion:*' cache-path "$HOME/.zsh/cache"
 # ==============================================================================
 
 if [[ "$(uname)" == 'Darwin' ]]; then
-  if [[ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-    source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  fi
-
   # Requires coreutils and vivid from brew
   if command -v vivid >/dev/null 2>&1; then
 {{- if eq .appearance "light" }}
@@ -182,3 +178,21 @@ fi
 if [ -f "$HOME/.zshrc.local" ]; then
     . "$HOME/.zshrc.local"
 fi
+
+# ==============================================================================
+# SYNTAX HIGHLIGHTING
+# ==============================================================================
+
+# Last on purpose: it wraps the ZLE widgets that exist when it loads, so anything
+# bound after it, including in .zshrc.local, would not be highlighted.
+_fsh_plugin="$HOME/.oh-my-zsh/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+if [[ -f "$_fsh_plugin" ]]; then
+  source "$_fsh_plugin"
+  # fast-theme compiles the theme into FAST_WORK_DIR, so run it only on a change.
+  _fsh_theme="catppuccin-{{ if eq .appearance "light" }}latte{{ else }}mocha{{ end }}"
+  if [[ -f "$XDG_CONFIG_HOME/fsh/$_fsh_theme.ini" ]] &&
+    { [[ ! -r "$FAST_WORK_DIR/.dotfiles-theme" ]] || [[ "$(<"$FAST_WORK_DIR/.dotfiles-theme")" != "$_fsh_theme" ]]; }; then
+    fast-theme -q "XDG:$_fsh_theme" && print -r -- "$_fsh_theme" >"$FAST_WORK_DIR/.dotfiles-theme"
+  fi
+fi
+unset _fsh_plugin _fsh_theme

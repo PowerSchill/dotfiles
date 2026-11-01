@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Install ccstatusline globally so the Claude Code statusLine can invoke the
-# binary directly instead of paying an npx/bunx registry round-trip per render.
+# binary directly instead of paying an npx/bunx registry round-trip per render. The settings call ~/.bun/bin/ccstatusline, which runs on node. Bump the
+# version by hand; changing it re-runs this script.
 set -euo pipefail
 
 # shellcheck source=home/dot_config/shell/functions/log.sh
@@ -15,7 +16,7 @@ if ! command -v bun >/dev/null 2>&1; then
 fi
 
 log_state "Installing ccstatusline"
-bun install -g ccstatusline
+bun install -g ccstatusline@2.2.33
 log_result "ccstatusline installed"
 
 {{- end }}

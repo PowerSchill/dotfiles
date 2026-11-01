@@ -104,7 +104,7 @@ Only `README.MD`, `CLAUDE.md`, and repo tooling sit at the top level.
 ### Roles (`home/.chezmoi.yaml.tmpl`)
 
 A machine's configuration is **role-based**. Roles are opt-in capabilities, chosen once at
-`chezmoi init` (via `promptBoolOnce`) and persisted in chezmoi's state, so they do not depend on
+`chezmoi init` and saved in the chezmoi config (`data.role.<name>`), so they do not depend on
 network-visible hostname/FQDN detection.
 
 | Role | Enables |
@@ -133,8 +133,10 @@ cmrole add security      # enable and re-apply
 cmrole remove onepassword
 ```
 
-It drives `chezmoi init --promptBool "<role>=true|false"`. Note chezmoi keys `--promptBool` on the
-*prompt string*, which is why `home/.chezmoi.yaml.tmpl` uses the bare role name as the prompt text.
+It drives `DOTFILES_ROLE_CHANGE=<role> chezmoi init --promptBool "<role>=true|false"`. A saved role
+wins over a bare `--promptBool`, so the variable names the role to take from the flag. Note chezmoi
+keys `--promptBool` on the *prompt string*, which is why `home/.chezmoi.yaml.tmpl` uses the bare role
+name as the prompt text.
 
 When `onepassword` is off, credential handling falls back to system-native: system `ssh-agent`,
 git's default `ssh-keygen` signer, and `osxkeychain` (darwin) / `cache` (linux) for git credentials.

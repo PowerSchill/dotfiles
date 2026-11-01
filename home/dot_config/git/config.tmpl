@@ -207,7 +207,7 @@
 #   native Windows  op-ssh-sign.exe
 #   macOS           op-ssh-sign           (inside the 1Password app bundle)
 #
-# See docs/git-signing.md. Set `opSshSignProgram` to skip auto-detection.
+# Set `opSshSignProgram` to skip auto-detection.
 {{- $signer := "" -}}
 {{- if .opSshSignProgram -}}
 {{-   $signer = .opSshSignProgram -}}

@@ -213,3 +213,90 @@ zsh_probe() {
   run zsh_probe "$PATH"
   [[ "$output" == *"COLOR=unset"* ]]
 }
+
+@test "scripts: the package removal script starts with its shebang, also as root" {
+  local script="$SOURCE_DIR/.chezmoiscripts/linux/run_onchange_linux_after_30_remove-packages.sh.tmpl"
+  local cfg
+  cfg="$(role_config dev)"
+  yq -i '.data.osid = "linux-ubuntu"' "$cfg"
+  run bash -c "sed 's/eq .chezmoi.username \"root\"/true/' '$script' |
+    chezmoi --source '$REPO_ROOT' --config '$cfg' --no-tty execute-template"
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = "#!/bin/bash" ]
+  [[ "$output" != *"sudo "* ]]
+}
+
+@test "op: Debian installs the CLI from apt, never the desktop tarball" {
+  RENDER_YQ='.data.osid = "linux-debian"' run render_with onepassword .chezmoiscripts/linux/run_onchange_before_30_install-op.sh.tmpl
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"packages+=(1password-cli)"* ]]
+  [[ "$output" == *"apt-get install"* ]]
+  [[ "$output" != *"packages+=(1password)"* ]]
+  [[ "$output" != *"1password-latest.tar.gz"* ]]
+}
+
+@test "op: a gui machine also installs the desktop app" {
+  RENDER_YQ='.data.osid = "linux-fedora"' run render_with onepassword,gui .chezmoiscripts/linux/run_onchange_before_30_install-op.sh.tmpl
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"packages+=(1password)"* ]]
+  [[ "$output" == *"dnf -y install"* ]]
+}
+
+@test "roles: a saved Role survives init unless DOTFILES_ROLE_CHANGE names it" {
+  local cfg
+  cfg="$(role_config dev)"
+  yq -i '.data.role.security = false' "$cfg"
+  render() {
+    chezmoi --source "$REPO_ROOT" --config "$cfg" --persistent-state "$(dirname "$cfg")/state.boltdb" \
+      --destination "$BATS_TEST_TMPDIR/fakehome" --no-tty \
+      execute-template --init --promptBool security=true <"$SOURCE_DIR/.chezmoi.yaml.tmpl" | yq -r '.data.role.security'
+  }
+  [ "$(render)" = false ]
+  export DOTFILES_ROLE_CHANGE=security
+  [ "$(render)" = true ]
+}
+
+@test "documents: one source directory per target" {
+  local src="$BATS_TEST_TMPDIR/docsrc"
+  mkdir -p "$src"
+  cp -R "$SOURCE_DIR"/*Documents "$src/"
+  run chezmoi --source "$src" --config "$BATS_TEST_TMPDIR/none.yaml" \
+    --persistent-state "$BATS_TEST_TMPDIR/docs.boltdb" --destination "$BATS_TEST_TMPDIR/fakehome" managed
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Microsoft.PowerShell_profile.ps1"* ]]
+}
+
+@test "claude: settings define the .env block, reading the event from stdin" {
+  local settings="$SOURCE_DIR/dot_claude/private_settings.json" cmd
+  cmd="$(jq -r '.hooks.PreToolUse[] | select(.matcher == "Read") | .hooks[0].command' "$settings")"
+  run bash -c "$cmd" <<<'{"tool_input":{"file_path":"/x/.env"}}'
+  [ "$status" -eq 2 ]
+  run bash -c "$cmd" <<<'{"tool_input":{"file_path":"/x/notes.txt"}}'
+  [ "$status" -eq 0 ]
+}
+
+@test "claude: the status line calls the installed binary, not bunx" {
+  run jq -r '.statusLine.command' "$SOURCE_DIR/dot_claude/private_settings.json"
+  # shellcheck disable=SC2016 # the literal text in the settings file
+  [ "$output" = '$HOME/.bun/bin/ccstatusline' ]
+}
+
+@test "lazygit: force push asks first and keeps the pre-push hook" {
+  run yq -r '.customCommands[] | select(.key == "F") | [.command, .prompts[0].type] | join(" ")' \
+    <(render_with dev dot_config/lazygit/config.yml.tmpl)
+  [ "$output" = "git push --force-with-lease confirm" ]
+}
+
+@test "gitignore: new shared templates can be committed" {
+  run git -C "$REPO_ROOT" check-ignore -q home/.chezmoitemplates/new.tmpl
+  [ "$status" -eq 1 ]
+}
+
+@test "zsh: syntax highlighting is the last thing .zshrc loads" {
+  local rendered
+  rendered="$(render_with dev dot_zshrc.tmpl)"
+  [[ "$rendered" != *"zsh-syntax-highlighting.zsh"* ]]
+  # shellcheck disable=SC2016 # the literal text in .zshrc
+  [ "$(printf '%s\n' "$rendered" | grep -n 'source "$_fsh_plugin"' | cut -d: -f1)" -gt \
+    "$(printf '%s\n' "$rendered" | grep -n '.zshrc.local"$' | tail -1 | cut -d: -f1)" ]
+}

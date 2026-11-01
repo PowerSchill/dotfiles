@@ -295,5 +295,11 @@ customCommands:
   #   command: 'git push && gh pr checks --watch --json name,state -q ".[] | select(.name == "Mark as draft") | .state == "SUCCESS" or .state == "SKIPPED""'
   # context: "localBranches"
   - key: "F"
-    command: "git push --force-with-lease --no-verify"
+    # Asks first, and leaves the pre-push secret scan on.
+    command: "git push --force-with-lease"
     context: "localBranches"
+    description: "Force-push the checked-out branch"
+    prompts:
+      - type: "confirm"
+        title: "Force push"
+        body: "Force-push the checked-out branch with --force-with-lease?"
