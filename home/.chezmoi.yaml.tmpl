@@ -6,6 +6,45 @@
 {{- /* In Codespaces and CI, force non-interactive mode */ -}}
 {{- $interactive := and stdinIsATTY (not $codespaces) (not $ci) -}}
 
+{{- /* Initializes the firstname and lastname variables with default values */ -}}
+{{- $firstname := "Mark" -}}
+{{- $lastname := "Schill" -}}
+
+{{- /* If firstname was previously set, reuses it */ -}}
+{{- if hasKey . "firstname" -}}
+{{-   $firstname = .firstname -}}
+{{- /* Otherwise, if running interactively, prompts for firstname */ -}}
+{{- else if $interactive -}}
+{{-   $firstname = promptString "firstname" $firstname -}}
+{{- end -}}
+
+{{- /* If lastname was previously set, reuses it */ -}}
+{{- if hasKey . "lastname" -}}
+{{-   $lastname = .lastname -}}
+{{- /* Otherwise, if running interactively, prompts for lastname */ -}}
+{{- else if $interactive -}}
+{{-   $lastname = promptString "lastname" $lastname -}}
+{{- end -}}
+
+{{- /* Combine firstname and lastname into full name */ -}}
+{{- $name := printf "%s %s" $firstname $lastname -}}
+
+{{- /* Username (for system login, etc.) */ -}}
+{{- $username := "powerschill" -}}
+{{- if hasKey . "username" -}}
+{{-   $username = .username -}}
+{{- else if $interactive -}}
+{{-   $username = promptString "username" $username -}}
+{{- end -}}
+
+{{- /* Does the same for the email */ -}}
+{{- $email := "11379992+PowerSchill@users.noreply.github.com" -}}
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else if $interactive -}}
+{{-   $email = promptString "email" $email -}}
+{{- end -}}
+
 {{/* ###########################################################################
 Roles
 
@@ -110,25 +149,31 @@ Sets the appearance of the desktop environment.
 {{-   if ne $appearance "dark" -}}
 {{-     $appearance = "light" -}}
 {{-   end -}}
-{{- end }}
-
-
-{{- $name := "Mark E. Schill" -}}
-{{- $email := "" -}}
-{{- if index $role "personal" -}}
-{{-   $email = "Mark.Schill@cmschill.net" -}}
 {{- end -}}
 
-{{- if not $ephemeral -}}
-{{-   if $email | empty -}}
-{{-     if stdinIsATTY -}}
-{{-       $email = promptStringOnce . "email" "What is your email address?" -}}
-{{-     else -}}
-{{-       $email = get . "email" | default "" -}}
+{{- /* Extract GitHub username from email or prompt */ -}}
+{{- $githubUsername := "" -}}
+{{- /* Matches GitHub noreply email format: ID+USERNAME@users.noreply.github.com (e.g., 11379992+PowerSchill@users.noreply.github.com) */ -}}
+{{- $githubEmailPattern := "^[0-9]+\\+([^@]+)@users\\.noreply\\.github\\.com$" -}}
+{{- if hasKey . "githubUsername" -}}
+{{-   $githubUsername = .githubUsername -}}
+{{- else -}}
+{{-   $match := regexMatch $githubEmailPattern $email -}}
+{{-   if $match -}}
+{{-     $githubUsername = regexReplaceAll $githubEmailPattern $email "${1}" -}}
+{{-   else -}}
+{{-     $gitRemote := output "sh" "-c" "git config --get remote.origin.url 2>/dev/null || true" | trim -}}
+{{-     if $gitRemote -}}
+{{-       $repoUrlPattern := "^.*github\\.com[:/]([^/]+).*$" -}}
+{{-       if regexMatch $repoUrlPattern $gitRemote -}}
+{{-         $githubUsername = regexReplaceAll $repoUrlPattern $gitRemote "${1}" -}}
+{{-       end -}}
+{{-     end -}}
+{{-     if and $interactive (eq $githubUsername "") -}}
+{{-       $githubUsername = promptString "GitHub username (optional)" "" -}}
 {{-     end -}}
 {{-   end -}}
 {{- end -}}
-
 
 {{- if $interactive -}}
 {{-   writeToStdout "💡 Tip: you can re-enter your details with `chezmoi init --data=false`.\n" -}}
@@ -171,20 +216,9 @@ fields are empty.
 {{- $entraIDTenantName := regexReplaceAll "^\\s*TenantName\\s*:\\s*" (regexFind "(?m)^\\s*TenantName\\s*:.*$" $dsreg) "" | trim -}}
 {{- $entraIDTenantId := regexReplaceAll "^\\s*TenantId\\s*:\\s*" (regexFind "(?m)^\\s*TenantId\\s*:.*$" $dsreg) "" | trim -}}
 
-{{- /* GitHub account used by scripts (CHEZMOI_GITHUB_USERNAME). Override it  */ -}}
-{{- /* per machine with `githubUsername` in your local chezmoi config.        */ -}}
-{{- $githubUsername := "PowerSchill" -}}
-{{- if get . "githubUsername" -}}
-{{-   $githubUsername = .githubUsername -}}
-{{- end -}}
-
 {{- /* 1Password Environment ID for the copilot-ssh helper. Optional and not  */ -}}
 {{- /* prompted: set `opCopilotEnvironmentId` in your local chezmoi config.   */ -}}
 {{- $opCopilotEnvironmentId := get . "opCopilotEnvironmentId" | default "" -}}
-
-
-
-
 
 {{- /* CLIs wrapped by a 1Password shell plugin (`op plugin run -- <cli>`).     */ -}}
 {{- /* Accepts a comma-separated string or a YAML list in your local chezmoi    */ -}}
@@ -215,7 +249,7 @@ fields are empty.
 {{- /* useYubiKey is true. See docs/git-signing.md.                             */ -}}
 {{- /*                                                                          */ -}}
 {{- /* These are PUBLIC keys, not secrets — the personal one is already         */ -}}
-{{- /* published at https://github.com/DevSecNinja.keys — so they are safe to   */ -}}
+{{- /* published at https://github.com/PowerSchill.keys — so they are safe to   */ -}}
 {{- /* ship as defaults. Two defaults ship: one for work machines (see          */ -}}
 {{- /* `isWork` below) and one for everything else; the pick happens after the  */ -}}
 {{- /* Entra ID detection has run. Override it per-machine by setting           */ -}}
@@ -227,6 +261,20 @@ fields are empty.
 {{- $gitSigningKey := "" -}}
 {{- if get . "gitSigningKey" -}}
 {{-   $gitSigningKey = .gitSigningKey -}}
+{{- end -}}
+
+{{- /* Now that work/personal is known, fall back to the matching default key.  */ -}}
+{{- /* A value that is merely one of the shipped defaults is not a real         */ -}}
+{{- /* override — re-pick it, so a config written by an earlier init (or on a   */ -}}
+{{- /* machine that has since changed work/personal status) does not pin the    */ -}}
+{{- /* wrong key forever.                                                       */ -}}
+{{- $gitSigningKeyTrimmed := $gitSigningKey | toString | trim -}}
+{{- if or (not $gitSigningKeyTrimmed) (eq $gitSigningKeyTrimmed $gitSigningKeyPersonal) (eq $gitSigningKeyTrimmed $gitSigningKeyWork) -}}
+{{-   if $isWork -}}
+{{-     $gitSigningKey = $gitSigningKeyWork -}}
+{{-   else -}}
+{{-     $gitSigningKey = $gitSigningKeyPersonal -}}
+{{-   end -}}
 {{- end -}}
 
 {{- /* Path to the 1Password SSH signer binary. Empty means auto-detect per   */ -}}
@@ -249,20 +297,6 @@ fields are empty.
 {{-   $opSshVault = .opSshVault -}}
 {{- end -}}
 
-{{- /* Now that work/personal is known, fall back to the matching default key.  */ -}}
-{{- /* A value that is merely one of the shipped defaults is not a real         */ -}}
-{{- /* override — re-pick it, so a config written by an earlier init (or on a   */ -}}
-{{- /* machine that has since changed work/personal status) does not pin the    */ -}}
-{{- /* wrong key forever.                                                       */ -}}
-{{- $gitSigningKeyTrimmed := $gitSigningKey | toString | trim -}}
-{{- if or (not $gitSigningKeyTrimmed) (eq $gitSigningKeyTrimmed $gitSigningKeyPersonal) (eq $gitSigningKeyTrimmed $gitSigningKeyWork) -}}
-{{-   if $isWork -}}
-{{-     $gitSigningKey = $gitSigningKeyWork -}}
-{{-   else -}}
-{{-     $gitSigningKey = $gitSigningKeyPersonal -}}
-{{-   end -}}
-{{- end -}}
-
 {{- /* Same treatment for the SSH agent's vault: a persisted shipped default is */ -}}
 {{- /* re-picked, only a differently-named vault counts as an override.         */ -}}
 {{- $opSshVaultTrimmed := $opSshVault | toString | trim -}}
@@ -277,6 +311,16 @@ fields are empty.
 ################################################################################
 # Chezmoi configuration file
 ################################################################################
+
+# Run PowerShell scripts without loading the user profile. This prevents the
+# Documents\PowerShell\profile.ps1 and Documents\WindowsPowerShell\profile.ps1
+# loaders from emitting "PowerShell configuration not found" warnings between
+# every chezmoi script on a fresh install, and ensures scripts run in a clean
+# shell regardless of what a user has customised in their profile.
+interpreters:
+  ps1:
+    command: "powershell"
+    args: ["-NoLogo", "-NoProfile"]
 
 scriptTempDir: "~/tmp"
 
@@ -317,14 +361,19 @@ textconv:
   - "-"
 data:
     appearance: {{ $appearance | quote }}
+    ci: {{ $ci }}
     codespaces: {{ $codespaces }}
+    devcontainer: {{ $devcontainer }}
     email: {{ $email | quote }}
     entraIDTenantId: {{ $entraIDTenantId | quote }}
     entraIDTenantName: {{ $entraIDTenantName | quote }}
     ephemeral: {{ $ephemeral }}
+    firstname: {{ $firstname | quote }}
     gitSigningKey: {{ $gitSigningKey | quote }}
     githubUsername: {{ $githubUsername | quote }}
     hostname: {{ $hostname | quote }}
+    interactive: {{ $interactive }}
+    lastname: {{ $lastname | quote }}
     isADDomainJoined: {{ $isADDomainJoined }}
     isEntraIDJoined: {{ $isEntraIDJoined }}
     isEntraRegistered: {{ $isEntraRegistered }}
@@ -338,6 +387,7 @@ data:
     opSshVault: {{ $opSshVault | quote }}
     roles: {{ $roles | toJson }}
     uname_arch: {{ $uname_arch }}
+    username: {{ $username | quote }}
     role:
 {{- range $r := $roleNames }}
       {{ $r }}: {{ index $role $r }}
