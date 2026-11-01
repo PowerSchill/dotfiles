@@ -243,11 +243,13 @@ zsh_probe() {
 }
 
 @test "roles: a saved Role survives init unless DOTFILES_ROLE_CHANGE names it" {
+  case "$(id -un)" in root | ubuntu | vagrant | vscode) skip "this username is detected as Ephemeral" ;; esac
   local cfg
   cfg="$(role_config dev)"
   yq -i '.data.role.security = false' "$cfg"
   render() {
-    chezmoi --source "$REPO_ROOT" --config "$cfg" --persistent-state "$(dirname "$cfg")/state.boltdb" \
+    env -u CI -u CODESPACES -u REMOTE_CONTAINERS_IPC chezmoi --source "$REPO_ROOT" --config "$cfg" \
+      --persistent-state "$(dirname "$cfg")/state.boltdb" \
       --destination "$BATS_TEST_TMPDIR/fakehome" --no-tty \
       execute-template --init --promptBool security=true <"$SOURCE_DIR/.chezmoi.yaml.tmpl" | yq -r '.data.role.security'
   }
