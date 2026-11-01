@@ -14,7 +14,7 @@ if ! command -v op >/dev/null 2>&1; then
   fi
   echo "Installing 1Password CLI for $ARCH..."
   tmpdir=$(mktemp -d)
-  cd "$tmpdir"
+  cd "$tmpdir" || exit 1
   curl -sSO "https://downloads.1password.com/linux/tar/stable/${DL_ARCH}/1password-latest.tar.gz"
   tar -xf 1password-latest.tar.gz
   sudo mkdir -p /opt/1Password

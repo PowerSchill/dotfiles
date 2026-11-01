@@ -61,6 +61,14 @@ fixture() {
   [ "$status" -ne 0 ]
 }
 
+@test "R14: shellcheck also lints template bodies gated on a Role" {
+  f="$(fixture gated.sh.tmpl '#!/usr/bin/env bash\n{{ if .role.onepassword -}}\nif [ -n $1 ]; then echo "$1"; fi\n{{ end -}}\n')"
+  run mise run -q check:shellcheck "$f"
+  echo "$output"
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"SC2070"* && "$output" == *"roles: all"* ]]
+}
+
 @test "R14: the dry-run apply passes on the repo" {
   run mise run -q check:apply
   echo "$output"

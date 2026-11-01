@@ -6,8 +6,10 @@
 #   mise-run <task> [args...]        mise run --quiet <task> [args...]
 #   mise-run --exec <cmd> [args...]  mise exec -- <cmd> [args...]
 set -euo pipefail
-for m in "$(command -v mise 2>/dev/null || true)" "$HOME/.local/bin/mise" \
-  /opt/homebrew/bin/mise /usr/local/bin/mise; do
+# Fixed install locations to try after PATH; tests override them.
+candidates="${DOTFILES_MISE_LOCATIONS:-$HOME/.local/bin/mise /opt/homebrew/bin/mise /usr/local/bin/mise}"
+# shellcheck disable=SC2086 # split the location list on spaces
+for m in "$(command -v mise 2>/dev/null || true)" $candidates; do
   if [[ -n "$m" && -x "$m" ]]; then
     if [[ "${1:-}" == --exec ]]; then
       shift

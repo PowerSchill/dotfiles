@@ -111,21 +111,38 @@ select_files() {
   return 0
 }
 
-# Render a chezmoi template to stdout using the data of an Ephemeral machine
-# (dev Role only), so the result does not depend on this Machine's own Roles
-# and never needs 1Password. Nothing outside .cache/ is read or written.
-render_template() {
-  local file="$1" cache="$DOTFILES_ROOT/.cache/render" cfg config_tmpl
-  cfg="$cache/chezmoi.yaml"
+# Role sets that rendered-template Checks cover: an Ephemeral machine (dev Role
+# only) and a Machine with every Role, so bodies gated on a Role (onepassword,
+# security, ...) are checked too. Both use synthetic data from
+# dotfiles-role-config, never this Machine's own config, and never 1Password.
+# shellcheck disable=SC2034 # used by the Checks that source this file
+RENDER_VARIANTS=(ephemeral all)
+
+# Print the path of the chezmoi config for a variant, (re)building it when the
+# config template or the generator changed. Nothing outside .cache/ is written.
+render_config() {
+  local variant="$1" dir="$DOTFILES_ROOT/.cache/render/config-$1" cfg config_tmpl roles
+  cfg="$dir/chezmoi.yaml"
   config_tmpl="$DOTFILES_ROOT/$(cat "$DOTFILES_ROOT/.chezmoiroot")/.chezmoi.yaml.tmpl"
-  mkdir -p "$cache"
-  if [[ ! -s "$cfg" || "$config_tmpl" -nt "$cfg" ]]; then
-    CODESPACES=true chezmoi --source "$DOTFILES_ROOT" --config "$cache/none.yaml" \
-      --persistent-state "$cache/state.boltdb" --no-tty \
-      execute-template --init <"$config_tmpl" >"$cfg.tmp" ||
-      die "could not render $config_tmpl"
-    mv "$cfg.tmp" "$cfg"
+  if [[ ! -s "$cfg" || "$config_tmpl" -nt "$cfg" ||
+    "$DOTFILES_ROOT/tools/bin/dotfiles-role-config" -nt "$cfg" ]]; then
+    roles=ephemeral
+    if [[ "$variant" == all ]]; then
+      roles="$(yq '.data.role | keys | join(",")' "$(render_config ephemeral)")"
+    fi
+    "$DOTFILES_ROOT/tools/bin/dotfiles-role-config" "$roles" "$dir" >/dev/null ||
+      die "could not build the '$variant' chezmoi config"
   fi
-  chezmoi --source "$DOTFILES_ROOT" --config "$cfg" --persistent-state "$cache/state.boltdb" \
-    --destination "$cache/home" --no-tty execute-template <"$file"
+  echo "$cfg"
+}
+
+# Render a chezmoi template to stdout for a variant (see RENDER_VARIANTS).
+#   render_template all home/.chezmoiscripts/linux/run_x.sh.tmpl
+render_template() {
+  local variant="$1" file="$2" cfg
+  cfg="$(render_config "$variant")" || return 1
+  chezmoi --source "$DOTFILES_ROOT" --config "$cfg" \
+    --persistent-state "$(dirname "$cfg")/state.boltdb" \
+    --destination "$DOTFILES_ROOT/.cache/render/home" --no-tty execute-template <"$file" \
+    2> >(grep -v 'config file template has changed' >&2)
 }

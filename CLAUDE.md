@@ -67,7 +67,8 @@ mise run fmt              # shfmt -i 2 -ci, in place
   `home/.commit_message.tmpl` (`chore(chezmoi): update .zshrc`).
 - **Releases:** date tags like `v2026.10.31`, created by hand. Nothing publishes release notes.
 - **Shell style:** `shfmt -i 2 -ci`. zsh is checked with `zsh -n` (zsh is a system prerequisite).
-  `*.sh.tmpl` scripts are rendered with Ephemeral-machine data before shellcheck.
+  `*.sh.tmpl` scripts (and zsh templates) are rendered twice before checking: as an Ephemeral
+  machine and with every Role, so Role-gated bodies are linted too.
 - **Dev container:** `.devcontainer/` builds `ghcr.io/powerschill/dotfiles-dev`
   (`mise run devcontainer:build`; CI publishes from main and `v*` tags).
 - **Renovate** (`renovate.json`) bumps `mise.toml`, `mise.full.toml`, the SHA-pinned actions and the
