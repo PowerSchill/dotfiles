@@ -111,6 +111,10 @@ jobs:
   wsl:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
+    env:
+      # WSL inherits only the Windows environment variables listed in WSLENV.
+      # Without CI, bootstrap would pick the full Profile inside WSL.
+      WSLENV: CI:CHEZMOI_GITHUB_ACCESS_TOKEN
     defaults:
       run:
         shell: wsl-bash {0}
