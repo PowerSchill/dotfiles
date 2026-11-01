@@ -3,7 +3,12 @@
 
 if command -v fzf >/dev/null 2>&1; then
 
-  eval "$(fzf --zsh)"
+  # `fzf --zsh` needs fzf 0.48+; older releases (Ubuntu 24.04 ships 0.44) leave
+  # key bindings to the oh-my-zsh fzf plugin.
+  if fzf_zsh="$(fzf --zsh 2>/dev/null)"; then
+    eval "$fzf_zsh"
+  fi
+  unset fzf_zsh
 
   if [ -f "$HOME/fzf-git/fzf-git.sh" ]; then
     source "$HOME/fzf-git/fzf-git.sh"

@@ -1,0 +1,50 @@
+# Builds the dev container image on PRs that can change it, and publishes it to
+# GHCR from main and from Release tags (R18). Same R17 rules as ci.yml: only
+# `mise run` tasks, the bootstrap, allowed actions and marked plumbing.
+name: devcontainer
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - .devcontainer/**
+      - .dockerignore
+      - mise.toml
+      - mise.lock
+      - tools/bootstrap.sh
+      - home/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: devcontainer-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CHEZMOI_GITHUB_ACCESS_TOKEN: ${{ github.token }}
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - run: tools/bootstrap.sh
+      # Plumbing: make the mise that bootstrap installed visible to later steps.
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - if: github.event_name == 'pull_request'
+        run: mise run devcontainer:build
+      - if: github.event_name != 'pull_request'
+        run: mise run devcontainer:publish --yes --tags "${{ github.ref_type == 'tag' && github.ref_name || 'latest' }},sha-${{ github.sha }}"

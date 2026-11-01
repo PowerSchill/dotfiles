@@ -1,0 +1,12 @@
+{
+  // This repo's own dev container, built from the Dockerfile next to it.
+  // Other projects reuse the published image instead:
+  //   "image": "ghcr.io/powerschill/dotfiles-dev:latest"
+  "name": "dotfiles",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "tools/bootstrap.sh"
+}

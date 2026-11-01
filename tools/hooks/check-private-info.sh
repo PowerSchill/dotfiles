@@ -21,7 +21,7 @@ set -euo pipefail
 DENYLIST="${DOTFILES_PRIVATE_PATTERNS:-${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/private-patterns}"
 
 # Usernames that may appear in /Users/<name> or /home/<name> paths.
-ALLOWED_USERS='^(powerschill|user|username|runner|Shared|linuxbrew)$'
+ALLOWED_USERS='^(powerschill|user|username|runner|vscode|Shared|linuxbrew)$'
 
 # Email domains that may appear in tracked files.
 ALLOWED_EMAIL='@(cmschill\.net|users\.noreply\.github\.com|noreply\.github\.com|example\.(com|org|net)|y\.com)$'

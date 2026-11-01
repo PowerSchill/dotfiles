@@ -1,0 +1,7 @@
+# Build context for .devcontainer/Dockerfile (the repo root).
+.git
+.cache
+.mise/installs
+.miserc.local.toml
+mise.local.toml
+tests/.tmp

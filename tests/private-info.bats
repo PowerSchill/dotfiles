@@ -116,3 +116,9 @@ stage() {
   run "$REPO_ROOT/tools/checks/private-info.sh" --range "$base..HEAD"
   [ "$status" -eq 1 ]
 }
+
+@test "the dev container user's home path is allowed" {
+  stage Dockerfile "COPY . /home/vscode/.local/share/chezmoi"
+  run check
+  [ "$status" -eq 0 ]
+}

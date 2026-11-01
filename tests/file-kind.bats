@@ -47,6 +47,7 @@ kind() {
   [ "$(kind a.json '{}')" = json ]
   [ "$(kind a.jsonc '{}')" = jsonc ]
   [ "$(kind home/dot_config/zed/settings.json '{}')" = jsonc ]
+  [ "$(kind .devcontainer/devcontainer.json '{}')" = jsonc ]
   [ "$(kind "home/private_Library/private_Application Support/private_Cursor/User/settings.json" '{}')" = jsonc ]
 }
 
