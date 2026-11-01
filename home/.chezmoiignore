@@ -59,3 +59,8 @@ Brewfile
 .local/share/fonts
 {{ end }}
 
+
+{{/* 1Password shell plugins: `op plugin run` refuses to run under WSL */}}
+{{ if .wsl }}
+.config/shell/functions/op-plugins.sh
+{{ end }}

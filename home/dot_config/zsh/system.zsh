@@ -12,10 +12,10 @@ fi
 # Install Homebrew Casks in user's Applications directory
 # export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
-if [[ -o interactive && -t 0 ]] && command -v op &>/dev/null; then
-  if [ -f ~/.config/op/plugins.sh ]; then
-    source ~/.config/op/plugins.sh
-  fi
+# 1Password shell plugin wrappers, tracked in this repo instead of the
+# `op plugin init` managed ~/.config/op/plugins.sh. See docs/1password-shell-plugins.md.
+if [[ -o interactive && -t 0 && -f ~/.config/shell/functions/op-plugins.sh ]]; then
+  source ~/.config/shell/functions/op-plugins.sh
 fi
 
 # [10 Zsh hacks I wish I knew about sooner](https://www.youtube.com/watch?v=3fVAtaGhUyU)

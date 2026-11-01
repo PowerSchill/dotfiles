@@ -16,7 +16,7 @@ track them in your dotfiles][opdotfiles]. That is what this repo does.
 
 | | `op plugin init` default | This repo |
 | --- | --- | --- |
-| Wrapper location | `~/.config/op/plugins.sh` | `~/.config/shell/functions/op-plugins.sh`, `~/.config/fish/conf.d/op-plugins.fish` |
+| Wrapper location | `~/.config/op/plugins.sh` | `~/.config/shell/functions/op-plugins.sh`, sourced by `~/.config/zsh/system.zsh` |
 | Tracked in git | ❌ | ✅ (generated from chezmoi templates) |
 | New machine | re-run `op plugin init` per CLI | wrappers apply with `chezmoi apply` |
 
@@ -29,8 +29,6 @@ track them in your dotfiles][opdotfiles]. That is what this repo does.
 The list comes from the chezmoi `opShellPlugins` variable and defaults to:
 
 - **`gh`** — [GitHub CLI][opgh]
-- **`copilot`** — [GitHub Copilot CLI][opcopilot], which the plugin
-  authenticates with a `COPILOT_GITHUB_TOKEN`
 
 Override it per machine in your local chezmoi config, as a list:
 
@@ -38,7 +36,6 @@ Override it per machine in your local chezmoi config, as a list:
 data:
   opShellPlugins:
     - gh
-    - copilot
     - aws
 ```
 
@@ -46,7 +43,7 @@ or as a comma-separated string (trimmed, de-duplicated and sorted for you):
 
 ```yaml
 data:
-  opShellPlugins: "gh, copilot, aws"
+  opShellPlugins: "gh, aws"
 ```
 
 Then re-run `chezmoi apply`. Run `op plugin list` to see the 60+ supported
@@ -87,8 +84,8 @@ cannot run would otherwise *replace* a working CLI:
   without `gh` would make `command -v gh` succeed and break the usual
   "is it installed?" checks, so each wrapper is guarded on the real CLI
   existing.
-- **Completions keep working.** The fish wrappers use `--wraps`, and the
-  bash/zsh completion files load *before* the wrappers, so generating
+- **Completions keep working.** The zsh completion files load *before* the
+  wrappers (`system.zsh` runs after Oh My Zsh initialises completions), so generating
   completions never triggers a 1Password prompt at shell startup.
 - **Not in SSH sessions.** `op plugin run` needs the 1Password desktop app for
   biometric unlock, which a headless host does not have. The wrappers are
@@ -112,8 +109,8 @@ the plugin still authenticates you with biometrics.
 `op plugin run` refuses to run under WSL — you get *"Shell Plugins are
 currently not supported on this operating system"* (tracked upstream in
 [1Password/shell-plugins#402][issue402]). Wrapping a CLI with a command that
-always fails is worse than not wrapping it, so chezmoi skips both wrapper
-files on WSL hosts via `.chezmoiignore`.
+always fails is worse than not wrapping it, so chezmoi skips the wrapper
+file on WSL hosts via `.chezmoiignore`.
 
 WSL still reaches 1Password for SSH and Git signing through the Windows host —
 see [wsl.md](wsl.md).
@@ -121,5 +118,4 @@ see [wsl.md](wsl.md).
 [opsp]: https://developer.1password.com/docs/cli/shell-plugins/
 [opdotfiles]: https://github.com/1Password/shell-plugins#managing-shell-plugins-in-your-own-dotfiles
 [opgh]: https://www.1password.dev/cli/shell-plugins/github
-[opcopilot]: https://www.1password.dev/cli/shell-plugins/github-copilot
 [issue402]: https://github.com/1Password/shell-plugins/issues/402
