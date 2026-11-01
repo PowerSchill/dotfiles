@@ -1,6 +1,7 @@
 # CI calls the same `mise run` tasks a developer runs (R17). The only other steps
-# are checkout, caching, and two pieces of environment plumbing, each marked
-# "Plumbing" below. tests/acceptance/r17.bats enforces this.
+# are checkout, caching, and environment plumbing, each marked "Plumbing" below.
+# Linux validate runs in the dev container image (.devcontainer/), so zsh is
+# installed only for the acceptance job. tests/acceptance/r17.bats enforces this.
 name: CI
 
 on:
@@ -23,13 +24,31 @@ env:
   CHEZMOI_GITHUB_ACCESS_TOKEN: ${{ github.token }}
 
 jobs:
-  validate:
-    name: validate (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+  # Linux validate runs in the published dev container image, which already has
+  # zsh and the rest of the system prerequisites. Root, because the checkout is
+  # mounted owned by the runner's user; the Toolchain installs under $HOME.
+  validate-linux:
+    name: validate (ubuntu-latest)
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/powerschill/dotfiles-dev:latest@sha256:ba4f130147e27de220598e877dea5e8e8d1c17a19150ee88c32258e945ad78e7
+      options: --user root
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # check:repo scans every commit
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.local/share/mise
+          key: mise-devcontainer-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
+      - run: tools/bootstrap.sh
+      # Plumbing: make the mise that bootstrap installed visible to later steps.
+      - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: mise run validate
+
+  validate-macos:
+    name: validate (macos-latest)
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -38,11 +57,6 @@ jobs:
         with:
           path: ~/.local/share/mise
           key: mise-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
-      # Plumbing: zsh is a system prerequisite mise cannot install (check:zsh).
-      # Goes away once CI runs in the dev container image.
-      - name: Install zsh
-        if: runner.os == 'Linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh
       - run: tools/bootstrap.sh
       # Plumbing: make the mise that bootstrap installed visible to later steps.
       - run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -77,7 +91,9 @@ jobs:
         with:
           path: ~/.local/share/mise
           key: mise-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
-      # Plumbing: zsh is a system prerequisite mise cannot install (check:zsh).
+      # Plumbing (the one remaining exception): zsh is a system prerequisite mise
+      # cannot install (check:zsh). This job drives Docker itself, so it runs on
+      # the host rather than in the dev container image.
       - name: Install zsh
         run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh
       - run: tools/bootstrap.sh
