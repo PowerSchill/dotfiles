@@ -191,7 +191,7 @@ Git is configured in `~/.config/git/config` with:
 | `home/.chezmoiexternal.yaml` | Externals fetched from GitHub (Oh My Zsh, plugins, fonts, themes) |
 | `home/.chezmoiscripts/{darwin,linux,windows}/` | Per-OS install and configuration scripts |
 | `home/.chezmoitemplates/` | Shared template partials (e.g. `brewList.tmpl`) |
-| `home/.chezmoiignore.tmpl` | OS-, role-, and environment-based exclusions |
+| `home/.chezmoiignore` | OS-, role-, and environment-based exclusions |
 
 To add a package, edit `home/.chezmoidata/packages.yaml` under the right platform and bucket. Do not edit the install scripts directly.
 
@@ -208,3 +208,22 @@ chezmoi update        # pull the repo and refresh externals
 ```
 
 > **Note:** `autoCommit` and `autoPush` are enabled, so `chezmoi edit`/`re-add` commit and push to `origin` automatically.
+
+---
+
+## 🧰 Working on This Repo
+
+The tools for working on the repo (linters, tests, chezmoi itself) are pinned in `mise.toml`, separate from the packages the dotfiles install.
+
+```bash
+tools/bootstrap.sh     # once per checkout: installs pinned mise and the Toolchain, plus git hooks
+mise tasks             # list every chore
+mise run check         # what the commit hook runs
+mise run validate      # what CI runs
+mise run preview       # see what applying would change (read-only)
+mise run apply --yes   # apply (refuses without --yes)
+```
+
+- **Commit messages** follow [Conventional Commits](https://www.conventionalcommits.org/): `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `ci`, `chore` or `revert`, with an optional scope, e.g. `fix(zsh): quote PATH`.
+- **Dev container:** this repo opens in `.devcontainer/`, and other projects can reuse the image with `"image": "ghcr.io/powerschill/dotfiles-dev:latest"` in their `devcontainer.json`.
+- **Terms and decisions:** [`GLOSSARY.md`](GLOSSARY.md) defines Roles, Profiles, the Toolchain and Checks; [`docs/adr/`](docs/adr/) records why.
