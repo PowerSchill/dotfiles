@@ -8,7 +8,7 @@ load helpers
 
 setup() { cd "$REPO_ROOT" || return 1; }
 
-ALLOWED_ACTIONS='^(actions/checkout|actions/cache|actions/upload-artifact|Vampire/setup-wsl)@[0-9a-f]{40}$'
+ALLOWED_ACTIONS='^(actions/checkout|actions/cache|actions/upload-artifact|Vampire/setup-wsl|docker/setup-qemu-action|docker/setup-buildx-action|docker/login-action)@[0-9a-f]{40}$'
 ALLOWED_RUN='^((~/.local/bin/)?mise run [a-z][a-z:-]*( .*)?|tools/bootstrap\.sh)$'
 # Environment plumbing, each commented "Plumbing" in the workflow (literal text).
 # shellcheck disable=SC2016

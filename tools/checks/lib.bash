@@ -80,7 +80,7 @@ file_kind() {
 # configs whose owning app documents JSONC). Everything else must be strict JSON.
 is_jsonc_path() {
   case "$1" in
-    */zed/* | *Cursor/User/* | *Code/User/* | home/dot_oh-my-posh.json) return 0 ;;
+    */zed/* | *Cursor/User/* | *Code/User/* | home/dot_oh-my-posh.json | .devcontainer/* | */.devcontainer/*) return 0 ;;
   esac
   return 1
 }
