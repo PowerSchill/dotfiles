@@ -34,7 +34,45 @@ chezmoi execute-template < .chezmoi.yaml.tmpl
 chezmoi update
 ```
 
-There are no build/test/lint commands — this is a configuration repo, not a software project.
+## Repo Tooling (Toolchain, Checks, tests)
+
+Working *on* this repo uses a pinned **Toolchain** declared in `mise.toml` (see `GLOSSARY.md`;
+decisions in `docs/adr/`). It is separate from the Packages the dotfiles install on Machines.
+
+```bash
+tools/bootstrap.sh        # clean machine: pinned mise, then the Toolchain for this Profile
+mise tasks                # every chore, with a one-line description
+mise run check            # every Check that must pass before commit (the commit hook runs these)
+mise run validate         # everything CI runs: check, check:repo, check:commits, check:apply, test
+mise run check:apply --roles dev,gui   # Dry-run apply for a Role set into a scratch home
+mise run test [file]      # bats unit tests (tests/*.bats)
+mise run test:acceptance [file]        # one test per requirement (tests/acceptance/rNN.bats), needs Docker
+mise run preview          # read-only diff against your real home
+mise run apply --yes      # Apply; refuses without --yes
+mise run release:preview  # release notes since the last date tag, to stdout only
+mise run fmt              # shfmt -i 2 -ci, in place
+```
+
+- **Profiles:** `minimal` (CI, containers, Codespaces) or `full` (workstations, adds git-cliff, act,
+  node, devcontainer CLI). Detected from the environment, never the hostname; override with
+  `DOTFILES_PROFILE`. Recorded in the untracked `.miserc.local.toml`.
+- **One definition per Check:** each Check is a `mise run check:*` task. `.pre-commit-config.yaml`
+  hooks only call those tasks (`tools/hooks/mise-run`), and CI runs `mise run validate`. Do not add
+  tool versions to `.pre-commit-config.yaml` or logic to the workflows; `tests/acceptance/r12.bats`
+  and `r17.bats` enforce this. A new hook id `x` needs a task `check:x` (and an entry in `check`).
+- **Hooks:** `mise run hooks:install` writes hooks that run pre-commit through mise, so they work
+  without python3 or mise on PATH (GUI clients, fresh Linux).
+- **Commits:** Conventional Commits with types feat, fix, perf, refactor, docs, test, ci, chore,
+  revert and an optional lowercase scope (`check:commit-msg`). chezmoi autoCommits use
+  `home/.commit_message.tmpl` (`chore(chezmoi): update .zshrc`).
+- **Releases:** date tags like `v2026.10.31`, created by hand. Nothing publishes release notes.
+- **Shell style:** `shfmt -i 2 -ci`. zsh is checked with `zsh -n` (zsh is a system prerequisite).
+  `*.sh.tmpl` scripts are rendered with Ephemeral-machine data before shellcheck.
+- **Dev container:** `.devcontainer/` builds `ghcr.io/powerschill/dotfiles-dev`
+  (`mise run devcontainer:build`; CI publishes from main and `v*` tags).
+- **Renovate** (`renovate.json`) bumps `mise.toml`, `mise.full.toml`, the SHA-pinned actions and the
+  base image digest; patch bumps merge themselves once CI passes. `tools/bootstrap.sh` pins mise
+  itself with checksums and is bumped by hand.
 
 ## Architecture
 
@@ -60,7 +98,7 @@ Only `README.MD`, `CLAUDE.md`, and repo tooling sit at the top level.
 | `home/.chezmoiexternal.yaml` | External dependencies (Oh My Zsh, plugins, fonts, fzf-git) fetched from GitHub |
 | `home/.chezmoidata/packages.yaml` | Package lists for all platforms/environments |
 | `home/.chezmoitemplates/brewList.tmpl` | Conditionally formats Homebrew install lists |
-| `home/.chezmoiignore.tmpl` | OS/environment-based file exclusions |
+| `home/.chezmoiignore` | OS/environment-based file exclusions |
 
 ### Roles (`home/.chezmoi.yaml.tmpl`)
 
@@ -138,16 +176,17 @@ Oh My Zsh, plugins (zsh-autosuggestions, fast-syntax-highlighting, powerlevel10k
 
 ### Secret / Private-Info Hooks
 
-This repo is public. `.pre-commit-config.yaml` (repo root, not deployed) runs on commit and push:
-- `gitleaks` — generic secrets; pinned and built by pre-commit. The pre-push run scans the
-  pushed range, so `--no-verify` commits and chezmoi autoCommits are still checked.
-- `tools/hooks/check-private-info.sh` — key/credential filenames, home paths for foreign users,
-  emails outside allowed domains, and patterns from the **untracked** denylist
+This repo is public. The commit and push hooks run two Checks for it:
+- `check:secrets` — gitleaks (pinned in `mise.toml`) over staged changes at commit and the pushed
+  commits at push, so `--no-verify` commits and chezmoi autoCommits are still checked.
+  `check:repo` (CI) scans every commit; known historical findings go in `.gitleaksignore` with a reason.
+- `check:private-info` (`tools/hooks/check-private-info.sh`) — key/credential filenames, home paths
+  for foreign users, emails outside allowed domains, and patterns from the **untracked** denylist
   `~/.config/dotfiles/private-patterns` (employer names, work usernames). Never commit that file.
   Exempt a single line with `allow-private-info`.
 
-`run_onchange_after_install-git-hooks.sh.tmpl` runs `pre-commit install` on non-ephemeral,
-non-Windows machines. Manual full scan: `pre-commit run --all-files`.
+`run_onchange_after_install-git-hooks.sh.tmpl` runs `mise run hooks:install` on non-ephemeral,
+non-Windows machines.
 
 ### Appearance
 

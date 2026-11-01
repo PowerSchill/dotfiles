@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Bumps the pinned Toolchain (mise.toml, mise.full.toml), the SHA-pinned GitHub Actions and the dev container base image digest (R3). Patch updates merge themselves once CI passes; minor and major wait for review.",
+  "extends": ["config:recommended", ":semanticCommits", "helpers:pinGitHubActionDigests"],
+  "enabledManagers": ["mise", "github-actions", "dockerfile"],
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "dependencyDashboard": true,
+  "prHourlyLimit": 4,
+  "packageRules": [
+    {
+      "description": "Patch bumps are low risk and covered by CI.",
+      "matchUpdateTypes": ["patch", "digest", "pin", "pinDigest"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "One PR for all GitHub Actions bumps.",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "description": "The dev container base image is pinned by digest; keep the 24.04 line.",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["mcr.microsoft.com/devcontainers/base"],
+      "allowedVersions": "/^ubuntu-24\\.04$/"
+    }
+  ]
+}
