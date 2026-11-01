@@ -3,14 +3,19 @@
 # binary directly instead of paying an npx/bunx registry round-trip per render.
 set -euo pipefail
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="ccstatusline"
+
 {{- if not .ephemeral }}
 
 if ! command -v bun >/dev/null 2>&1; then
-    echo "ccstatusline: bun not found, skipping install" >&2
+    log_warn "bun not found, skipping ccstatusline install"
     exit 0
 fi
 
-echo "Installing ccstatusline..."
+log_state "Installing ccstatusline"
 bun install -g ccstatusline
+log_result "ccstatusline installed"
 
 {{- end }}

@@ -2,6 +2,12 @@
 # hash: {{ .appearance }}
 # Reload running apps after appearance change
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="theme-reload"
+
+log_state "Reloading apps for the {{ .appearance }} appearance"
+
 # Reload tmux config if tmux is running
 if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
   tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null

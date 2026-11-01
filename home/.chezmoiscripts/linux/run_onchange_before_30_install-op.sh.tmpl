@@ -2,7 +2,10 @@
 
 {{ if .role.onepassword -}}
 # 1Password CLI installer script
-echo "Starting 1Password CLI installation..."
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="install-op"
+log_state "Starting 1Password CLI installation"
 
 {{ if and (ne .uname_arch "") (not .ephemeral) -}}
 if ! command -v op >/dev/null 2>&1; then
@@ -12,7 +15,7 @@ if ! command -v op >/dev/null 2>&1; then
   else
     DL_ARCH="x86_64"
   fi
-  echo "Installing 1Password CLI for $ARCH..."
+  log_state "Installing 1Password CLI for $ARCH"
   tmpdir=$(mktemp -d)
   cd "$tmpdir" || exit 1
   curl -sSO "https://downloads.1password.com/linux/tar/stable/${DL_ARCH}/1password-latest.tar.gz"
@@ -22,28 +25,28 @@ if ! command -v op >/dev/null 2>&1; then
   sudo /opt/1Password/after-install.sh
   cd /
   rm -rf "$tmpdir"
-  echo "1Password CLI installation complete."
+  log_result "1Password CLI installation complete"
 else
-  echo "1Password CLI already installed, skipping."
+  log_info "1Password CLI already installed, skipping"
 fi
 {{ end -}}
 
 {{ if (eq .osid "linux-fedora") -}}
 if ! command -v op >/dev/null 2>&1; then
-  echo "Installing 1Password CLI for Fedora..."
+  log_state "Installing 1Password CLI for Fedora"
   sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
   sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
   sudo dnf check-update -y 1password-cli || true
   sudo dnf -y install 1password-cli
-  echo "1Password CLI installation complete."
+  log_result "1Password CLI installation complete"
 else
-  echo "1Password CLI already installed, skipping."
+  log_info "1Password CLI already installed, skipping"
 fi
 {{ end -}}
 
 {{ if (eq .osid "linux-ubuntu") -}}
 if ! command -v op >/dev/null 2>&1; then
-  echo "Installing 1Password CLI for Ubuntu..."
+  log_state "Installing 1Password CLI for Ubuntu"
   curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
     sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | \
@@ -56,11 +59,14 @@ if ! command -v op >/dev/null 2>&1; then
     sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
   sudo apt update
   sudo apt install -y 1password-cli
-  echo "1Password CLI installation complete."
+  log_result "1Password CLI installation complete"
 else
-  echo "1Password CLI already installed, skipping."
+  log_info "1Password CLI already installed, skipping"
 fi
 {{ end -}}
 {{ else -}}
-echo "onepassword role not enabled, skipping 1Password CLI install."
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="install-op"
+log_info "onepassword role not enabled, skipping 1Password CLI install"
 {{ end -}}

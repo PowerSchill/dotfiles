@@ -11,11 +11,19 @@
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
 {{   $sudo = "" -}}
+log_result "Unwanted packages removed"
+
 {{ end -}}
 
 #!/bin/bash
 
 set -eufo pipefail
+
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="remove-packages"
+
+log_state "Removing unwanted packages"
 
 {{ $sudo }}apt-get remove -y {{ $packages | join " " }}
 
@@ -24,5 +32,7 @@ set -eufo pipefail
 snap info {{ . }} && {{ $sudo }}snap remove {{ . }}
 {{   end }}
 {{ end }}
+
+log_result "Unwanted packages removed"
 
 {{ end -}}

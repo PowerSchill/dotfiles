@@ -6,6 +6,10 @@
 # .pre-commit-config.yaml hash: {{ joinPath .chezmoi.workingTree ".pre-commit-config.yaml" | include | sha256sum }}
 set -euo pipefail
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="git-hooks"
+
 mise=""
 for m in "$(command -v mise 2>/dev/null || true)" "$HOME/.local/bin/mise"; do
   if [[ -n "$m" && -x "$m" ]]; then
@@ -15,10 +19,13 @@ for m in "$(command -v mise 2>/dev/null || true)" "$HOME/.local/bin/mise"; do
 done
 
 if [[ -z "$mise" ]]; then
-  echo "git hooks: mise not found, skipping. Run tools/bootstrap.sh in {{ .chezmoi.workingTree }}" >&2
+  log_warn "mise not found, skipping git hooks"
+  log_hint "Run tools/bootstrap.sh in {{ .chezmoi.workingTree }}"
   exit 0
 fi
 
+log_state "Installing git hooks"
 cd {{ .chezmoi.workingTree | quote }}
 MISE_TRUSTED_CONFIG_PATHS={{ .chezmoi.workingTree | quote }} "$mise" run hooks:install
+log_result "Git hooks installed"
 {{ end -}}

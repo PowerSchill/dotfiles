@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="packages"
+
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
 {{   $sudo = "" -}}
@@ -15,7 +19,7 @@
 {{   $skip = .packages.linux.vmExclude | default list }}
 {{ end -}}
 
-echo "Installing Packages: {{ .osid }}"
+log_state "Installing packages: {{ .osid }}"
 
 {{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-raspbian") -}}
 
@@ -91,3 +95,5 @@ cargo install  {{ . | quote }}
 {{- end }}
 
 {{ end -}}
+
+log_result "Packages installed: {{ .osid }}"

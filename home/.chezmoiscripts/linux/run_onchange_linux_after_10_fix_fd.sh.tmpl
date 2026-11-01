@@ -1,7 +1,11 @@
 #!/bin/sh
 
 {{ if (eq .osid "linux-ubuntu") -}}
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="fix-fd"
 if [ ! -e ~/.local/bin/fd ]; then
+  log_state "Linking fdfind as fd"
   /usr/bin/ln -s "$(command -v fdfind)" ~/.local/bin/fd
 fi
 {{ end -}}

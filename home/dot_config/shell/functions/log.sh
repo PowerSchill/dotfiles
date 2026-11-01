@@ -349,7 +349,9 @@ _log_sanitize() {
 		BEGIN { ORS=""; out = "" }
 		{
 			s = $0
-			gsub(/[\000\033\007]/, "", s)
+			gsub(/\000/, "", s)
+			gsub(/\033/, "", s)
+			gsub(/\007/, "", s)
 			gsub(/\r/, "\\r", s)
 			out = (NR == 1 ? s : out "\\n" s)
 		}

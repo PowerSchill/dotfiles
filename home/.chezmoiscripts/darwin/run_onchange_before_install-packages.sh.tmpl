@@ -1,6 +1,10 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="packages"
+
 {{ $isEphemeral := or .ephemeral (eq (env "EPHEMERAL") "true") }}
 {{- /* `base` is always installed; each enabled role appends its own bucket. */ -}}
 {{ $buckets := prepend .roles "base" }}
@@ -35,5 +39,7 @@ cat >~/.Brewfile <<EOF
 
 EOF
 
+log_state "Running brew bundle"
 brew bundle --file=~/.Brewfile
+log_result "brew bundle complete"
 {{ end -}}

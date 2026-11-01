@@ -1,9 +1,14 @@
 #!/bin/sh
 
 {{ if and (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) (not .ephemeral) -}}
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="wezterm"
 
+log_state "Configuring the WezTerm apt repository"
 curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
 echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
 sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+log_result "WezTerm apt repository configured"
 
 {{ end -}}

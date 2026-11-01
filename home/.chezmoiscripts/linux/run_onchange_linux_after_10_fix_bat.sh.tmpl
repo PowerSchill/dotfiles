@@ -1,7 +1,11 @@
 #!/bin/sh
 
 {{ if (eq .osid "linux-ubuntu") -}}
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+LOG_TAG="fix-bat"
 if [ ! -e ~/.local/bin/bat ]; then
+  log_state "Linking batcat as bat"
   /usr/bin/ln -s "$(command -v batcat)" ~/.local/bin/bat
 fi
 {{ end -}}

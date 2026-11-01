@@ -2,6 +2,12 @@
 
 set -eufo pipefail
 
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "${HOME}/.config/shell/functions/log.sh"
+LOG_TAG="dock"
+
+log_state "Configuring Finder, Dock and system defaults"
+
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 ###############################################################################
@@ -257,3 +263,5 @@ done
 killall Dock
 
 launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2>/dev/null
+
+log_result "Finder, Dock and system defaults configured"
