@@ -33,6 +33,13 @@ jobs:
     container:
       image: ghcr.io/powerschill/dotfiles-dev:latest@sha256:ba4f130147e27de220598e877dea5e8e8d1c17a19150ee88c32258e945ad78e7
       options: --user root
+    env:
+      # The checkout is owned by the runner's user, not root, and actions/checkout
+      # only marks it safe inside its own step. Trust it for every git process in
+      # this throwaway container, including ones that ignore the global config.
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: safe.directory
+      GIT_CONFIG_VALUE_0: "*"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
