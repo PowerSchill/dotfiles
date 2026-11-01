@@ -2,16 +2,36 @@
 
 echo "Installing Packages: {{ .osid }}"
 
+# Exit non-zero on a failed install, so chezmoi re-runs this script next time.
+# winget also exits non-zero for a package that is already current:
+#   -1978335189 UPDATE_NOT_APPLICABLE, -1978335135 PACKAGE_ALREADY_INSTALLED
+$failed = @()
+function Install-WingetPackage([string]$Id) {
+    winget install $Id
+    if ($LASTEXITCODE -notin 0, -1978335189, -1978335135) {
+        Write-Error "winget install $Id failed with exit code $LASTEXITCODE" -ErrorAction Continue
+        $script:failed += $Id
+    }
+}
+
 {{- $buckets := prepend .roles "base" }}
 {{- range $b := $buckets }}
 {{- range (index $.packages.windows.winget $b) }}
-winget install  {{ . | quote }}
+Install-WingetPackage {{ . | quote }}
 {{- end }}
 {{- end }}
 
 
 
 oh-my-posh font install meslo
+if ($LASTEXITCODE -ne 0) {
+    $failed += "oh-my-posh font install"
+}
+
+if ($failed.Count -gt 0) {
+    Write-Error "Failed: $($failed -join ', ')" -ErrorAction Continue
+    exit 1
+}
 
 {{ end -}}
 

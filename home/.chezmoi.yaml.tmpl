@@ -81,9 +81,15 @@ Role selection
 {{-     $_ := set $role $r (promptBoolOnce $ (printf "role_%s" $r) $r (index $roleDefaults $r)) -}}
 {{-   end -}}
 {{- else -}}
-{{/*   Non-interactive and not detected as ephemeral: fall back to defaults. */}}
+{{/*   Non-interactive and not detected as ephemeral: keep what this machine
+     already chose, and use the default only for a Role it has no value for. */}}
+{{-   $savedRole := get . "role" | default dict -}}
 {{-   range $r := $roleNames -}}
-{{-     $_ := set $role $r (index $roleDefaults $r) -}}
+{{-     if hasKey $savedRole $r -}}
+{{-       $_ := set $role $r (index $savedRole $r) -}}
+{{-     else -}}
+{{-       $_ := set $role $r (index $roleDefaults $r) -}}
+{{-     end -}}
 {{-   end -}}
 {{- end -}}
 
@@ -117,6 +123,8 @@ Sets the appearance of the desktop environment.
 {{-   if $email | empty -}}
 {{-     if stdinIsATTY -}}
 {{-       $email = promptStringOnce . "email" "What is your email address?" -}}
+{{-     else -}}
+{{-       $email = get . "email" | default "" -}}
 {{-     end -}}
 {{-   end -}}
 {{- end -}}

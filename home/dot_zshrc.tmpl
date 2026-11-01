@@ -141,8 +141,15 @@ ZSH_CONFIG_DIR="$HOME/.config/zsh"
 
 # Load all zsh configuration files
 if [ -d "$ZSH_CONFIG_DIR" ]; then
-    # Load main configuration files
-    for config in "$ZSH_CONFIG_DIR"/*.zsh(N); do
+    # Oh My Zsh first: it defines aliases (ls, ll, l, la) and key bindings, and
+    # this repo's own configuration has to override them, not the reverse. Select
+    # vi mode before it, so its completion widgets are bound in the vi keymap.
+    bindkey -v
+    [ -f "$ZSH_CONFIG_DIR/oh-my-zsh.zsh" ] && source "$ZSH_CONFIG_DIR/oh-my-zsh.zsh"
+
+    # Load main configuration files. The catppuccin-* prompt colors are skipped:
+    # ~/.p10k.zsh sources the one that matches the appearance.
+    for config in "$ZSH_CONFIG_DIR"/*.zsh~*/(oh-my-zsh|catppuccin-*).zsh(N); do
         [ -f "$config" ] && source "$config"
     done
 

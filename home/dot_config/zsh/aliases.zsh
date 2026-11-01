@@ -10,9 +10,6 @@ fi
 
 # Directory navigation shortcuts
 alias ..='cd ..'
-alias ...='cd ../../..'
-alias ....='cd ../../../..'
-alias .....='cd ../../../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias cd..='cd ..'
@@ -29,24 +26,27 @@ alias db="cd ~/Library/CloudStorage/Dropbox"
 
 export LSCOLORS='Gxfxcxdxdxegedabagacad'
 
-# Basic listing
-alias ls="eza --color=always --icons=always --group-directories-first"
-alias l='eza --color=always --icons=always'
-alias la='eza --color=always --icons=always --all'
+# Only with eza installed; otherwise the Oh My Zsh defaults stay in place.
+if command -v eza >/dev/null 2>&1; then
+  # Basic listing
+  alias ls="eza --icons=auto --group-directories-first"
+  alias l='eza --icons=auto'
+  alias la='eza --icons=auto --all'
 
-# Long format with git info
-alias ll="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions"
-alias lla="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --all"
-alias llt="eza --color=always --icons=always --group-directories-first --long --git --no-user --time-style=long-iso --no-permissions --all"
+  # Long format with git info
+  alias ll="eza --icons=auto --group-directories-first --long --git --no-user --no-time --no-permissions"
+  alias lla="eza --icons=auto --group-directories-first --long --git --no-user --no-time --no-permissions --all"
+  alias llt="eza --icons=auto --group-directories-first --long --git --no-user --time-style=long-iso --no-permissions --all"
 
-# Filtered views
-alias llf="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --all --only-files"
-alias lld="eza --color=always --icons=always --group-directories-first --long --git --no-user --no-time --no-permissions --only-dirs"
+  # Filtered views
+  alias llf="eza --icons=auto --group-directories-first --long --git --no-user --no-time --no-permissions --all --only-files"
+  alias lld="eza --icons=auto --group-directories-first --long --git --no-user --no-time --no-permissions --only-dirs"
 
-# Sorted listings
-alias lk='eza --color=always --icons=always --long --sort=size'           # Sort by size
-alias lt='eza --color=always --icons=always --long --sort=modified'       # Sort by date
-alias lr='eza --color=always --icons=always --long --recurse --level=2'   # Recursive
+  # Sorted listings
+  alias lk='eza --icons=auto --long --sort=size'           # Sort by size
+  alias lt='eza --icons=auto --long --sort=modified'       # Sort by date
+  alias lr='eza --icons=auto --long --recurse --level=2'   # Recursive
+fi
 
 # Tree view
 alias tree='tree -Csuh'
