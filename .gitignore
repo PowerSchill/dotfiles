@@ -3,10 +3,6 @@
 *cert-base64*.txt
 CodeSigningCert-*.pfx
 
-# Chezmoi generated files
-.chezmoitemplates/
-.chezmoiremove
-
 # Generated completion cache files (Fish)
 *_generated.fish
 chezmoi_completions.fish
