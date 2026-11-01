@@ -16,7 +16,9 @@ if ! command -v bun >/dev/null 2>&1; then
 fi
 
 log_state "Installing ccstatusline"
-bun install -g ccstatusline@2.2.33
+# Pin the location: bun otherwise installs under $XDG_CACHE_HOME/.bun when that
+# is set, and the settings call ~/.bun/bin/ccstatusline.
+BUN_INSTALL="$HOME/.bun" bun install -g ccstatusline@2.2.33
 log_result "ccstatusline installed"
 
 {{- end }}

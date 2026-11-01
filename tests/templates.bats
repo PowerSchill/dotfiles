@@ -283,6 +283,12 @@ zsh_probe() {
   [ "$output" = '$HOME/.bun/bin/ccstatusline' ]
 }
 
+@test "claude: ccstatusline installs where the status line calls it" {
+  # shellcheck disable=SC2016 # the literal text in the script
+  grep -q '^BUN_INSTALL="$HOME/.bun" bun install -g ccstatusline@' \
+    "$SOURCE_DIR/.chezmoiscripts/darwin/run_onchange_after_install-ccstatusline.sh.tmpl"
+}
+
 @test "lazygit: force push asks first and keeps the pre-push hook" {
   run yq -r '.customCommands[] | select(.key == "F") | [.command, .prompts[0].type] | join(" ")' \
     <(render_with dev dot_config/lazygit/config.yml.tmpl)
