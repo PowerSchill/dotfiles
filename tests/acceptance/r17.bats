@@ -53,3 +53,13 @@ steps() {
   deps="$(mise tasks info validate --json | jq -r '.depends[]' | sort | tr '\n' ' ')"
   [ "$deps" = "check check:apply check:commits check:repo test " ]
 }
+
+@test "R17: Linux validate runs in the dev container image, pinned by digest" {
+  image="$(yq -r '.jobs."validate-linux".container.image' .github/workflows/ci.yml)"
+  [[ "$image" =~ ^ghcr\.io/powerschill/dotfiles-dev:[a-z0-9.-]+@sha256:[0-9a-f]{64}$ ]]
+}
+
+@test "R17: only the acceptance job installs zsh (it has to run on the host)" {
+  jobs="$(yq -r '.jobs | to_entries[] | select(.value.steps[]?.run | test("apt-get install .*zsh")) | .key' .github/workflows/ci.yml | sort -u)"
+  [ "$jobs" = acceptance ]
+}
