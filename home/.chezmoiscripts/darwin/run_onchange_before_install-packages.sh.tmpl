@@ -1,6 +1,9 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
+# A failure must fail the script: chezmoi only re-runs run_onchange scripts that failed.
+set -euo pipefail
+
 # shellcheck source=home/dot_config/shell/functions/log.sh
 . "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
 LOG_TAG="packages"

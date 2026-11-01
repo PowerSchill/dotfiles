@@ -22,7 +22,9 @@ Host *
 	ControlMaster auto
 	ControlPath ~/.ssh/control-%h-%p-%r
 	ControlPersist yes
-	ForwardAgent yes
+	# A forwarded agent can be used by anyone with root on the remote host. To opt a
+	# host in, add `ForwardAgent yes` for it in ~/.ssh/config.d/ (first value wins).
+	ForwardAgent no
 	GSSAPIAuthentication no
 	GSSAPIDelegateCredentials no
 

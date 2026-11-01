@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# A failure must fail the script: chezmoi only re-runs run_onchange scripts that failed.
+set -euo pipefail
+
 # shellcheck source=home/dot_config/shell/functions/log.sh
 . "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
 LOG_TAG="packages"
@@ -28,19 +31,30 @@ log_state "Installing packages: {{ .osid }}"
 ########################################
 
 # Wezterm apt repo configuration
-curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
-sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+curl -fsSL https://apt.fury.io/wez/gpg.key | {{ $sudo }}gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | {{ $sudo }}tee /etc/apt/sources.list.d/wezterm.list
+{{ $sudo }}chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 
 ########################################
 # Installing native os packages
 ########################################
 {{ $sudo }}apt-get update
-{{ $sudo }}apt-get install -y
+# Releases differ (Ubuntu 24.04 has no fastfetch or lazygit), and one unknown name
+# makes apt-get install nothing at all. Skip what this release does not carry.
+apt_packages=()
+for package in
 {{- range $b := $buckets }}
 {{- range (index $.packages.linux.debian.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
-{{- end }}
+{{- end }}; do
+  # `apt-cache show` also succeeds for a name with no installable version.
+  if [[ "$(apt-cache policy "$package" 2>/dev/null)" == *"Candidate: "[!\(]* ]]; then
+    apt_packages+=("$package")
+  else
+    log_warn "Package not available on this release, skipping: $package"
+  fi
+done
+{{ $sudo }}apt-get install -y "${apt_packages[@]}"
 
 ########################################
 # Installing cargo packages
@@ -55,13 +69,20 @@ cargo install  {{ . | quote }}
 ########################################
 # Installing snap packages
 ########################################
+# Containers and plain Debian have no working snapd (the snap command alone can be
+# installed as a dependency); that is expected, not a failure.
+if command -v snap >/dev/null 2>&1 && [ -S /run/snapd.socket ]; then
+  :
 {{- range $b := $buckets }}
 {{- range (index $.packages.linux.debian.snap $b) }}
 {{- if not (has . $skip) }}
-{{ $sudo }} snap install {{ . | quote }} --classic
+  {{ $sudo }}snap install {{ . | quote }} --classic
 {{- end }}
 {{- end }}
 {{- end }}
+else
+  log_warn "snapd not available, skipping snap packages"
+fi
 
 {{ end -}}
 
@@ -78,7 +99,8 @@ cargo install  {{ . | quote }}
 ########################################
 # Installing native os packages
 ########################################
-{{ $sudo }}dnf -y install
+# Without this, one name Fedora does not carry makes dnf install nothing at all.
+{{ $sudo }}dnf -y install --skip-unavailable
 {{- range $b := $buckets }}
 {{- range (index $.packages.linux.fedora.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
