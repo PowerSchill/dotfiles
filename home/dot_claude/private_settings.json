@@ -7,10 +7,32 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file_path=$(jq -r '.tool_input.file_path // empty'); basename=$(basename \"$file_path\" 2>/dev/null); if [ \"$basename\" = \".env\" ] || [ \"$basename\" = \".envrc\" ] || echo \"$basename\" | grep -qE '^\\.env\\.'; then echo 'BLOCKED: Reading .env and .envrc files is not allowed.' >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file_path=$(jq -r '.tool_input.file_path // empty'); basename=$(basename \"$file_path\" 2>/dev/null); if [ \"$basename\" = \".env\" ] || [ \"$basename\" = \".envrc\" ] || echo \"$basename\" | grep -qE '^\\.env\\.'; then echo 'BLOCKED: Editing .env and .envrc files is not allowed.' >&2; exit 2; fi"
+          }
+        ]
+      }
+    ]
+  },
   "model": "sonnet",
   "statusLine": {
     "type": "command",
-    "command": "bunx -y ccstatusline",
+    "command": "$HOME/.bun/bin/ccstatusline",
     "padding": 0,
     "refreshInterval": 10
   },

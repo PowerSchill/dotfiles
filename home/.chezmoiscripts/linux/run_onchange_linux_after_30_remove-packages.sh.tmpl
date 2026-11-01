@@ -11,8 +11,6 @@
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
 {{   $sudo = "" -}}
-log_result "Unwanted packages removed"
-
 {{ end -}}
 
 #!/bin/bash

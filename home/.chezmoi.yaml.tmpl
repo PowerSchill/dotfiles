@@ -6,18 +6,61 @@
 {{- /* In Codespaces and CI, force non-interactive mode */ -}}
 {{- $interactive := and stdinIsATTY (not $codespaces) (not $ci) -}}
 
+{{- /* Initializes the firstname and lastname variables with default values */ -}}
+{{- $firstname := "Mark" -}}
+{{- $lastname := "Schill" -}}
+
+{{- /* If firstname was previously set, reuses it */ -}}
+{{- if hasKey . "firstname" -}}
+{{-   $firstname = .firstname -}}
+{{- /* Otherwise, if running interactively, prompts for firstname */ -}}
+{{- else if $interactive -}}
+{{-   $firstname = promptString "firstname" $firstname -}}
+{{- end -}}
+
+{{- /* If lastname was previously set, reuses it */ -}}
+{{- if hasKey . "lastname" -}}
+{{-   $lastname = .lastname -}}
+{{- /* Otherwise, if running interactively, prompts for lastname */ -}}
+{{- else if $interactive -}}
+{{-   $lastname = promptString "lastname" $lastname -}}
+{{- end -}}
+
+{{- /* Combine firstname and lastname into full name */ -}}
+{{- $name := printf "%s %s" $firstname $lastname -}}
+
+{{- /* Username (for system login, etc.) */ -}}
+{{- $username := "powerschill" -}}
+{{- if hasKey . "username" -}}
+{{-   $username = .username -}}
+{{- else if $interactive -}}
+{{-   $username = promptString "username" $username -}}
+{{- end -}}
+
+{{- /* Does the same for the email */ -}}
+{{- $email := "11379992+PowerSchill@users.noreply.github.com" -}}
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else if $interactive -}}
+{{-   $email = promptString "email" $email -}}
+{{- end -}}
+
 {{/* ###########################################################################
 Roles
 
 A machine's configuration is the union of the `base` set plus one bucket per
-enabled role. Roles are chosen once at `chezmoi init` and persisted, so they no
-longer depend on network-visible hostname/FQDN state.
+enabled role. Roles are chosen once at `chezmoi init` and saved in the chezmoi
+config as data.role.<name>, so they no longer depend on network-visible
+hostname/FQDN state.
 
 To change a role later use the `cmrole` shell function (see
 dot_config/zsh/functions/role.zsh), which drives:
 
-    chezmoi init --promptBool "<role>=true|false" && chezmoi apply
+    DOTFILES_ROLE_CHANGE=<role> chezmoi init --promptBool "<role>=true|false"
+    chezmoi apply
 
+A saved role wins over --promptBool, so a bare `chezmoi init --promptBool` cannot
+change one; DOTFILES_ROLE_CHANGE names the role to take from the flag instead.
 The prompt text below is deliberately the bare role name: chezmoi keys
 --promptBool on the *prompt string*, not on the state key.
 ########################################################################### */}}
@@ -76,17 +119,20 @@ Role selection
 {{-   range $r := $roleNames -}}
 {{-     $_ := set $role $r (eq $r "dev") -}}
 {{-   end -}}
-{{- else if stdinIsATTY -}}
-{{-   range $r := $roleNames -}}
-{{-     $_ := set $role $r (promptBoolOnce $ (printf "role_%s" $r) $r (index $roleDefaults $r)) -}}
-{{-   end -}}
 {{- else -}}
-{{/*   Non-interactive and not detected as ephemeral: keep what this machine
-     already chose, and use the default only for a Role it has no value for. */}}
+{{/*   Keep what this machine already chose. Only a Role with no saved value is
+     asked about, and only on a terminal; otherwise it gets its default.
+     promptBoolOnce cannot do this job: given a saved value it ignores
+     --promptBool, which would silently break cmrole. */}}
 {{-   $savedRole := get . "role" | default dict -}}
+{{-   $changing := env "DOTFILES_ROLE_CHANGE" -}}
 {{-   range $r := $roleNames -}}
-{{-     if hasKey $savedRole $r -}}
+{{-     if eq $r $changing -}}
+{{-       $_ := set $role $r (promptBool $r (index $roleDefaults $r)) -}}
+{{-     else if hasKey $savedRole $r -}}
 {{-       $_ := set $role $r (index $savedRole $r) -}}
+{{-     else if stdinIsATTY -}}
+{{-       $_ := set $role $r (promptBool $r (index $roleDefaults $r)) -}}
 {{-     else -}}
 {{-       $_ := set $role $r (index $roleDefaults $r) -}}
 {{-     end -}}
@@ -110,25 +156,31 @@ Sets the appearance of the desktop environment.
 {{-   if ne $appearance "dark" -}}
 {{-     $appearance = "light" -}}
 {{-   end -}}
-{{- end }}
-
-
-{{- $name := "Mark E. Schill" -}}
-{{- $email := "" -}}
-{{- if index $role "personal" -}}
-{{-   $email = "Mark.Schill@cmschill.net" -}}
 {{- end -}}
 
-{{- if not $ephemeral -}}
-{{-   if $email | empty -}}
-{{-     if stdinIsATTY -}}
-{{-       $email = promptStringOnce . "email" "What is your email address?" -}}
-{{-     else -}}
-{{-       $email = get . "email" | default "" -}}
+{{- /* Extract GitHub username from email or prompt */ -}}
+{{- $githubUsername := "" -}}
+{{- /* Matches GitHub noreply email format: ID+USERNAME@users.noreply.github.com (e.g., 11379992+PowerSchill@users.noreply.github.com) */ -}}
+{{- $githubEmailPattern := "^[0-9]+\\+([^@]+)@users\\.noreply\\.github\\.com$" -}}
+{{- if hasKey . "githubUsername" -}}
+{{-   $githubUsername = .githubUsername -}}
+{{- else -}}
+{{-   $match := regexMatch $githubEmailPattern $email -}}
+{{-   if $match -}}
+{{-     $githubUsername = regexReplaceAll $githubEmailPattern $email "${1}" -}}
+{{-   else -}}
+{{-     $gitRemote := output "sh" "-c" "git config --get remote.origin.url 2>/dev/null || true" | trim -}}
+{{-     if $gitRemote -}}
+{{-       $repoUrlPattern := "^.*github\\.com[:/]([^/]+).*$" -}}
+{{-       if regexMatch $repoUrlPattern $gitRemote -}}
+{{-         $githubUsername = regexReplaceAll $repoUrlPattern $gitRemote "${1}" -}}
+{{-       end -}}
+{{-     end -}}
+{{-     if and $interactive (eq $githubUsername "") -}}
+{{-       $githubUsername = promptString "GitHub username (optional)" "" -}}
 {{-     end -}}
 {{-   end -}}
 {{- end -}}
-
 
 {{- if $interactive -}}
 {{-   writeToStdout "💡 Tip: you can re-enter your details with `chezmoi init --data=false`.\n" -}}
@@ -171,20 +223,9 @@ fields are empty.
 {{- $entraIDTenantName := regexReplaceAll "^\\s*TenantName\\s*:\\s*" (regexFind "(?m)^\\s*TenantName\\s*:.*$" $dsreg) "" | trim -}}
 {{- $entraIDTenantId := regexReplaceAll "^\\s*TenantId\\s*:\\s*" (regexFind "(?m)^\\s*TenantId\\s*:.*$" $dsreg) "" | trim -}}
 
-{{- /* GitHub account used by scripts (CHEZMOI_GITHUB_USERNAME). Override it  */ -}}
-{{- /* per machine with `githubUsername` in your local chezmoi config.        */ -}}
-{{- $githubUsername := "PowerSchill" -}}
-{{- if get . "githubUsername" -}}
-{{-   $githubUsername = .githubUsername -}}
-{{- end -}}
-
 {{- /* 1Password Environment ID for the copilot-ssh helper. Optional and not  */ -}}
 {{- /* prompted: set `opCopilotEnvironmentId` in your local chezmoi config.   */ -}}
 {{- $opCopilotEnvironmentId := get . "opCopilotEnvironmentId" | default "" -}}
-
-
-
-
 
 {{- /* CLIs wrapped by a 1Password shell plugin (`op plugin run -- <cli>`).     */ -}}
 {{- /* Accepts a comma-separated string or a YAML list in your local chezmoi    */ -}}
@@ -211,11 +252,10 @@ fields are empty.
 {{- /* SSH public key used to sign Git commits when the 1Password SSH agent is  */ -}}
 {{- /* driving signing. Copy it from the 1Password app ("Configure Commit       */ -}}
 {{- /* Signing" -> Copy Snippet). Works on WSL, native Windows and macOS; the   */ -}}
-{{- /* platform-specific signer binary is auto-detected. Ignored when           */ -}}
-{{- /* useYubiKey is true. See docs/git-signing.md.                             */ -}}
+{{- /* platform-specific signer binary is auto-detected.                        */ -}}
 {{- /*                                                                          */ -}}
 {{- /* These are PUBLIC keys, not secrets — the personal one is already         */ -}}
-{{- /* published at https://github.com/DevSecNinja.keys — so they are safe to   */ -}}
+{{- /* published at https://github.com/PowerSchill.keys — so they are safe to   */ -}}
 {{- /* ship as defaults. Two defaults ship: one for work machines (see          */ -}}
 {{- /* `isWork` below) and one for everything else; the pick happens after the  */ -}}
 {{- /* Entra ID detection has run. Override it per-machine by setting           */ -}}
@@ -227,26 +267,6 @@ fields are empty.
 {{- $gitSigningKey := "" -}}
 {{- if get . "gitSigningKey" -}}
 {{-   $gitSigningKey = .gitSigningKey -}}
-{{- end -}}
-
-{{- /* Path to the 1Password SSH signer binary. Empty means auto-detect per   */ -}}
-{{- /* platform: op-ssh-sign-wsl.exe in WSL, op-ssh-sign.exe on Windows and   */ -}}
-{{- /* op-ssh-sign on macOS. Set this for a non-standard install, or on Linux */ -}}
-{{- /* where there is no standard path. See docs/git-signing.md.             */ -}}
-{{- $opSshSignProgram := "" -}}
-{{- if hasKey . "opSshSignProgram" -}}
-{{-   $opSshSignProgram = .opSshSignProgram -}}
-{{- end -}}
-
-{{- /* 1Password vault the SSH agent offers keys from, written to the Windows  */ -}}
-{{- /* agent.toml. Empty means pick per machine below: the work vault on work */ -}}
-{{- /* devices, Private elsewhere. Set it to use a differently-named vault.   */ -}}
-{{- /* See docs/git-signing.md.                                              */ -}}
-{{- $opSshVaultWork := "Employee" -}}
-{{- $opSshVaultPersonal := "Development" -}}
-{{- $opSshVault := "" -}}
-{{- if get . "opSshVault" -}}
-{{-   $opSshVault = .opSshVault -}}
 {{- end -}}
 
 {{- /* Now that work/personal is known, fall back to the matching default key.  */ -}}
@@ -263,6 +283,25 @@ fields are empty.
 {{-   end -}}
 {{- end -}}
 
+{{- /* Path to the 1Password SSH signer binary. Empty means auto-detect per   */ -}}
+{{- /* platform: op-ssh-sign-wsl.exe in WSL, op-ssh-sign.exe on Windows and   */ -}}
+{{- /* op-ssh-sign on macOS. Set this for a non-standard install, or on Linux */ -}}
+{{- /* where there is no standard path.                                     */ -}}
+{{- $opSshSignProgram := "" -}}
+{{- if hasKey . "opSshSignProgram" -}}
+{{-   $opSshSignProgram = .opSshSignProgram -}}
+{{- end -}}
+
+{{- /* 1Password vault the SSH agent offers keys from, written to the Windows  */ -}}
+{{- /* agent.toml. Empty means pick per machine below: the work vault on work */ -}}
+{{- /* devices, Private elsewhere. Set it to use a differently-named vault.   */ -}}
+{{- $opSshVaultWork := "Employee" -}}
+{{- $opSshVaultPersonal := "Development" -}}
+{{- $opSshVault := "" -}}
+{{- if get . "opSshVault" -}}
+{{-   $opSshVault = .opSshVault -}}
+{{- end -}}
+
 {{- /* Same treatment for the SSH agent's vault: a persisted shipped default is */ -}}
 {{- /* re-picked, only a differently-named vault counts as an override.         */ -}}
 {{- $opSshVaultTrimmed := $opSshVault | toString | trim -}}
@@ -277,6 +316,16 @@ fields are empty.
 ################################################################################
 # Chezmoi configuration file
 ################################################################################
+
+# Run PowerShell scripts without loading the user profile. This prevents the
+# Documents\PowerShell\profile.ps1 and Documents\WindowsPowerShell\profile.ps1
+# loaders from emitting "PowerShell configuration not found" warnings between
+# every chezmoi script on a fresh install, and ensures scripts run in a clean
+# shell regardless of what a user has customised in their profile.
+interpreters:
+  ps1:
+    command: "powershell"
+    args: ["-NoLogo", "-NoProfile"]
 
 scriptTempDir: "~/tmp"
 
@@ -317,14 +366,19 @@ textconv:
   - "-"
 data:
     appearance: {{ $appearance | quote }}
+    ci: {{ $ci }}
     codespaces: {{ $codespaces }}
+    devcontainer: {{ $devcontainer }}
     email: {{ $email | quote }}
     entraIDTenantId: {{ $entraIDTenantId | quote }}
     entraIDTenantName: {{ $entraIDTenantName | quote }}
     ephemeral: {{ $ephemeral }}
+    firstname: {{ $firstname | quote }}
     gitSigningKey: {{ $gitSigningKey | quote }}
     githubUsername: {{ $githubUsername | quote }}
     hostname: {{ $hostname | quote }}
+    interactive: {{ $interactive }}
+    lastname: {{ $lastname | quote }}
     isADDomainJoined: {{ $isADDomainJoined }}
     isEntraIDJoined: {{ $isEntraIDJoined }}
     isEntraRegistered: {{ $isEntraRegistered }}
@@ -338,6 +392,7 @@ data:
     opSshVault: {{ $opSshVault | quote }}
     roles: {{ $roles | toJson }}
     uname_arch: {{ $uname_arch }}
+    username: {{ $username | quote }}
     role:
 {{- range $r := $roleNames }}
       {{ $r }}: {{ index $role $r }}

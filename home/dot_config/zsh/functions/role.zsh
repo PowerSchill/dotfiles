@@ -4,14 +4,13 @@
 # which package buckets from .chezmoidata/packages.yaml get installed and which
 # configuration templates render.
 #
-# Role choices are persisted by chezmoi's promptBoolOnce state, so this drives
-# `chezmoi init --promptBool` rather than editing ~/.config/chezmoi/chezmoi.yaml
-# directly. A hand-edit of that file takes effect immediately but is silently
-# reverted by the next `chezmoi init`; going through init keeps one source of
-# truth.
+# Role choices are saved in ~/.config/chezmoi/chezmoi.yaml by `chezmoi init`, so
+# this drives init rather than editing that file directly. Going through init
+# keeps one source of truth and re-renders everything derived from the roles.
 #
 # NOTE: chezmoi keys --promptBool on the *prompt string*, which .chezmoi.yaml.tmpl
-# deliberately sets to the bare role name.
+# deliberately sets to the bare role name. A saved role wins over the flag unless
+# DOTFILES_ROLE_CHANGE names it.
 #
 #   cmrole list            show which roles are enabled
 #   cmrole add <name>      enable a role and re-apply
@@ -60,7 +59,7 @@ cmrole() {
             [[ "$action" == "remove" ]] && value=false
 
             echo "cmrole: setting $name=$value"
-            chezmoi init --promptBool "${name}=${value}" || return 1
+            DOTFILES_ROLE_CHANGE="$name" chezmoi init --promptBool "${name}=${value}" || return 1
             chezmoi apply
             ;;
         *)

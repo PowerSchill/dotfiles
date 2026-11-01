@@ -92,7 +92,7 @@
     PrivateData       = @{
         PSData = @{
             Tags       = @('dotfiles', 'profile', 'chezmoi', 'winget', 'office365')
-            ProjectUri = 'https://github.com/DevSecNinja/dotfiles'
+            ProjectUri = 'https://github.com/PowerSchill/dotfiles'
         }
     }
 }
