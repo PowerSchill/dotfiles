@@ -227,6 +227,19 @@ fi
 exec git-cliff --config cliff.toml --unreleased ${usage_tag:+--tag "$usage_tag"}
 '''
 
+[tasks."release:tag"]
+description = "Tag and push a Release from a clean, pushed main (requires --yes)"
+usage = '''
+flag "--yes" help="Confirm creating and pushing the tag"
+flag "--tag <tag>" help="Release name (default: today, e.g. v2026.10.31)"
+'''
+run = '''
+set --
+if [ -n "${usage_tag:-}" ]; then set -- --tag "$usage_tag"; fi
+if [ "${usage_yes:-false}" = true ]; then set -- "$@" --yes; fi
+exec tools/release-tag.sh "$@"
+'''
+
 # --- Dev container (R18) ----------------------------------------------------
 
 [tasks."devcontainer:build"]

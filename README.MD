@@ -287,6 +287,9 @@ mise run fmt
 
 # Release notes since the last tag, printed only
 mise run release:preview
+
+# Tag today's date on a clean, pushed main and push it (refuses without --yes)
+mise run release:tag --yes
 ```
 
 ### Profiles

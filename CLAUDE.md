@@ -50,6 +50,7 @@ mise run test:acceptance [file]        # one test per requirement (tests/accepta
 mise run preview          # read-only diff against your real home
 mise run apply --yes      # Apply; refuses without --yes
 mise run release:preview  # release notes since the last date tag, to stdout only
+mise run release:tag --yes  # tag today's date on a clean, pushed main and push it
 mise run fmt              # shfmt -i 2 -ci, in place
 ```
 
@@ -65,7 +66,9 @@ mise run fmt              # shfmt -i 2 -ci, in place
 - **Commits:** Conventional Commits with types feat, fix, perf, refactor, docs, test, ci, chore,
   revert and an optional lowercase scope (`check:commit-msg`). chezmoi autoCommits use
   `home/.commit_message.tmpl` (`chore(chezmoi): update .zshrc`).
-- **Releases:** date tags like `v2026.10.31`, created by hand. Nothing publishes release notes.
+- **Releases:** date tags like `v2026.10.31`, created when you choose with `mise run release:tag --yes`
+  (refuses off `main`, on a dirty tree, or when `main` differs from origin). Pushing a `v*` tag publishes
+  the dev container image. Nothing publishes release notes.
 - **Shell style:** `shfmt -i 2 -ci`. zsh is checked with `zsh -n` (zsh is a system prerequisite).
   `*.sh.tmpl` scripts (and zsh templates) are rendered twice before checking: as an Ephemeral
   machine and with every Role, so Role-gated bodies are linted too.
