@@ -13,6 +13,20 @@ _Avoid_: host, box, target
 A program the dotfiles install on a Machine for the person using it.
 _Avoid_: tool, dependency
 
+**Homebrew platform**:
+An operating system and architecture where a Machine gets its Packages from Homebrew: one Homebrew
+supports at Tier 1 or Tier 2, or WSL 2. Other Machines skip Homebrew.
+_Avoid_: supported OS, target platform
+
+**Brewfile entry**:
+One declared Homebrew item, made up of a type (such as formula, cask, or tap), a name, and options.
+_Avoid_: brew line, package line
+
+**Native package**:
+A Package installed by the operating system's own package manager because Homebrew needs it or
+cannot provide it.
+_Avoid_: system package, apt package
+
 **Role**:
 An opt-in capability a Machine has, chosen once and remembered (dev, gui, work, personal,
 security, onepassword, homelab).

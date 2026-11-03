@@ -1,0 +1,33 @@
+{{- /*
+  Write one YAML value as a Ruby literal for a Brewfile. Recursive.
+
+    map      { key: value, other: value }
+    list     ["a", "b"]
+    ":word"  the Ruby symbol :word (for example restart_service: :changed)
+    string   a double-quoted string; `#{` is escaped so Ruby does not interpolate
+    other    as is (true, 1519867270)
+*/ -}}
+{{- if kindIs "map" . -}}
+{ {{ $first := true -}}
+{{- range $key, $value := . -}}
+{{- if not $first }}, {{ end -}}
+{{- $first = false -}}
+{{- $key }}: {{ template "brewRuby.tmpl" $value -}}
+{{- end }} }
+{{- else if kindIs "slice" . -}}
+[{{- range $i, $value := . -}}
+{{- if $i }}, {{ end -}}
+{{- template "brewRuby.tmpl" $value -}}
+{{- end -}}]
+{{- else if kindIs "string" . -}}
+{{- if regexMatch "^:[a-z_]+$" . -}}
+{{- . -}}
+{{- else -}}
+{{- . | quote | replace "#{" "\\#{" -}}
+{{- end -}}
+{{- else if kindIs "float64" . -}}
+{{- /* A whole number decoded as a float would otherwise print as 1.5e+09. */ -}}
+{{- printf "%.0f" . -}}
+{{- else -}}
+{{- . -}}
+{{- end -}}
