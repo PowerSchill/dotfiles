@@ -166,12 +166,19 @@
 # so a stale keychain/cache entry cannot shadow the gh token. The path is quoted
 # because git hands `!`-prefixed helpers to a shell.
 {{- $ghPath := $gh | replace "\\" "/" }}
+#
+# On 1Password machines the helper is a wrapper script that routes gh through
+# `op plugin run`, so git pushes with the account chosen in the shell plugin.
+{{- $ghHelper := printf "'%s' auth git-credential" $ghPath }}
+{{- if and .role.onepassword (not .wsl) (has "gh" .opShellPlugins) }}
+{{-   $ghHelper = "~/.config/git/gh-credential" }}
+{{- end }}
 [credential "https://github.com"]
 	helper =
-	helper = !'{{ $ghPath }}' auth git-credential
+	helper = !{{ $ghHelper }}
 [credential "https://gist.github.com"]
 	helper =
-	helper = !'{{ $ghPath }}' auth git-credential
+	helper = !{{ $ghHelper }}
 {{- end }}
 
 [diff]
