@@ -48,6 +48,7 @@ log_result "1Password installation complete"
 {{ else if eq .osid "linux-fedora" -}}
 log_state "Installing ${packages[*]} with dnf"
 sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+# shellcheck disable=SC2016 # $basearch is for dnf, not this shell
 printf '%s\n' '[1password]' 'name=1Password Stable Channel' \
   'baseurl=https://downloads.1password.com/linux/rpm/stable/$basearch' \
   'enabled=1' 'gpgcheck=1' 'repo_gpgcheck=1' \
