@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-Personal dotfiles managed by [chezmoi](https://www.chezmoi.io/), targeting macOS (primary), Linux (Fedora/Ubuntu), and Windows. The repo bootstraps a full dev environment with Zsh + Oh My Zsh, Neovim (LazyVim), WezTerm, Catppuccin theming, and 100+ CLI tools.
+Personal dotfiles managed by [chezmoi](https://www.chezmoi.io/), targeting macOS (primary), Linux (any glibc distro, through Homebrew), and Windows. The repo bootstraps a full dev environment with Zsh + Oh My Zsh, Neovim (LazyVim), WezTerm, Catppuccin theming, and 100+ CLI tools.
 
 ## Common Commands
 
@@ -52,6 +52,7 @@ mise run apply --yes      # Apply; refuses without --yes
 mise run release:preview  # release notes since the last date tag, to stdout only
 mise run release:tag --yes  # tag today's date on a clean, pushed main and push it
 mise run fmt              # shfmt -i 2 -ci, in place
+mise run packages:check   # is every ~/.Brewfile entry installed? (also :cleanup, :leftovers, :audit)
 ```
 
 - **Profiles:** `minimal` (CI, containers, Codespaces) or `full` (workstations, adds git-cliff, act,
@@ -101,7 +102,8 @@ Only `README.MD`, `CLAUDE.md`, and repo tooling sit at the top level.
 | `home/.chezmoi.yaml.tmpl` | Master config — defines all feature flags and environment detection |
 | `home/.chezmoiexternal.yaml` | External dependencies (Oh My Zsh, plugins, fonts, fzf-git) fetched from GitHub |
 | `home/.chezmoidata/packages.yaml` | Package lists for all platforms/environments |
-| `home/.chezmoitemplates/brewList.tmpl` | Conditionally formats Homebrew install lists |
+| `home/.chezmoitemplates/brewfile.tmpl` | Renders the Brewfile (with `brewEntries.tmpl` and `brewRuby.tmpl`) |
+| `home/dot_config/shell/functions/homebrew.sh` | Decides if Homebrew can serve a Machine, and installs it from a pinned commit |
 | `home/.chezmoiignore` | OS/environment-based file exclusions |
 
 ### Roles (`home/.chezmoi.yaml.tmpl`)
@@ -146,26 +148,42 @@ git's default `ssh-keygen` signer, and `osxkeychain` (darwin) / `cache` (linux) 
 
 ### Package Management (`home/.chezmoidata/packages.yaml`)
 
-Packages are declared in YAML, not inline scripts. The `brewList.tmpl` template reads this data and
-generates `~/.Brewfile` at apply time. Packages are bucketed by role:
+Packages are declared in YAML, not inline scripts. Homebrew is the installer on macOS, Linux and WSL 2
+(`docs/adr/0004`): `brewfile.tmpl` renders `packages.homebrew` into `~/.Brewfile` at apply time. Each
+entry type has its own section (`taps`, `brews`, `casks`, `mas`, `winget`, `vscode`, `go`, `cargo`,
+`uv`, `npm`, `krew`, `flatpak`), and each section is bucketed by role:
 
 - **`base`** — installed on every machine, including ephemeral ones
 - **one bucket per role** — appended only when that role is enabled
 
-Buckets exist for all three platforms (darwin, linux debian/fedora, windows winget), so a role means
-the same thing everywhere. Buckets may be empty or absent — the install scripts `range` over an
-`index` result, and ranging over a missing key is a no-op.
+Buckets may be empty or absent — the templates `range` over an `index` result, and ranging over a
+missing key is a no-op. An entry takes `name`, and optionally:
 
-Individual darwin entries may set `excludeEphemeral: true` to be skipped on throwaway machines, and
-`args:` (e.g. `appdir`) which is emitted into the Brewfile.
+- `options` — Brewfile options, written as Ruby. `":word"` becomes the symbol `:word`. `check:packages`
+  rejects any option the entry type does not have; add new ones to `tools/checks/packages.py`.
+- `platforms` — `macos`, `linux`, `wsl` (`linux` includes `wsl`). The default is every platform, except
+  `winget` (WSL) and `flatpak` (Linux). Homebrew skips casks and `mas` where they do not apply, so only
+  macOS-only formulae need this.
+- `when` — a Ruby modifier: `unless system "..."`. `excludeEphemeral: true` skips throwaway machines.
+
+A third-party formula or cask must be named in full with `trusted: true`, and a tap's commands go in its
+`trusted` map; `check:packages` rejects gaps and whole-tap trust.
+
+`packages.linux` is **Native packages only**: what Homebrew needs first, the login shell, and what it
+cannot provide. `packages.windows` is winget, because Homebrew has no native Windows support.
+
+Apply never uninstalls. `mise run packages:check`, `packages:cleanup`, `packages:leftovers` and
+`packages:audit` run only when asked. `homebrew.sh` pins the installer's commit and checksum; bump
+them by hand.
 
 When adding a new package, edit `home/.chezmoidata/packages.yaml` — not the install scripts directly.
 
 ### Scripts (`home/.chezmoiscripts/`)
 
-Scripts are organized by OS: `darwin/`, `linux/`, `windows/`. Key scripts:
-- `darwin/run_onchange_before_install-packages.sh.tmpl` — generates `~/.Brewfile` and runs `brew bundle`
-- `linux/run_onchange_before_10_install-packages.sh.tmpl` — apt/dnf and cargo package install
+Scripts are organized by OS: `darwin/`, `linux/`, `windows/`, plus `packages/` for macOS and Linux. It
+sorts after `linux/` so native prerequisites come first. Key scripts:
+- `packages/run_onchange_before_install-packages.sh.tmpl` — installs Homebrew if needed, generates `~/.Brewfile` and runs `brew bundle`
+- `linux/run_onchange_before_10_install-packages.sh.tmpl` — Native packages (apt, dnf, pacman, snap, COPR)
 - `windows/run_onchange_windows-install-packages.ps1.tmpl` — winget package install
 - `darwin/run_onchange_after_configure-dock.sh` — macOS Dock and Finder defaults
 - `darwin/run_onchange_after_configure-browser.sh` — browser defaults

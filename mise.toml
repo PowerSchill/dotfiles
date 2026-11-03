@@ -220,6 +220,30 @@ description = "Format shell scripts in place"
 usage = 'arg "[files]" var=#true help="Files to format (default: all)"'
 run = 'eval "set -- ${usage_files:-}"; tools/checks/shfmt.sh --write "$@"'
 
+# --- Packages (docs/adr/0004) ------------------------------------------------
+# Apply only ever installs. These run when someone asks, and only cleanup --yes
+# removes anything.
+
+[tasks."packages:check"]
+description = "Report whether every ~/.Brewfile entry is installed"
+run = "dotfiles-packages check"
+
+[tasks."packages:cleanup"]
+description = "List Packages not in ~/.Brewfile; uninstall them with --yes"
+usage = 'flag "--yes" help="Confirm uninstalling them and resetting the trust store"'
+run = """
+if [ "${usage_yes:-false}" = true ]; then exec dotfiles-packages cleanup --yes; fi
+exec dotfiles-packages cleanup
+"""
+
+[tasks."packages:leftovers"]
+description = "List native copies of Packages Homebrew now installs (read-only)"
+run = "dotfiles-packages leftovers"
+
+[tasks."packages:audit"]
+description = "Check every entry in packages.yaml against Homebrew's API (needs network)"
+run = "dotfiles-package-audit"
+
 # --- Release notes ----------------------------------------------------------
 
 [tasks."release:preview"]
