@@ -13,6 +13,11 @@
 #   platforms         macos, linux, wsl; linux includes wsl
 #   when              a Ruby modifier, e.g. `unless system "..."`
 #   excludeEphemeral  skip on Ephemeral machines
+#
+# Homebrew loads a third-party formula, cask or command only once it is trusted.
+# Trust stays narrow (docs/adr/0004): name a formula or cask in full with
+# `trusted: true`, or list a command in its tap's `trusted` map. Never a whole tap.
+#
 # `homebrew` may also set `env` (ENV[...] lines) and `caskArgs` (cask_args).
 #
 # linux and windows entries are bare strings.
@@ -22,14 +27,14 @@ packages:
     taps:
       base:
         - name: buo/cask-upgrade
+          options:
+            trusted: { command: cu }
         - name: lazywalker/tap
         - name: teamookla/speedtest
       dev:
       gui:
-        - name: darrylmorley/whatcable
       security:
       onepassword:
-        - name: 1password/tap
       homelab:
       work:
       personal:
@@ -91,7 +96,9 @@ packages:
         - name: highlight # Source code syntax highlighter
         - name: jq # JSON query processor for command-line
         - name: lnav # Log file navigator with highlighting
-        - name: rgrc # Rusty generic colouriser for program output (drop-in grc replacement)
+        - name: lazywalker/tap/rgrc # Rusty generic colouriser for program output (drop-in grc replacement)
+          options:
+            trusted: true
         - name: ripgrep # Fast recursive grep replacement
         - name: source-highlight # Syntax highlighter for many languages
         - name: the_silver_searcher # Fast code searching tool (ag)
@@ -110,6 +117,9 @@ packages:
         - name: imagemagick # Image manipulation and conversion tool
         - name: streamlink # Extract and play video streams
         - name: teamookla/speedtest/speedtest # Ookla Speedtest
+          platforms: [macos] # the formula only downloads a macOS build
+          options:
+            trusted: true
 
       dev:
         #######################################
@@ -229,6 +239,9 @@ packages:
           platforms: [macos]
           excludeEphemeral: true
         - name: vitalyrodnenko/omnifocus-mcp/omnifocus-mcp # Model Context Protocol server for OmniFocus
+          platforms: [macos]
+          options:
+            trusted: true
 
     casks:
       base:

@@ -57,7 +57,8 @@ SAVEHIST=10000000
 # ============================================================================
 
 typeset -U path  # Keep unique entries in path
-path=($HOME/bin $HOME/.local/bin /usr/local/go/bin $HOME/.cargo/bin /opt/homebrew/bin $path)
+[[ -f "$HOME/.config/shell/homebrew-env.sh" ]] && source "$HOME/.config/shell/homebrew-env.sh"
+path=($HOME/bin $HOME/.local/bin /usr/local/go/bin $HOME/.cargo/bin $path)
 
 # Default editors
 if command -v nvim >/dev/null 2>&1; then
