@@ -42,6 +42,7 @@ Documents
 AppData
 {{ else }}
 # Ignore these for Windows
+.chezmoiscripts/packages/**
 .inputrc
 .oh-my-zsh
 .ssh
