@@ -197,14 +197,14 @@ YAML
   [[ "$output" == *'brew "in-base"'* && "$output" == *'brew "in-dev"'* && "$output" != *'brew "in-security"'* ]]
 }
 
-@test "packages: the darwin install script does not expand Brewfile values" {
+@test "packages: the install script does not expand Brewfile values" {
   local cfg bin="$BATS_TEST_TMPDIR/bin" home="$BATS_TEST_TMPDIR/home" script="$BATS_TEST_TMPDIR/install.sh"
   mkdir -p "$bin" "$home"
   printf '#!/bin/sh\nexit 0\n' >"$bin/brew"
   chmod +x "$bin/brew"
   cfg="$(role_config dev)"
   chezmoi --source "$REPO_ROOT" --config "$cfg" --override-data '{"chezmoi":{"os":"darwin"}}' --no-tty \
-    execute-template <"$SOURCE_DIR/.chezmoiscripts/darwin/run_onchange_before_install-packages.sh.tmpl" >"$script"
+    execute-template <"$SOURCE_DIR/.chezmoiscripts/packages/run_onchange_before_install-packages.sh.tmpl" >"$script"
   # Prove the heredoc is literal: a line a shell would expand comes through unchanged.
   sed -i.bak '/^BREWFILE$/i\
 brew "x", postinstall: "${HOMEBREW_PREFIX}/bin/x"
@@ -390,4 +390,76 @@ taps: { base: [{ name: u/t }] }
 YAML
   [ "$status" -ne 0 ]
   [[ "$output" == *"nothing from this tap is trusted"* ]]
+}
+
+# Render the native package script for a distro, as the given Role set.
+#   native_script <osid> [roles] [idLike]
+native_script() {
+  local osid="$1" roles="${2:-dev}" like="${3:-}" cfg
+  cfg="$(role_config "$roles")"
+  yq -i ".data.osid = \"$osid\"" "$cfg"
+  chezmoi --source "$REPO_ROOT" --config "$cfg" --persistent-state "$(dirname "$cfg")/state.boltdb" \
+    --override-data "{\"chezmoi\":{\"osRelease\":{\"idLike\":\"$like\"}}}" \
+    --destination "$BATS_TEST_TMPDIR/fakehome" --no-tty execute-template \
+    <"$SOURCE_DIR/.chezmoiscripts/linux/run_onchange_before_10_install-packages.sh.tmpl"
+}
+
+@test "native: Debian and Ubuntu get Homebrew's prerequisites, and nothing from cargo" {
+  run native_script linux-ubuntu
+  [ "$status" -eq 0 ]
+  [[ "$output" == *'"build-essential" "curl" "file" "git" "procps" "zsh"'* ]]
+  [[ "$output" != *cargo* && "$output" != *'"bat"'* && "$output" != *wezterm* ]]
+  bash -n <<<"$output"
+}
+
+@test "native: only the gui Role sets up the WezTerm apt repository" {
+  run native_script linux-ubuntu gui
+  [[ "$output" == *'apt-get install -y gnupg'* && "$output" == *'apt.fury.io/wez'* && "$output" == *'"wezterm-nightly"'* ]]
+  bash -n <<<"$output"
+}
+
+@test "native: Fedora installs the development group before its packages" {
+  run native_script linux-fedora
+  [ "$status" -eq 0 ]
+  [[ "$output" == *'dnf -y group install "development-tools"'* ]]
+  [[ "$output" == *'"procps-ng"'* && "$output" != *'copr enable'* ]]
+  bash -n <<<"$output"
+}
+
+@test "native: a gui Fedora Machine keeps its COPR terminals" {
+  run native_script linux-fedora gui
+  [[ "$output" == *'copr enable "scottames/ghostty"'* && "$output" != *lazygit* ]]
+}
+
+@test "native: RHEL, its derivatives and Arch have prerequisite lists" {
+  run native_script linux-rhel
+  [[ "$output" == *'dnf -y group install "Development Tools"'* ]]
+  bash -n <<<"$output"
+  run native_script linux-rocky dev "rhel centos fedora"
+  [[ "$output" == *'dnf -y group install "Development Tools"'* ]]
+  run native_script linux-arch
+  [[ "$output" == *'pacman -S --needed --noconfirm "base-devel"'* ]]
+  bash -n <<<"$output"
+  run native_script linux-manjaro dev arch
+  [[ "$output" == *'pacman -S'* ]]
+}
+
+@test "native: an unknown distro warns about what Homebrew needs" {
+  run native_script linux-mystery
+  [ "$status" -eq 0 ]
+  [[ "$output" == *'No native package list for linux-mystery'* ]]
+  bash -n <<<"$output"
+}
+
+@test "packages: the shared install script is ignored on Windows" {
+  grep -q '^\.chezmoiscripts/packages/\*\*$' "$SOURCE_DIR/.chezmoiignore"
+}
+
+@test "packages: Ephemeral machines skip the heavy Packages" {
+  local cfg rendered
+  cfg="$(role_config ephemeral)"
+  rendered="$(chezmoi --source "$REPO_ROOT" --config "$cfg" --no-tty execute-template '{{ template "brewfile.tmpl" . }}')"
+  [[ "$rendered" == *'brew "bat"'* ]]
+  [[ "$rendered" != *'brew "ffmpeg"'* && "$rendered" != *'brew "gcc"'* && "$rendered" != *'brew "mysql"'* ]]
+  [[ "$rendered" != *'cask "postman"'* ]]
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-{{ if and (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) (not .ephemeral) -}}
+{{ if and (or (eq .osid "linux-debian") (eq .osid "linux-ubuntu")) (not .ephemeral) .role.gui -}}
 set -euo pipefail
 
 # shellcheck source=home/dot_config/shell/functions/log.sh

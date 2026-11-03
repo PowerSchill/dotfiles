@@ -78,6 +78,10 @@ packages:
         - name: rename # Rename multiple files using Perl expressions
         - name: trash # Move files to trash instead of permanent deletion
           platforms: [macos]
+        - name: trash-cli # The same `trash` command on Linux
+          platforms: [linux]
+        - name: tlrc # tldr pages client
+          platforms: [linux]
         - name: tree # Display directory structure as a tree
         - name: wget # Download files from the web
         #######################################
@@ -113,8 +117,11 @@ packages:
         #######################################
         - name: exiftool # Read and write metadata in image files
         - name: ffmpeg # Video and audio processing framework
+          excludeEphemeral: true
         - name: ghostscript # Interpreter for PostScript and PDF
+          excludeEphemeral: true
         - name: imagemagick # Image manipulation and conversion tool
+          excludeEphemeral: true
         - name: streamlink # Extract and play video streams
         - name: teamookla/speedtest/speedtest # Ookla Speedtest
           platforms: [macos] # the formula only downloads a macOS build
@@ -141,13 +148,16 @@ packages:
         #######################################
         - name: bun # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
         - name: dotnet # Microsoft .NET runtime and development platform
+          excludeEphemeral: true
         - name: gcc # GNU Compiler Collection for C/C++
+          excludeEphemeral: true
         - name: go # Go programming language compiler
         - name: jenv # Manage Java versions with ease
         - name: luarocks # Package manager for Lua modules
         - name: node # JavaScript runtime built on V8
         - name: nvm # Manage multiple Node.js versions
         - name: php # Popular server-side scripting language
+          excludeEphemeral: true
         - name: powershell # Cross-platform command-line shell and scripting language
         - name: python@3.15 # Python programming language interpreter
         #######################################
@@ -194,6 +204,7 @@ packages:
         - name: freetds # Library for accessing Sybase and Microsoft SQL Server
         - name: krb5 # Kerberos network authentication protocol
         - name: mysql # Popular relational database
+          excludeEphemeral: true
         #######################################
         # General
         #######################################
@@ -248,10 +259,15 @@ packages:
 
       dev:
         - name: dotnet-sdk # Microsoft .NET SDK for development
+          excludeEphemeral: true
         - name: postman # API development and testing platform
+          excludeEphemeral: true
         - name: ghostty # GPU-accelerated terminal emulator
+          excludeEphemeral: true
         - name: viscosity # OpenVPN client with AppleScript support
+          excludeEphemeral: true
         - name: codexbar # Menu bar app for tracking agentic coding limits and usage
+          excludeEphemeral: true
 
       gui:
         #######################################
@@ -305,7 +321,9 @@ packages:
 
       onepassword:
         - name: 1password-cli # Command-line access to 1Password vault
+          platforms: [macos] # Linux: run_onchange_before_30_install-op
         - name: 1password # Password manager and digital vault
+          platforms: [macos] # Linux: run_onchange_before_30_install-op
           options:
             args:
               appdir: "/Applications"
@@ -391,6 +409,9 @@ packages:
         - name: windows-app # Windows App for running Windows apps on macOS
           excludeEphemeral: true
 
+  # Native packages only: what Homebrew needs first, the login shell, and what is
+  # system-level or has no Homebrew formula (docs/adr/0004). Everything else belongs
+  # in `homebrew` above.
   linux:
     # Skipped when systemd-detect-virt reports a VM. Ghostty needs OpenGL 4.3
     # and renders a blank window on virgl guests (Parallels/UTM), even with
@@ -398,39 +419,14 @@ packages:
     vmExclude:
       - ghostty
     debian:
-      cargo:
-        base:
-          - cargo-update
-          - eza
-          - topgrade
-        dev:
-          - cocogitto # provides `cog` for the commit-msg hook
-          - git-cliff # changelog generator
       packages:
         base:
-          - bat
+          - build-essential
           - curl
-          - direnv
-          - fastfetch
-          - fd-find
-          - fzf
-          - jq
-          - libssl-dev
-          - ncdu
-          - tmux
-          - trash-cli
-          - vim
-          - zoxide
+          - file
+          - git
+          - procps
           - zsh
-        dev:
-          - gh
-          - git-delta
-          - golang
-          - lazygit
-          - npm
-          - pre-commit
-          - shellcheck
-          - shfmt
         gui:
           - chromium-browser
           - conky-std
@@ -439,86 +435,54 @@ packages:
           - rofi
           - wezterm-nightly
           - xorg
-        security:
-          - ffuf
-          - hashcat
-          - hydra
-          - nmap
-          - sqlmap
-        onepassword:
-        homelab:
-        work:
-        personal:
       snap:
-        base:
-          - nvim # builtin package is too old.
-          - yazi
         gui:
           - ghostty # no apt package before Ubuntu 26.04
     fedora:
-      cargo:
-        base:
-          - cargo-upgrades
-          - cargo-update
-          - eza
-        dev:
-          - cocogitto # provides `cog` for the commit-msg hook
-          - git-cliff # changelog generator
       copr:
-        base:
-          - lilay/topgrade
-          - lihaohong/yazi
-        dev:
-          - dejan/lazygit
         gui:
           - scottames/ghostty
           - wezfurlong/wezterm-nightly
+      groups:
+        base:
+          - development-tools
       packages:
         base:
-          - bat
-          - direnv
-          - fastfetch
-          - fd
-          - fzf
+          - curl
+          - file
+          - git
           - gnome-keyring
           - gnome-keyring-pam
-          - jq
-          - ncdu
-          - neovim
+          - procps-ng
           - tar
-          - tldr
-          - tmux
-          - topgrade
-          - trash
-          - yazi
-          - yq
-          - zoxide
           - zsh
-        dev:
-          - copr-cli
-          - gh
-          - git-delta
-          - golang
-          - lazygit
-          - pre-commit
-          - ShellCheck
-          - shfmt
         gui:
           - conky
           - ghostty
           - polybar
           - rofi
           - wezterm
-        security:
-          - ffuf
-          - hashcat
-          - hydra
-          - nmap
-          - sqlmap
-        onepassword:
-        homelab:
-        work:
-        personal:
+    # CentOS Stream, RHEL and derivatives.
+    rhel:
+      groups:
+        base:
+          - Development Tools
+      packages:
+        base:
+          - curl
+          - file
+          - git
+          - procps-ng
+          - zsh
+    arch:
+      packages:
+        base:
+          - base-devel
+          - curl
+          - file
+          - git
+          - procps-ng
+          - zsh
   windows:
     winget:
       base:
