@@ -71,12 +71,6 @@
         "url": "https://github.com/viticci/shortcuts-playground-plugin.git"
       }
     },
-    "pretty-claude": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/powerschill/Projects/pretty_claude"
-      }
-    },
     "claude-kit": {
       "source": {
         "source": "github",
