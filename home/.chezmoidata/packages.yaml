@@ -256,13 +256,13 @@ packages:
 
     casks:
       base:
-
+        - name: ghostty # GPU-accelerated terminal emulator
+          excludeEphemeral: true
+          platforms: [macos]
       dev:
         - name: dotnet-sdk # Microsoft .NET SDK for development
           excludeEphemeral: true
         - name: postman # API development and testing platform
-          excludeEphemeral: true
-        - name: ghostty # GPU-accelerated terminal emulator
           excludeEphemeral: true
         - name: viscosity # OpenVPN client with AppleScript support
           excludeEphemeral: true
