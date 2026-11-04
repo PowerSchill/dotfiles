@@ -57,6 +57,7 @@ packages:
         - name: zsh # Z shell with advanced interactive features
         - name: zsh-autosuggestions # Fish-like autosuggestions for zsh
         - name: zsh-completions # Additional completion definitions for zsh
+        - name: zsh-syntax-highlighting
         - name: zoxide # Smarter cd command that learns your habits
         #######################################
         # Core system utilities

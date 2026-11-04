@@ -1,6 +1,10 @@
 {{ if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
+# run_onchange hash input: re-run when ~/.Brewfile.local changes. The packages are already in this
+# script's rendered body.
+# Brewfile.local sha256: {{ $local := joinPath .chezmoi.homeDir ".Brewfile.local" }}{{ if stat $local }}{{ include $local | sha256sum }}{{ else }}absent{{ end }}
+
 # A failure must fail the script: chezmoi only re-runs run_onchange scripts that failed.
 set -euo pipefail
 
@@ -14,6 +18,17 @@ LOG_TAG="packages"
 cat >~/.Brewfile <<'BREWFILE'
 {{ template "brewfile.tmpl" . }}
 BREWFILE
+
+# ~/.Brewfile.local is yours and unmanaged. The Brewfile is Ruby, so it reads the local file when
+# brew runs: edits count at once, and `bundle cleanup` will not uninstall what the file lists.
+cat >>~/.Brewfile <<'LOCAL'
+
+####################################################################################################
+# Local entries for this Machine, from ~/.Brewfile.local (not managed by chezmoi)
+####################################################################################################
+local_brewfile = File.expand_path("~/.Brewfile.local")
+instance_eval(File.read(local_brewfile), local_brewfile) if File.exist?(local_brewfile)
+LOCAL
 
 # A Machine Homebrew cannot serve warns and carries on; it must not fail Apply.
 if ! homebrew_prepare; then
