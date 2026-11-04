@@ -7,6 +7,12 @@ set -euo pipefail
 . "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
 LOG_TAG="packages"
 
+{{- /*
+  Native packages only: what Homebrew needs first and what it cannot provide
+  (docs/adr/0004). Everything else comes from the Brewfile, which a later script
+  installs: packages/ sorts after linux/.
+*/ -}}
+
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
 {{   $sudo = "" -}}
@@ -22,25 +28,43 @@ LOG_TAG="packages"
 {{   $skip = .packages.linux.vmExclude | default list }}
 {{ end -}}
 
-log_state "Installing packages: {{ .osid }}"
+{{- /* Which native list applies. A derivative counts as the distro it says it is like. */ -}}
+{{ $id := .osid | trimPrefix "linux-" }}
+{{ $like := "" }}
+{{ if hasKey .chezmoi.osRelease "idLike" }}{{ $like = .chezmoi.osRelease.idLike }}{{ end }}
+{{ $family := "" }}
+{{ if or (has $id (list "debian" "ubuntu" "raspbian")) (contains "debian" $like) (contains "ubuntu" $like) -}}
+{{   $family = "debian" -}}
+{{ else if eq $id "fedora" -}}
+{{   $family = "fedora" -}}
+{{ else if or (has $id (list "rhel" "centos" "rocky" "almalinux")) (contains "rhel" $like) (contains "centos" $like) -}}
+{{   $family = "rhel" -}}
+{{ else if or (eq $id "arch") (contains "arch" $like) -}}
+{{   $family = "arch" -}}
+{{ end -}}
 
-{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-raspbian") -}}
+log_state "Installing native packages: {{ .osid }}"
 
+{{ if eq $family "debian" -}}
+{{ if .role.gui -}}
 ########################################
 # Custom pre-install functions
 ########################################
 
-# Wezterm apt repo configuration
+# Wezterm apt repo configuration, for wezterm-nightly in the gui bucket
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y gnupg
 curl -fsSL https://apt.fury.io/wez/gpg.key | {{ $sudo }}gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
 echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | {{ $sudo }}tee /etc/apt/sources.list.d/wezterm.list
 {{ $sudo }}chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 
+{{ end -}}
 ########################################
 # Installing native os packages
 ########################################
 {{ $sudo }}apt-get update
-# Releases differ (Ubuntu 24.04 has no fastfetch or lazygit), and one unknown name
-# makes apt-get install nothing at all. Skip what this release does not carry.
+# Releases differ, and one unknown name makes apt-get install nothing at all.
+# Skip what this release does not carry.
 apt_packages=()
 for package in
 {{- range $b := $buckets }}
@@ -55,16 +79,6 @@ for package in
   fi
 done
 {{ $sudo }}apt-get install -y "${apt_packages[@]}"
-
-########################################
-# Installing cargo packages
-########################################
-{{ $sudo }}apt -y install cargo
-{{- range $b := $buckets }}
-{{- range (index $.packages.linux.debian.cargo $b) }}
-cargo install  {{ . | quote }}
-{{- end }}
-{{- end }}
 
 ########################################
 # Installing snap packages
@@ -84,38 +98,44 @@ else
   log_warn "snapd not available, skipping snap packages"
 fi
 
-{{ end -}}
-
-{{ if (eq .osid  "linux-fedora"  ) -}}
+{{ else if or (eq $family "fedora") (eq $family "rhel") -}}
+{{ $lists := index .packages.linux $family -}}
 ########################################
 # Enabling copr repos (before dnf install, which pulls packages from them)
 ########################################
 {{- range $b := $buckets }}
-{{- range (index $.packages.linux.fedora.copr $b) }}
-{{ $sudo }}dnf -y copr enable  {{ . | quote }}
+{{- range (index (index $lists "copr" | default dict) $b) }}
+{{ $sudo }}dnf -y copr enable {{ . | quote }}
 {{- end }}
 {{- end }}
 
 ########################################
 # Installing native os packages
 ########################################
-# Without this, one name Fedora does not carry makes dnf install nothing at all.
+{{- range $b := $buckets }}
+{{- range (index (index $lists "groups" | default dict) $b) }}
+{{ $sudo }}dnf -y group install {{ . | quote }}
+{{- end }}
+{{- end }}
+# Without this, one name the distro does not carry makes dnf install nothing at all.
 {{ $sudo }}dnf -y install --skip-unavailable
 {{- range $b := $buckets }}
-{{- range (index $.packages.linux.fedora.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
+{{- range (index $lists.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
 {{- end }}
 
+{{ else if eq $family "arch" -}}
 ########################################
-# Installing cargo packages
+# Installing native os packages
 ########################################
-{{ $sudo }}dnf -y install cargo
+{{ $sudo }}pacman -S --needed --noconfirm
 {{- range $b := $buckets }}
-{{- range (index $.packages.linux.fedora.cargo $b) }}
-cargo install  {{ . | quote }}
+{{- range (index $.packages.linux.arch.packages $b) }}{{ if not (has . $skip) }} {{ . | quote }}{{ end }}
 {{- end }}
 {{- end }}
+
+{{ else -}}
+log_warn "No native package list for {{ .osid }}. Homebrew needs a C compiler, procps, curl, file and git: https://docs.brew.sh/Homebrew-on-Linux"
 
 {{ end -}}
-
-log_result "Packages installed: {{ .osid }}"
+log_result "Native packages installed: {{ .osid }}"

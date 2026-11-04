@@ -1,4 +1,4 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
 # A failure must fail the script: chezmoi only re-runs run_onchange scripts that failed.

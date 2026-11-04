@@ -7,7 +7,7 @@
 #   mise-run --exec <cmd> [args...]  mise exec -- <cmd> [args...]
 set -euo pipefail
 # Fixed install locations to try after PATH; tests override them.
-candidates="${DOTFILES_MISE_LOCATIONS:-$HOME/.local/bin/mise /opt/homebrew/bin/mise /usr/local/bin/mise}"
+candidates="${DOTFILES_MISE_LOCATIONS:-$HOME/.local/bin/mise /opt/homebrew/bin/mise /home/linuxbrew/.linuxbrew/bin/mise /usr/local/bin/mise}"
 # shellcheck disable=SC2086 # split the location list on spaces
 for m in "$(command -v mise 2>/dev/null || true)" $candidates; do
   if [[ -n "$m" && -x "$m" ]]; then

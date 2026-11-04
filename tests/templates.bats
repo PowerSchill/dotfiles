@@ -140,14 +140,14 @@ EOF
   [[ "$output" != *"ForwardAgent yes"$'\n'* ]]
 }
 
-@test "packages: a failed brew bundle fails the darwin install script" {
+@test "packages: a failed brew bundle fails the install script" {
   local cfg bin="$BATS_TEST_TMPDIR/bin" home="$BATS_TEST_TMPDIR/home"
   mkdir -p "$bin" "$home"
   printf '#!/bin/sh\nexit 1\n' >"$bin/brew"
   chmod +x "$bin/brew"
   cfg="$(role_config dev)"
   chezmoi --source "$REPO_ROOT" --config "$cfg" --override-data '{"chezmoi":{"os":"darwin"}}' --no-tty \
-    execute-template <"$SOURCE_DIR/.chezmoiscripts/darwin/run_onchange_before_install-packages.sh.tmpl" \
+    execute-template <"$SOURCE_DIR/.chezmoiscripts/packages/run_onchange_before_install-packages.sh.tmpl" \
     >"$BATS_TEST_TMPDIR/install.sh"
   run env HOME="$home" PATH="$bin:$PATH" bash "$BATS_TEST_TMPDIR/install.sh"
   [ "$status" -ne 0 ]
