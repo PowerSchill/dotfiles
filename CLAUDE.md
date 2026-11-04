@@ -178,6 +178,9 @@ them by hand.
 
 When adding a new package, edit `home/.chezmoidata/packages.yaml` — not the install scripts directly.
 
+`~/.Brewfile.local` is the exception: untracked Brewfile entries for one Machine. The install script
+appends it to `~/.Brewfile` and hashes it, so editing it re-runs the script on the next Apply.
+
 ### Scripts (`home/.chezmoiscripts/`)
 
 Scripts are organized by OS: `darwin/`, `linux/`, `windows/`, plus `packages/` for macOS and Linux. It

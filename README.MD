@@ -234,6 +234,11 @@ brews:
       options: { trusted: true }
 ```
 
+For Packages only one Machine wants, write Brewfile entries in `~/.Brewfile.local`. It is untracked,
+and Apply appends it to `~/.Brewfile`, so `brew bundle cleanup` keeps those Packages. Run
+`chezmoi apply` after editing it: until then `~/.Brewfile` does not list the new entries, and cleanup
+would remove them.
+
 Apply only installs. To look further, or to remove things:
 
 ```bash

@@ -15,6 +15,17 @@ cat >~/.Brewfile <<'BREWFILE'
 {{ template "brewfile.tmpl" . }}
 BREWFILE
 
+# Packages only this Machine wants. Apply reads ~/.Brewfile.local and never writes it.
+# Its hash is here so that changing it changes this script, and Apply re-runs it.
+{{- $local := joinPath .chezmoi.homeDir ".Brewfile.local" }}
+# sha256: {{ if stat $local }}{{ include $local | sha256sum }}{{ else }}none{{ end }}
+if [[ -f ~/.Brewfile.local ]]; then
+  {
+    printf '\n# From ~/.Brewfile.local\n'
+    cat ~/.Brewfile.local
+  } >>~/.Brewfile
+fi
+
 # A Machine Homebrew cannot serve warns and carries on; it must not fail Apply.
 if ! homebrew_prepare; then
   exit 0

@@ -214,6 +214,64 @@ brew "x", postinstall: "${HOMEBREW_PREFIX}/bin/x"
   grep -qF 'postinstall: "${HOMEBREW_PREFIX}/bin/x"' "$home/.Brewfile"
 }
 
+# Render the install script for a home directory, as Apply would.
+install_script() {
+  local cfg
+  cfg="$(role_config dev)"
+  HOME="$1" chezmoi --source "$REPO_ROOT" --config "$cfg" --override-data '{"chezmoi":{"os":"darwin"}}' --no-tty \
+    execute-template <"$SOURCE_DIR/.chezmoiscripts/packages/run_onchange_before_install-packages.sh.tmpl"
+}
+
+@test "packages: ~/.Brewfile.local is appended to the Brewfile and installed" {
+  local bin="$BATS_TEST_TMPDIR/bin" home="$BATS_TEST_TMPDIR/home" script="$BATS_TEST_TMPDIR/install.sh"
+  mkdir -p "$bin" "$home"
+  printf '#!/bin/sh\nexit 0\n' >"$bin/brew"
+  chmod +x "$bin/brew"
+  printf 'cask "only-here"\n' >"$home/.Brewfile.local"
+  install_script "$home" >"$script"
+  run env HOME="$home" PATH="$bin:$PATH" bash "$script"
+  [ "$status" -eq 0 ]
+  [ "$(tail -n 1 "$home/.Brewfile")" = 'cask "only-here"' ]
+  # Generated entries are still there, and the local file is left alone.
+  grep -q '^brew "' "$home/.Brewfile"
+  [ "$(cat "$home/.Brewfile.local")" = 'cask "only-here"' ]
+}
+
+@test "packages: re-running does not append ~/.Brewfile.local twice" {
+  local bin="$BATS_TEST_TMPDIR/bin" home="$BATS_TEST_TMPDIR/home" script="$BATS_TEST_TMPDIR/install.sh"
+  mkdir -p "$bin" "$home"
+  printf '#!/bin/sh\nexit 0\n' >"$bin/brew"
+  chmod +x "$bin/brew"
+  printf 'cask "only-here"\n' >"$home/.Brewfile.local"
+  install_script "$home" >"$script"
+  HOME="$home" PATH="$bin:$PATH" bash "$script"
+  HOME="$home" PATH="$bin:$PATH" bash "$script"
+  [ "$(grep -c '^cask "only-here"$' "$home/.Brewfile")" -eq 1 ]
+}
+
+@test "packages: without ~/.Brewfile.local the Brewfile has no local section" {
+  local bin="$BATS_TEST_TMPDIR/bin" home="$BATS_TEST_TMPDIR/home" script="$BATS_TEST_TMPDIR/install.sh"
+  mkdir -p "$bin" "$home"
+  printf '#!/bin/sh\nexit 0\n' >"$bin/brew"
+  chmod +x "$bin/brew"
+  install_script "$home" >"$script"
+  run env HOME="$home" PATH="$bin:$PATH" bash "$script"
+  [ "$status" -eq 0 ]
+  run ! grep -q 'Brewfile.local' "$home/.Brewfile"
+}
+
+@test "packages: changing ~/.Brewfile.local changes the script, so Apply re-runs it" {
+  local home="$BATS_TEST_TMPDIR/home" none one two
+  mkdir -p "$home"
+  none="$(install_script "$home")"
+  printf 'cask "a"\n' >"$home/.Brewfile.local"
+  one="$(install_script "$home")"
+  printf 'cask "b"\n' >"$home/.Brewfile.local"
+  two="$(install_script "$home")"
+  [ "$none" != "$one" ]
+  [ "$one" != "$two" ]
+}
+
 @test "check:packages: the repo's packages.yaml passes" {
   run "$REPO_ROOT/tools/checks/packages.sh"
   echo "$output"
