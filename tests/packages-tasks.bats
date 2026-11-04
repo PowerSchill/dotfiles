@@ -5,6 +5,8 @@
 # Stub bodies are expanded when the stub runs, not here.
 # shellcheck disable=SC2016
 
+bats_require_minimum_version 1.5.0
+
 load helpers
 
 setup() {
