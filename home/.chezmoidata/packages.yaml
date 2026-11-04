@@ -6,11 +6,19 @@
 # enabled. Buckets may be empty or absent -- the install scripts range over
 # `index` results and a missing key is a no-op.
 #
-# darwin entries are maps (name, optional excludeEphemeral, optional args).
+# `homebrew` entries are maps, written to the Brewfile on every platform unless
+# `platforms:` narrows them (see .chezmoitemplates/brewEntries.tmpl):
+#   name              required
+#   options           Brewfile options, checked by check:packages
+#   platforms         macos, linux, wsl; linux includes wsl
+#   when              a Ruby modifier, e.g. `unless system "..."`
+#   excludeEphemeral  skip on Ephemeral machines
+# `homebrew` may also set `env` (ENV[...] lines) and `caskArgs` (cask_args).
+#
 # linux and windows entries are bare strings.
 ################################################################################
 packages:
-  darwin:
+  homebrew:
     taps:
       base:
         - name: buo/cask-upgrade
@@ -64,6 +72,7 @@ packages:
         - name: readline # Library for command-line editing
         - name: rename # Rename multiple files using Perl expressions
         - name: trash # Move files to trash instead of permanent deletion
+          platforms: [macos]
         - name: tree # Display directory structure as a tree
         - name: wget # Download files from the web
         #######################################
@@ -183,9 +192,13 @@ packages:
       gui:
         # macOS desktop helper CLIs -- only meaningful with a GUI session
         - name: blueutil # Control Bluetooth from the command line
+          platforms: [macos]
         - name: dockutil # Manage macOS dock from command line
+          platforms: [macos]
         - name: pinentry-mac # macOS GUI for entering passphrases
+          platforms: [macos]
         - name: switchaudio-osx # Switch audio input/output on macOS
+          platforms: [macos]
 
       security:
         - name: nmap # Network mapper and security scanner
@@ -213,6 +226,7 @@ packages:
 
       personal:
         - name: mas
+          platforms: [macos]
           excludeEphemeral: true
         - name: vitalyrodnenko/omnifocus-mcp/omnifocus-mcp # Model Context Protocol server for OmniFocus
 
@@ -279,14 +293,16 @@ packages:
       onepassword:
         - name: 1password-cli # Command-line access to 1Password vault
         - name: 1password # Password manager and digital vault
-          args:
-            appdir: "/Applications"
+          options:
+            args:
+              appdir: "/Applications"
 
       homelab:
         - name: docker-desktop # Docker container platform for macOS
           excludeEphemeral: true
-          args:
-            appdir: "/Applications"
+          options:
+            args:
+              appdir: "/Applications"
         - name: gcloud-cli # Google Cloud command-line tool
         - name: tailscale-app # Mesh VPN based on WireGuard
           excludeEphemeral: true
@@ -327,8 +343,9 @@ packages:
         - name: keyboardcleantool
           excludeEphemeral: true
         # - name: little-snitch@nightly # Network activity monitor and firewall
-        #   args:
-        #     appdir: "/Applications"
+        #   options:
+        #     args:
+        #       appdir: "/Applications"
         #   excludeEphemeral: true
         - name: mactracker # Detailed information on every Apple product ever made
         - name: mailmate@beta # Powerful email client for macOS

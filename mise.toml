@@ -96,6 +96,7 @@ depends = [
   "check:private-info",
   "check:workflows",
   "check:exec-bit",
+  "check:packages",
 ]
 
 [tasks."check:syntax"]
@@ -122,6 +123,11 @@ run = 'eval "set -- ${usage_files:-}"; tools/checks/zsh.sh "$@"'
 description = "Reject files over 1 MB"
 usage = 'arg "[files]" var=#true help="Files to check (default: all)"'
 run = 'eval "set -- ${usage_files:-}"; tools/checks/large-files.sh "$@"'
+
+[tasks."check:packages"]
+description = "Validate the Homebrew entries in packages.yaml (offline)"
+usage = 'arg "[files]" var=#true help="Files to check (default: home/.chezmoidata/packages.yaml)"'
+run = 'eval "set -- ${usage_files:-}"; tools/checks/packages.sh "$@"'
 
 [tasks."check:secrets"]
 description = "Scan staged changes (or a range) for secrets with gitleaks"

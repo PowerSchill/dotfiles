@@ -1,0 +1,38 @@
+{{- /*
+  Write the Brewfile entries of one bucket that apply to this Machine.
+
+  Args: dict
+    items      - a bucket from .chezmoidata/packages.yaml (may be nil)
+    type       - the Brewfile keyword: tap, brew, cask, mas, ...
+    platform   - this Machine: macos, linux or wsl
+    defaults   - platforms for an entry without `platforms:` (empty means all)
+    ephemeral  - skip entries marked `excludeEphemeral: true`
+
+  An entry is a map:
+    name              required
+    options           Brewfile options, written as Ruby (brewRuby.tmpl)
+    platforms         macos, linux, wsl; linux includes wsl
+    when              a Ruby modifier: `if OS.mac?`, `unless system "..."`
+    excludeEphemeral  skip on Ephemeral machines
+
+  A tap's `url` option is written as the positional clone URL Homebrew expects.
+  Ranging over a nil bucket is a no-op, so empty or absent buckets need no guard.
+*/ -}}
+{{- $ctx := . -}}
+{{- range .items -}}
+  {{- $platforms := index . "platforms" | default $ctx.defaults -}}
+  {{- $applies := or (not $platforms) (has $ctx.platform $platforms) (and (eq $ctx.platform "wsl") (has "linux" $platforms)) -}}
+  {{- $skipped := and $ctx.ephemeral (index . "excludeEphemeral") -}}
+  {{- if and $applies (not $skipped) -}}
+    {{- $options := index . "options" | default dict }}
+{{ $ctx.type }} {{ template "brewRuby.tmpl" .name -}}
+    {{- if and (eq $ctx.type "tap") (hasKey $options "url") -}}
+      , {{ template "brewRuby.tmpl" (index $options "url") -}}
+      {{- $options = omit $options "url" -}}
+    {{- end -}}
+    {{- range $key, $value := $options -}}
+      , {{ $key }}: {{ template "brewRuby.tmpl" $value -}}
+    {{- end -}}
+    {{- with index . "when" }} {{ . }}{{ end -}}
+  {{- end -}}
+{{- end -}}

@@ -32,5 +32,30 @@ fi
 if [[ -n "$(find "$work/home" -mindepth 1 -print -quit)" ]]; then
   die "dry-run apply wrote into the scratch home; it must not write anything"
 fi
+
+# Homebrew reads the Brewfile as Ruby, so only Homebrew can prove it parses. It is
+# not part of the Toolchain: CI's runners carry it, the dev container does not.
+find_brew() {
+  local candidate
+  for candidate in "${DOTFILES_BREW:-}" "$(command -v brew || true)" /opt/homebrew/bin/brew \
+    /usr/local/bin/brew /home/linuxbrew/.linuxbrew/bin/brew; do
+    [[ -x "$candidate" ]] && echo "$candidate" && return 0
+  done
+  return 1
+}
+
+parsed=""
+# Homebrew refuses root outside a container, and CI's root container has no brew.
+if { [[ -n "${DOTFILES_BREW:-}" ]] || [[ "$(id -u)" != 0 ]]; } && brew_bin="$(find_brew)"; then
+  brewfile="$work/Brewfile"
+  # shellcheck disable=SC2016 # a chezmoi template, not a shell expression
+  "${chez[@]}" execute-template '{{ template "brewfile.tmpl" . }}' >"$brewfile" 2> >(quiet) ||
+    die "could not render the Brewfile for roles '$roles'"
+  if ! HOMEBREW_NO_AUTO_UPDATE=1 "$brew_bin" bundle list --file="$brewfile" >/dev/null; then
+    die "Homebrew could not parse the Brewfile for roles '$roles' ($brewfile)"
+  fi
+  parsed=", Homebrew parsed the Brewfile"
+fi
+
 count="$("${chez[@]}" managed --exclude externals 2> >(quiet) | wc -l | tr -d ' ')"
-echo "$CHECK_NAME: roles '$roles' render cleanly ($count targets on $(uname -s))"
+echo "$CHECK_NAME: roles '$roles' render cleanly ($count targets on $(uname -s)$parsed)"
