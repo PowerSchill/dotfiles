@@ -26,11 +26,11 @@ packages:
   homebrew:
     taps:
       base:
-        - name: buo/cask-upgrade
+        - name: buo/cask-upgrade # Adds `brew cu` to upgrade casks
           options:
             trusted: { command: cu }
-        - name: lazywalker/tap
-        - name: teamookla/speedtest
+        - name: lazywalker/tap # Tap for rgrc
+        - name: teamookla/speedtest # Tap for the Ookla Speedtest CLI
       dev:
       gui:
       security:
@@ -38,7 +38,7 @@ packages:
       homelab:
       work:
       personal:
-        - name: vitalyrodnenko/omnifocus-mcp
+        - name: vitalyrodnenko/omnifocus-mcp # Tap for the OmniFocus MCP server
 
     brews:
       base:
@@ -127,6 +127,8 @@ packages:
           platforms: [macos] # the formula only downloads a macOS build
           options:
             trusted: true
+        - name: television # Fuzzy finder TUI for any source of text
+        - name: docker # Docker command-line client
 
       dev:
         #######################################
@@ -209,6 +211,20 @@ packages:
         # General
         #######################################
         - name: yubikey-agent # YubiKey SSH agent
+        - name: kubernetes-cli # Kubernetes command-line tool (kubectl)
+        - name: minikube # Local Kubernetes cluster for development
+        - name: terraform-docs # Generate Terraform documentation from code
+        - name: terragrunt # Terraform wrapper for orchestrating infrastructure
+        - name: ipcalc # IP address calculator for networking
+        - name: sipcalc # Advanced IP subnet calculator
+        - name: ssh-copy-id # Copy SSH public key to remote machines
+        - name: whois # Query domain registration information
+        - name: tfswitch # Switch between Terraform versions
+        - name: helm # Kubernetes package manager
+        - name: openspec # Spec-driven development workflow for AI coding assistants
+        - name: crane # Tool for managing container images and registries
+        - name: conftest # Test configuration files with Open Policy Agent policies
+        - name: opentofu # Open-source Terraform fork
 
       gui:
         # macOS desktop helper CLIs -- only meaningful with a GUI session
@@ -227,23 +243,21 @@ packages:
         - name: sqlmap # free and open-source penetration testing tool written in Python that automates the process of detecting and exploiting SQL injection (SQLi) flaws
         - name: tfsec # Security scanner for Terraform code
         - name: trivy # Vulnerability and misconfiguration scanner
-        - name: hydra
+        - name: hydra # Network login cracker supporting many protocols
         - name: ffuf # Fast web fuzzer written in Go
         - name: hashcat # Advanced password recovery utility
+        - name: trufflehog # Find leaked credentials in repositories and other sources
+        - name: gitleaks # Detect secrets in git repositories
+        - name: semgrep # Static analysis for finding bugs and security issues
 
       onepassword:
 
       homelab:
-        - name: kubernetes-cli # Kubernetes command-line tool (kubectl)
-        - name: minikube # Local Kubernetes cluster for development
-        - name: terraform-docs # Generate Terraform documentation from code
-        - name: terragrunt # Terraform wrapper for orchestrating infrastructure
-        - name: ipcalc # IP address calculator for networking
-        - name: sipcalc # Advanced IP subnet calculator
-        - name: ssh-copy-id # Copy SSH public key to remote machines
-        - name: whois # Query domain registration information
 
       work:
+        - name: awscli # Amazon Web Services command-line interface
+        - name: ansible # IT automation and configuration management
+        - name: azure-cli # Microsoft Azure command-line interface
 
       personal:
         - name: mas
@@ -281,7 +295,7 @@ packages:
         #######################################
         # Desktop applications
         #######################################
-        - name: arc
+        - name: arc # Chromium-based web browser
         - name: alfred # Application launcher and productivity tool
         - name: beyond-compare # Advanced file and folder comparison tool
         - name: bloom # Bloom language server utility
@@ -315,6 +329,8 @@ packages:
         - name: whatcable # Menu bar app for USB-C cable diagnostics
         - name: wezterm@nightly # Nightly build of WezTerm terminal emulator
         - name: zed # High-performance code editor
+        - name: zen # Privacy-focused web browser
+        - name: visual-studio-code # Installed from self-service on work machines.
 
       security:
         - name: burp-suite # Web security testing toolkits
@@ -334,12 +350,13 @@ packages:
           options:
             args:
               appdir: "/Applications"
-        - name: gcloud-cli # Google Cloud command-line tool
         - name: tailscale-app # Mesh VPN based on WireGuard
           excludeEphemeral: true
 
       work:
         # - name: displaylink # DisplayLink graphics adapter drivers
+        - name: gcloud-cli # Google Cloud command-line tool
+        - name: wizcli # Wiz command-line scanner for code, images and IaC
 
       personal:
         - name: anylist # Shared grocery and household list app
@@ -369,9 +386,9 @@ packages:
         - name: google-chrome # Google Chrome web browser
         - name: grammarly-desktop # Grammar check and writing assistant
         - name: helium-browser # Lightweight side window browser
-        - name: imazing
+        - name: imazing # Manage and back up iOS devices
           excludeEphemeral: true
-        - name: keyboardcleantool
+        - name: keyboardcleantool # Lock the keyboard while cleaning it
           excludeEphemeral: true
         # - name: little-snitch@nightly # Network activity monitor and firewall
         #   options:
@@ -395,13 +412,10 @@ packages:
         - name: slack # Team messaging and collaboration platform
         - name: steam # Video game digital distribution service
           excludeEphemeral: true
-        - name: visual-studio-code # Installed from self-service on work machines.
-          excludeEphemeral: true
         - name: vlc # Multimedia player and framework
           excludeEphemeral: true
         - name: yubico-authenticator # YubiKey authentication application
           excludeEphemeral: true
-        - name: zen # Privacy-focused web browser
         - name: zoom # Video conferencing platform
           excludeEphemeral: true
         - name: zotero@beta # Research source manager and bibliography software

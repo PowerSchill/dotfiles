@@ -43,6 +43,7 @@ AppData
 {{ else }}
 # Ignore these for Windows
 .chezmoiscripts/packages/**
+.Brewfile.local
 .inputrc
 .oh-my-zsh
 .ssh
