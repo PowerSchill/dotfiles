@@ -36,6 +36,14 @@ in_image() {
   [ "$(jq -c .roles <<<"$output")" = '["dev"]' ]
 }
 
+@test "R18: the base Packages come from Homebrew, without the heavy ones" {
+  run in_image "$IMAGE" sh -c 'command -v bat; brew list --formula; grep -c "^brew" ~/.Brewfile'
+  echo "$output"
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = /home/linuxbrew/.linuxbrew/bin/bat ]
+  [[ "$output" != *ffmpeg* && "$output" != *imagemagick* && "$output" != *ghostscript* ]]
+}
+
 @test "R18: an interactive zsh starts without errors" {
   run in_image "$IMAGE" zsh -lic 'echo READY' 2>&1
   [ "$status" -eq 0 ]

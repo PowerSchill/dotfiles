@@ -14,8 +14,9 @@ you pick for each machine.
 - **Role-based**: each machine is `base` plus the Roles you opt into (`dev`, `gui`, `work`,
   `personal`, `security`, `onepassword`, `homelab`). Roles are chosen once at `chezmoi init`, not
   guessed from the hostname.
-- **Cross-platform**: macOS (Homebrew), Linux (apt/dnf + cargo), Windows (winget + PowerShell) and
-  WSL, with every package declared in one YAML file.
+- **Cross-platform**: macOS, Linux and WSL 2 get the same Packages from Homebrew, using every
+  Brewfile entry type and option. Native packages cover what Homebrew cannot, and Windows uses winget
+  and PowerShell. Every package is declared in one YAML file.
 - **Shell**: [Zsh](https://www.zsh.org/) with [Oh My Zsh](https://ohmyz.sh/),
   [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and curated plugins; PowerShell with
   [Oh My Posh](https://ohmyposh.dev/) on Windows.
@@ -121,7 +122,11 @@ git clone https://github.com/PowerSchill/dotfiles.git ~/.local/share/chezmoi
 ~/.local/share/chezmoi/install.sh
 ```
 
-Tested on Fedora 43 and Ubuntu 25.10. Other distributions may work.
+Apply installs Homebrew from a pinned commit, after the native packages it needs. That takes `sudo`
+to create `/home/linuxbrew`; without it, or as root outside a container, Homebrew is skipped with a
+warning. Native lists exist for Debian, Ubuntu, Fedora, RHEL-family and Arch distributions.
+
+Tested on Fedora 43 and Ubuntu 25.10. Other glibc distributions may work.
 
 ### Install on Windows (PowerShell)
 
@@ -149,8 +154,9 @@ detected through interop (see [Windows Enterprise](#windows-enterprise-windows-a
 
 1. **Role prompts**: a yes/no question for each Role. Answers are saved and not asked again.
 2. **Email prompt**: once, unless the `personal` Role is on.
-3. **Packages**: `base` plus every enabled Role's bucket is installed (`brew bundle`, apt/dnf/cargo,
-   or winget).
+3. **Packages**: `base` plus every enabled Role's bucket is installed (`brew bundle` on macOS, Linux
+   and WSL 2, or winget on Windows). Machines Homebrew does not serve (Intel Macs, ARM32, WSL 1) get
+   a warning and only the native packages.
 4. **Externals**: Oh My Zsh, Powerlevel10k, Zsh plugins, fzf-git, gitalias, Catppuccin themes and
    fonts are fetched from GitHub.
 5. **OS defaults**: on macOS, Dock, Finder and browser defaults are applied.
@@ -213,8 +219,29 @@ Per-machine overrides (`githubUsername`, `opShellPlugins`, `opCopilotEnvironment
 
 ### Packages
 
-Add packages to `home/.chezmoidata/packages.yaml` under the right platform and bucket (`base` or a
-Role), not to the install scripts.
+Add packages to `home/.chezmoidata/packages.yaml`, not to the install scripts. Almost everything goes
+under `homebrew`, in its entry type (`brews`, `casks`, `taps`, `mas`, `vscode`, ...) and bucket (`base`
+or a Role). `check:packages` validates each entry.
+
+```yaml
+brews:
+  dev:
+    - name: postgresql@16
+      options: { restart_service: ":changed", link: true } # ":word" is a Ruby symbol
+    - name: blueutil
+      platforms: [macos] # every platform unless narrowed: macos, linux, wsl
+    - name: user/tap/thing # a third-party Package is named in full and trusted
+      options: { trusted: true }
+```
+
+Apply only installs. To look further, or to remove things:
+
+```bash
+mise run packages:check       # is every ~/.Brewfile entry installed?
+mise run packages:cleanup     # list what isn't in the Brewfile; --yes uninstalls it
+mise run packages:leftovers   # Linux: native copies of Packages Homebrew now installs
+mise run packages:audit       # does Homebrew still carry every entry? (needs network)
+```
 
 ## 📝 Common Commands
 

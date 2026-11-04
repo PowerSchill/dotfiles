@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+"""Check every core entry in packages.yaml against Homebrew's API. Needs a network.
+
+    dotfiles-package-audit [packages.json]     (default: read through yq from the repo)
+
+Not a Check: Homebrew changes without this repo changing, so it would fail commits
+that did nothing wrong. Run it with `mise run packages:audit` when you want to know.
+Tapped entries are reported but not checked; the API only covers Homebrew's own.
+"""
+import json
+import os
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+
+API = os.environ.get("DOTFILES_BREW_API", "https://formulae.brew.sh/api")
+LINUX_BOTTLES = ("x86_64_linux", "arm64_linux")
+
+
+def fetch(name):
+    with urllib.request.urlopen(f"{API}/{name}.json", timeout=120) as response:
+        return json.load(response)
+
+
+def load_packages(argv):
+    if len(argv) > 1:
+        with open(argv[1], encoding="utf-8") as handle:
+            return json.load(handle)
+    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    with open(os.path.join(root, ".chezmoiroot"), encoding="utf-8") as handle:
+        source = handle.read().strip()
+    path = os.path.join(root, source, ".chezmoidata", "packages.yaml")
+    return json.loads(subprocess.check_output(["yq", "-o", "json", ".", path]))
+
+
+def entries(homebrew, section):
+    for bucket, items in (homebrew.get(section) or {}).items():
+        for item in items or []:
+            yield bucket, item
+
+
+def applies(item, platform):
+    platforms = item.get("platforms") or ["macos", "linux"]
+    return platform in platforms or (platform == "linux" and "wsl" in platforms)
+
+
+def is_tapped(name):
+    return name.count("/") == 2 and not name.lower().startswith("homebrew/")
+
+
+def audit_formulae(homebrew, formulae, aliases):
+    problems, tapped = [], []
+    for bucket, item in entries(homebrew, "brews"):
+        name = item["name"]
+        if is_tapped(name):
+            tapped.append(name)
+            continue
+        formula = formulae.get(name) or formulae.get(aliases.get(name, ""))
+        if formula is None:
+            problems.append(f"brews.{bucket}: {name}: no such formula")
+            continue
+        if formula.get("disabled"):
+            problems.append(f"brews.{bucket}: {name}: disabled by Homebrew")
+        files = set(((formula.get("bottle") or {}).get("stable") or {}).get("files") or {})
+        if "all" in files:
+            continue
+        if applies(item, "macos") and not any(key.startswith("arm64_") and key != "arm64_linux" for key in files):
+            problems.append(f"brews.{bucket}: {name}: no Apple Silicon macOS bottle")
+        missing = [key for key in LINUX_BOTTLES if key not in files]
+        if applies(item, "linux") and missing:
+            problems.append(f"brews.{bucket}: {name}: no {' or '.join(missing)} bottle (consider platforms: [macos])")
+    return problems, tapped
+
+
+def audit_casks(homebrew, casks):
+    problems, tapped = [], []
+    for bucket, item in entries(homebrew, "casks"):
+        name = item["name"]
+        if is_tapped(name):
+            tapped.append(name)
+        elif name not in casks:
+            problems.append(f"casks.{bucket}: {name}: no such cask")
+        elif casks[name].get("disabled"):
+            problems.append(f"casks.{bucket}: {name}: disabled by Homebrew")
+    return problems, tapped
+
+
+def main(argv):
+    homebrew = load_packages(argv)["packages"]["homebrew"]
+    try:
+        formula_list = fetch("formula")
+        cask_list = fetch("cask")
+    except (urllib.error.URLError, TimeoutError) as error:
+        print(f"packages:audit: could not reach {API}: {error}", file=sys.stderr)
+        return 2
+    formulae = {item["name"]: item for item in formula_list}
+    aliases = {alias: item["name"] for item in formula_list for alias in item.get("aliases", [])}
+    casks = {item["token"]: item for item in cask_list}
+
+    problems, tapped_formulae = audit_formulae(homebrew, formulae, aliases)
+    cask_problems, tapped_casks = audit_casks(homebrew, casks)
+    problems += cask_problems
+    for problem in problems:
+        print(problem)
+    for name in tapped_formulae + tapped_casks:
+        print(f"not checked (tapped): {name}")
+    print(f"packages:audit: {len(problems)} problem(s)")
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

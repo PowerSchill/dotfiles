@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+# Ask about this Machine's Homebrew Packages. Apply only ever installs them
+# (docs/adr/0004); everything here runs because a person asked.
+#
+#   dotfiles-packages check             are the ~/.Brewfile entries installed?
+#   dotfiles-packages cleanup           list what cleanup would uninstall
+#   dotfiles-packages cleanup --yes     uninstall it, and reset Homebrew's trust store
+#                                       to match the Brewfile
+#   dotfiles-packages leftovers         list native copies of Brewfile formulae (read-only)
+set -euo pipefail
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source_dir="$root/$(cat "$root/.chezmoiroot")"
+# shellcheck source=home/dot_config/shell/functions/log.sh
+. "$source_dir/dot_config/shell/functions/log.sh"
+# shellcheck source=home/dot_config/shell/functions/homebrew.sh
+. "$source_dir/dot_config/shell/functions/homebrew.sh"
+LOG_TAG="packages"
+
+brewfile="$HOME/.Brewfile"
+
+need_brewfile() {
+  if [[ ! -f "$brewfile" ]]; then
+    echo "dotfiles-packages: $brewfile does not exist. Apply writes it." >&2
+    exit 1
+  fi
+}
+
+brew_bin() {
+  homebrew_find || {
+    echo "dotfiles-packages: Homebrew is not installed on this Machine." >&2
+    exit 1
+  }
+}
+
+# Native names for formulae whose package is called something else.
+native_names() {
+  case "$1" in
+    fd) printf '%s\n' fd fd-find ;;
+    go) printf '%s\n' go golang ;;
+    neovim) printf '%s\n' neovim nvim ;;
+    shellcheck) printf '%s\n' shellcheck ShellCheck ;;
+    trash-cli) printf '%s\n' trash-cli trash ;;
+    tlrc) printf '%s\n' tlrc tldr ;;
+    *) echo "$1" ;;
+  esac
+}
+
+# The name of a native manager that has this package installed, if any.
+native_owner() {
+  local name="$1"
+  if command -v dpkg-query >/dev/null 2>&1 &&
+    [[ "$(dpkg-query -W -f='${Status}' "$name" 2>/dev/null)" == "install ok installed" ]]; then
+    echo apt
+  fi
+  if command -v rpm >/dev/null 2>&1 && rpm -q "$name" >/dev/null 2>&1; then echo dnf; fi
+  if command -v pacman >/dev/null 2>&1 && pacman -Q "$name" >/dev/null 2>&1; then echo pacman; fi
+  if command -v snap >/dev/null 2>&1 && snap list "$name" >/dev/null 2>&1; then echo snap; fi
+  if [[ -x "$HOME/.cargo/bin/$name" ]]; then echo cargo; fi
+}
+
+leftovers() {
+  need_brewfile
+  if [[ "$(uname -s)" != Linux ]]; then
+    echo "leftovers: only Linux has native copies to report"
+    return 0
+  fi
+  local formula name owner found=0
+  while IFS= read -r formula; do
+    # The login shell and Homebrew's own prerequisites stay native on purpose.
+    case "$formula" in zsh | curl | git) continue ;; esac
+    while IFS= read -r name; do
+      while IFS= read -r owner; do
+        [[ -n "$owner" ]] || continue
+        echo "$owner: $name (Homebrew installs $formula)"
+        found=1
+      done < <(native_owner "$name")
+    done < <(native_names "$formula")
+  done < <(sed -n 's/^brew "\([^"]*\)".*/\1/p' "$brewfile")
+  local link
+  for link in bat fd; do
+    if [[ -L "$HOME/.local/bin/$link" ]]; then
+      echo "link: ~/.local/bin/$link -> $(readlink "$HOME/.local/bin/$link") (shadows Homebrew's $link)"
+      found=1
+    fi
+  done
+  if ((found)); then
+    echo "leftovers: nothing was removed. Remove what you no longer need by hand."
+  else
+    echo "leftovers: none"
+  fi
+}
+
+case "${1:-}" in
+  check)
+    need_brewfile
+    exec "$(brew_bin)" bundle check --verbose --file="$brewfile"
+    ;;
+  cleanup)
+    need_brewfile
+    if [[ "${2:-}" == --yes ]]; then
+      exec "$(brew_bin)" bundle cleanup --force --file="$brewfile"
+    fi
+    echo "dotfiles-packages: listing only. Uninstalling needs --yes." >&2
+    exec "$(brew_bin)" bundle cleanup --file="$brewfile"
+    ;;
+  leftovers) leftovers ;;
+  *)
+    sed -n '/^# Ask/,/^set -euo/p' "${BASH_SOURCE[0]}" | sed -e '$d' -e 's/^# \{0,1\}//' >&2
+    exit 2
+    ;;
+esac
