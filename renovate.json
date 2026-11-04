@@ -3,6 +3,7 @@
   "description": "Bumps the pinned Toolchain (mise.toml, mise.full.toml), the SHA-pinned GitHub Actions and the dev container base image digest (R3). Patch updates merge themselves once CI passes; minor and major wait for review.",
   "extends": ["config:recommended", ":semanticCommits", "helpers:pinGitHubActionDigests"],
   "enabledManagers": ["mise", "github-actions", "dockerfile"],
+  "mode": "full",
   "semanticCommitType": "chore",
   "semanticCommitScope": "deps",
   "dependencyDashboard": true,
