@@ -366,10 +366,6 @@ packages:
           excludeEphemeral: true
         - name: backblaze-downloader # Download tool for Backblaze backups
           excludeEphemeral: true
-        - name: caldigit-docking-utility # CalDigit dock configuration app
-          excludeEphemeral: true
-        - name: caldigit-thunderbolt-charging # CalDigit Thunderbolt charging utility
-          excludeEphemeral: true
         - name: calibre # E-book management library
           excludeEphemeral: true
         - name: cardhop # Contacts manager
@@ -378,8 +374,6 @@ packages:
         - name: curseforge # Modding platform for games
         - name: discord # Voice, video, and text communication platform
         - name: dropbox # Cloud storage and file synchronization
-          excludeEphemeral: true
-        - name: elgato-stream-deck # Stream Deck control software
           excludeEphemeral: true
         - name: fastscripts # Keyboard shortcuts for AppleScripts
         - name: fastmail # Email client
