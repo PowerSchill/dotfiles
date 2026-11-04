@@ -11,6 +11,12 @@ case $- in
 *) return ;;
 esac
 
+# Homebrew on PATH, and where `brew bundle --global` finds the Brewfile
+if [ -f "$HOME/.config/shell/homebrew-env.sh" ]; then
+  # shellcheck source=home/dot_config/shell/homebrew-env.sh
+  source "$HOME/.config/shell/homebrew-env.sh"
+fi
+
 # Source the main shell config
 if [ -f "$HOME/.config/shell/config.bash" ]; then
   # shellcheck source=/dev/null

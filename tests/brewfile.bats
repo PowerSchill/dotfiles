@@ -235,13 +235,13 @@ taps:
       options: { url: https://x/y.git, trusted: { formula: a, formulae: [b], cask: c, casks: [d], command: e, commands: [f] } }
 brews:
   base:
-    - name: a
+    - name: u/t/a
       options: { args: [x], conflicts_with: [y], link: true, postinstall: z, restart_service: ":changed", trusted: true, version_file: f }
     - name: b
       options: { link: ":overwrite", restart_service: true }
 casks:
   base:
-    - name: c
+    - name: u/t/c
       options: { args: { appdir: x }, greedy: true, postinstall: z, trusted: true }
 mas: { base: [{ name: m, options: { id: 1 } }] }
 winget: { base: [{ name: w, options: { id: i, source: msstore } }] }
@@ -333,4 +333,61 @@ STUB
   DOTFILES_BREW="$bin/brew" run "$REPO_ROOT/tools/checks/apply.sh" dev
   [ "$status" -ne 0 ]
   [[ "$output" == *"Homebrew could not parse"* ]]
+}
+
+@test "check:packages: the repo's third-party taps declare only narrow trust" {
+  run yq -r '.packages.homebrew.taps[][]? | select(.options.trusted == true) | .name' \
+    "$SOURCE_DIR/.chezmoidata/packages.yaml"
+  [ -z "$output" ]
+}
+
+@test "check:packages: whole-tap trust is rejected" {
+  check_packages <<'YAML'
+taps: { base: [{ name: u/t, options: { trusted: true } }] }
+YAML
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"option 'trusted' must be a map"* ]]
+}
+
+@test "check:packages: a third-party entry needs trust" {
+  check_packages <<'YAML'
+brews: { base: [{ name: u/t/f }] }
+casks: { base: [{ name: u/t/c }] }
+YAML
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"u/t/f: a third-party entry needs"* ]]
+  [[ "$output" == *"u/t/c: a third-party entry needs"* ]]
+}
+
+@test "check:packages: trust on the entry or in its tap's map both count" {
+  check_packages <<'YAML'
+taps: { base: [{ name: u/t, options: { trusted: { formula: f } } }] }
+brews: { base: [{ name: u/t/f }, { name: u/t/g, options: { trusted: true } }] }
+YAML
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+
+@test "check:packages: core entries need no trust, and homebrew/ names are not third-party" {
+  check_packages <<'YAML'
+brews: { base: [{ name: bat }, { name: homebrew/core/git }] }
+YAML
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+
+@test "check:packages: trust on a bare name is rejected, Homebrew would ignore it" {
+  check_packages <<'YAML'
+brews: { base: [{ name: bat, options: { trusted: true } }] }
+YAML
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"trusted needs a fully-qualified name"* ]]
+}
+
+@test "check:packages: a tap nothing is trusted from is rejected" {
+  check_packages <<'YAML'
+taps: { base: [{ name: u/t }] }
+YAML
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"nothing from this tap is trusted"* ]]
 }

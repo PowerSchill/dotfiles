@@ -6,12 +6,23 @@ set -euo pipefail
 
 # shellcheck source=home/dot_config/shell/functions/log.sh
 . "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/log.sh"
+# shellcheck source=home/dot_config/shell/functions/homebrew.sh
+. "{{ .chezmoi.sourceDir }}/dot_config/shell/functions/homebrew.sh"
 LOG_TAG="packages"
 
 # Quoted: values like ${HOMEBREW_PREFIX} in a postinstall are for Homebrew, not this shell.
 cat >~/.Brewfile <<'BREWFILE'
 {{ template "brewfile.tmpl" . }}
 BREWFILE
+
+# A Machine Homebrew cannot serve warns and carries on; it must not fail Apply.
+if ! homebrew_prepare; then
+  exit 0
+fi
+
+# Every Machine upgrades from current metadata, whatever the calling shell set.
+log_state "Updating Homebrew"
+brew update
 
 log_state "Running brew bundle"
 brew bundle --file=~/.Brewfile
