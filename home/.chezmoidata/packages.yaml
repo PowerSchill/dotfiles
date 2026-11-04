@@ -296,12 +296,9 @@ packages:
         #######################################
         # Desktop applications
         #######################################
-        - name: arc # Chromium-based web browser
         - name: alfred # Application launcher and productivity tool
         - name: beyond-compare # Advanced file and folder comparison tool
         - name: bloom # Bloom language server utility
-        - name: camo-studio # Virtual camera app for video calls
-          excludeEphemeral: true
         - name: claude-code@latest # Claude Code editor integration
         - name: cyberduck # FTP/SFTP and cloud storage client
         - name: daisydisk # Visual disk usage analyzer
