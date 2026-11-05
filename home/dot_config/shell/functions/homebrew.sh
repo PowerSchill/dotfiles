@@ -77,6 +77,7 @@ homebrew_platform_problem() {
 homebrew_can_install() {
     local prefix=/opt/homebrew
     [[ "$(uname -s)" == Darwin ]] || prefix=/home/linuxbrew/.linuxbrew
+    prefix="${DOTFILES_HOMEBREW_PREFIX:-$prefix}"
     [[ "$(id -u)" == 0 || -w "$prefix" ]] && return 0
     command -v sudo >/dev/null 2>&1 || return 1
     sudo -n true 2>/dev/null && return 0

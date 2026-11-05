@@ -11,6 +11,8 @@ setup() {
   BIN="$BATS_TEST_TMPDIR/bin"
   mkdir -p "$BIN"
   export DOTFILES_HOMEBREW_LOCATIONS="$BATS_TEST_TMPDIR/none/brew"
+  # Not the real prefix: the acceptance container has a writable one.
+  export DOTFILES_HOMEBREW_PREFIX="$BATS_TEST_TMPDIR/none"
   export DOTFILES_CONTAINER_MARKERS="$BATS_TEST_TMPDIR/not-a-container"
   stub id 'echo 1000'
   stub uname 'case "$1" in -s) echo Linux ;; -m) echo x86_64 ;; -r) echo 6.1.0-generic ;; esac'
