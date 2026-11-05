@@ -329,6 +329,12 @@ packages:
         - name: zed # High-performance code editor
         - name: zen # Privacy-focused web browser
         - name: visual-studio-code # Installed from self-service on work machines.
+        - name: darrylmorley/whatcable/whatcable
+          options:
+            trusted: true
+        - name: darrylmorley/whatbattery/whatbattery
+          options:
+            trusted: true
 
       security:
         - name: burp-suite # Web security testing toolkits
