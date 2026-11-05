@@ -3,32 +3,33 @@
 lockfile_version = 3
 
 [[tools.act]]
-version = "0.2.93"
+version = "0.2.96"
 backend = "aqua:nektos/act"
-specifiers = ["0.2.93"]
+specifiers = ["0.2.96"]
 
 [tools.act."platforms.linux-arm64"]
-checksum = "sha256:c93bb0d3a0bc2e6de8572497fe0742a51af9090d1af6c5d22e0b1fe4b5428ac2"
+checksum = "sha256:158a16eee7394c266ee87dee9f15ca5f219d47193f7a1df9bad9093774e340c4"
 checksum_source = "mise-versions"
-url = "https://github.com/nektos/act/releases/download/v0.2.93/act_Linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/nektos/act/releases/assets/696155668"
+url = "https://github.com/nektos/act/releases/download/v0.2.96/act_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/nektos/act/releases/assets/706246898"
 
 [tools.act."platforms.linux-x64"]
-checksum = "sha256:dd2b976b7f2c06081da003a90c980a3ac7b814f7f2fed94da2fcaedd9130832a"
+checksum = "sha256:b861e901c9062d841c6e8ecd36cdf27e0ce39ea0124cfd93de6efcebea0e16e7"
 checksum_source = "mise-versions"
-url = "https://github.com/nektos/act/releases/download/v0.2.93/act_Linux_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/nektos/act/releases/assets/696155758"
+url = "https://github.com/nektos/act/releases/download/v0.2.96/act_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/nektos/act/releases/assets/706247036"
 
 [tools.act."platforms.macos-arm64"]
-checksum = "sha256:a951243d61bab28947e339f166a9a6eba687b2a4771bbd19272fc347de70a8c6"
-url = "https://github.com/nektos/act/releases/download/v0.2.93/act_Darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/nektos/act/releases/assets/696155586"
+checksum = "sha256:fba2638fb6e1def14fbbb704b27888c7b697d041da5b08cac7d06d055ef9d690"
+checksum_source = "mise-versions"
+url = "https://github.com/nektos/act/releases/download/v0.2.96/act_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/nektos/act/releases/assets/706246891"
 
 [tools.act."platforms.macos-x64"]
-checksum = "sha256:882f26c5b2160ac1d8979d2ed13451626965e4874e4ee99e31b728e7e65f5a7b"
+checksum = "sha256:84a95ddc407e66a5bb84e8debfe27b50fb83f009487a4be84e17f90a82b05992"
 checksum_source = "mise-versions"
-url = "https://github.com/nektos/act/releases/download/v0.2.93/act_Darwin_x86_64.tar.gz"
-url_api = "https://api.github.com/repos/nektos/act/releases/assets/696155763"
+url = "https://github.com/nektos/act/releases/download/v0.2.96/act_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/nektos/act/releases/assets/706247039"
 
 [[tools.git-cliff]]
 version = "2.14.2"
