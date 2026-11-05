@@ -25,7 +25,7 @@ PYTHONNOUSERSITE = "1"
 DOTFILES_CONVENTIONAL_SINCE = "b2cdbf97bec54d7512aef5e4ef3fb32eb67ae3f2"
 
 [tools]
-chezmoi = "2.73.3"
+chezmoi = "2.74.0"
 python = "3.14.10" # interpreter for pre-commit's .pyz
 pre-commit = "4.7.0"
 shellcheck = "0.11.0"
