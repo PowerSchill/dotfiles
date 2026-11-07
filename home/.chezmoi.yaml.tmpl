@@ -336,25 +336,27 @@ git:
   commitMessageTemplateFile: .commit_message.tmpl
 diff:
   # pager: delta
-{{- if lookPath "ksdiff" }}
-  command: "ksdiff"
-  args:
-    - "--partial-changeset"
-    - "--relative-path"
-    - "{{ `{{ .Target }}` }}"
-    - "--"
-    - "{{ `{{ .Target }}` }}"
-    - "{{ `{{ .Destination }}` }}"
-{{- end }}
-{{- if lookPath "bcomp" }}
-merge:
-  command: "bcomp"
-  args:
-    - "{{ `{{ .Destination }}` }}"
-    - "{{ `{{ .Source }}` }}"
-    - "{{ `{{ .Target }}` }}"
-    - "{{ `{{ .Source }}` }}"
-{{- end }}
+{{- /*
+  {{- if lookPath "ksdiff" }}
+    command: "ksdiff"
+    args:
+      - "--partial-changeset"
+      - "--relative-path"
+      - "{{ `{{ .Target }}` }}"
+      - "--"
+      - "{{ `{{ .Target }}` }}"
+      - "{{ `{{ .Destination }}` }}"
+  {{- end }}
+  {{- if lookPath "bcomp" }}
+  merge:
+    command: "bcomp"
+    args:
+      - "{{ `{{ .Destination }}` }}"
+      - "{{ `{{ .Source }}` }}"
+      - "{{ `{{ .Target }}` }}"
+      - "{{ `{{ .Source }}` }}"
+  {{- end }}
+*/}}
 textconv:
 - pattern: "**/*.plist"
   command: "plutil"
