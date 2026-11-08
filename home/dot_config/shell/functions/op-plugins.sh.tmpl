@@ -26,7 +26,13 @@
 #     helper, which forwards COPILOT_GITHUB_TOKEN / GH_TOKEN to headless hosts
 #     precisely because they have no vault. Leaving the CLIs unwrapped lets
 #     those forwarded tokens do their job. See docs/copilot-cli.md.
-if command -v op >/dev/null 2>&1 && [ -z "${SSH_CONNECTION:-}" ]; then
+#   - Inside a coding-agent session (Claude Code, T3 Code) each command is a
+#     fresh process tree, and 1Password authorizes the CLI per terminal
+#     session for 10 minutes of inactivity, so every git/gh call after a
+#     pause re-prompts. Skip the wrappers there and let gh use its keyring
+#     token. CLAUDECODE and T3CODE_THREAD_ID mark those sessions.
+if command -v op >/dev/null 2>&1 && [ -z "${SSH_CONNECTION:-}" ] \
+  && [ -z "${CLAUDECODE:-}" ] && [ -z "${T3CODE_THREAD_ID:-}" ]; then
     # Tells `op` the plugin aliases are already set up, so it does not ask us
     # to source ~/.config/op/plugins.sh.
     export OP_PLUGIN_ALIASES_SOURCED="1"

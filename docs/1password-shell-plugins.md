@@ -91,6 +91,13 @@ cannot run would otherwise *replace* a working CLI:
   biometric unlock, which a headless host does not have. The wrappers are
   therefore guarded on `SSH_CONNECTION`, so they never shadow a CLI on a
   server — see below.
+- **Not in coding-agent sessions.** 1Password authorizes the CLI per terminal
+  session and drops it after 10 minutes of inactivity. Agents such as Claude
+  Code and T3 Code run every command in a fresh process tree, so each `git`
+  or `gh` call after a pause would raise the approval dialog again. The
+  wrappers and `~/.config/git/gh-credential` are guarded on `CLAUDECODE` and
+  `T3CODE_THREAD_ID` and fall back to plain `gh`, which uses the token in its
+  own keyring (`gh auth login`).
 
 ## Interaction with `copilot-ssh`
 
