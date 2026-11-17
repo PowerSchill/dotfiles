@@ -5,5 +5,5 @@
 [tools]
 git-cliff = "2.14.2" # release:preview
 act = "0.2.98"       # run the CI workflow locally
-node = "26.13.0"     # runtime for the devcontainer CLI
+node = "26.13.1"     # runtime for the devcontainer CLI
 "npm:@devcontainers/cli" = "0.90.0"
