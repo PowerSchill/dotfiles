@@ -31,7 +31,7 @@ jobs:
     name: validate (ubuntu-latest)
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/powerschill/dotfiles-dev:latest@sha256:79c4ef754d204f0cda6f1c6ec94811ab94c84b5a4488056ccacbbe9b7e583fc6
+      image: ghcr.io/powerschill/dotfiles-dev:latest@sha256:3a4624bbcf9b9916f61395105363e6bfd4b0a79aaa3f0b513fd38813f21abe1c
       options: --user root
     env:
       # The checkout is owned by the runner's user, not root, and actions/checkout
