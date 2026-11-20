@@ -10,5 +10,13 @@ log_state "Reloading apps for the {{ .appearance }} appearance"
 
 # Reload tmux config if tmux is running
 if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
+  # Catppuccin sets its palette with `set -o` (only if unset), so a plain
+  # re-source keeps the old flavor's @thm_* colors. Clear them first.
+  tmux show-options -g 2>/dev/null | awk '/^@thm_/ {print $1}' |
+    while read -r opt; do tmux set-option -gu "$opt"; done
   tmux source-file ~/.config/tmux/tmux.conf 2>/dev/null
+  tmux refresh-client -S 2>/dev/null || true
 fi
+
+# Ghostty reloads its config on SIGUSR2 (1.2+); every open window re-themes
+pkill -USR2 -x ghostty 2>/dev/null || true

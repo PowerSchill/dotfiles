@@ -24,8 +24,15 @@ adjust-cell-height = 20%
 # -----------------------------------------------------------------------------
 # Appearance
 # -----------------------------------------------------------------------------
-# Follows the macOS system appearance automatically.
-theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+# Set from chezmoi's `appearance` (dark or light), like the other Catppuccin
+# configs. `theme-sync` re-renders this and the theme-reload script sends
+# Ghostty SIGUSR2 so open windows pick it up.
+{{- if eq .appearance "light" }}
+theme = Catppuccin Latte
+{{- else }}
+theme = Catppuccin Mocha
+{{- end }}
+# auto follows the theme's background, so the titlebar matches it.
 window-theme = auto
 
 background-opacity = 0.95
@@ -34,11 +41,12 @@ background-blur = 30
 scrollbar = never
 copy-on-select = false
 
-# WezTerm uses a blurred background image in dark mode only. Ghostty has no
-# per-appearance image, so it is off by default; uncomment to apply everywhere.
+# Blurred background image in dark mode only, like WezTerm.
+{{- if ne .appearance "light" }}
 background-image = ~/.config/wezterm/assets/Wezterm Background Blurred.png
 background-image-opacity = 0.35
 background-image-fit = cover
+{{- end }}
 
 # WezTerm window_padding = 3 on all sides
 window-padding-x = 3
