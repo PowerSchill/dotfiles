@@ -81,7 +81,7 @@ checksum = "sha256:82bb96078a24ca50b9c9a38f2379e6be6d87171fcd400fc14c8934b3bce96
 url = "https://nodejs.org/dist/v26.13.1/node-v26.13.1-darwin-x64.tar.gz"
 
 [[tools."npm:@devcontainers/cli"]]
-version = "0.90.0"
-aube = { path = ".mise/locks/mise.full/npm-devcontainers-cli/0.90.0", digest = "sha256:8a8a9e59feed6f3c786e90fcb8b436fec9cf4fa84a33211fc5998570a65501e2" }
+version = "0.91.0"
+aube = { path = ".mise/locks/mise.full/npm-devcontainers-cli/0.91.0", digest = "sha256:95766e5b4b0ce6661ee04aa534e4a549d82b312723ca778b5e98968d398f0741" }
 backend = "npm:@devcontainers/cli"
-specifiers = ["0.90.0"]
+specifiers = ["0.91.0"]
