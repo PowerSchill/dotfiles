@@ -141,3 +141,11 @@ keybind = global:cmd+grave_accent=toggle_quick_terminal
 quick-terminal-position = top
 quick-terminal-screen = mouse
 quick-terminal-animation-duration = 0.1
+
+# -----------------------------------------------------------------------------
+# SSH
+# -----------------------------------------------------------------------------
+# Hosts without the xterm-ghostty terminfo entry fail to start a terminal.
+# ssh-env sends TERM=xterm-256color to the remote instead. Not ssh-terminfo:
+# its remote `tic` install fails ("InstallFailed") on some hosts.
+shell-integration-features = ssh-env
